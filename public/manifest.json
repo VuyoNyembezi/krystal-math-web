@@ -1,0 +1,23 @@
+{
+  "short_name": "Krystal Math",
+  "name": "Krystal Math",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "description": "Management Tool",
+  "orientation": "any"
+}
