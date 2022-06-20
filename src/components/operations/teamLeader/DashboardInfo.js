@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Badge,
@@ -382,6 +382,24 @@ function DashBoardInfo() {
   const handleClose_assign_project = () => setShow_assign_project(false);
   const handleShow_assign_project = () => setShow_assign_project(true);
 
+
+
+  // Keeps track of changes in the database
+  const [old_team_projects_data, set_old_team_projects_data] = useState([]);
+  const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([])
+  // const [old_team_tasks_data, set_old_team_tasks_data] = useState([])
+  function OldData(){
+    set_old_team_projects_data(projectData);
+    set_old_team_live_issue_data(LiveIssueData);
+
+  };
+  
+
+  const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
+  
+  const latest_ive_ssue_data = useMemo(() => old_team_live_issue_data, [old_team_live_issue_data]);
+
+
   // Team Members List
   useEffect(() => {
     const requestOptions = {
@@ -564,18 +582,10 @@ function DashBoardInfo() {
         set_digital_marketing_ProjectData(results.digital_marketing_projects);
         set_integrations_ProjectData(results.integrations_projects);
         set_payment_methods_ProjectData(results.payment_method_projects);
+        set_all_ProjectData(results.all_projects)
       });
 
-    // fetch all projects assigned to the team
-    fetch(
-      `${URL}/api/auth/team/projects/all?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((res) => set_all_ProjectData(res.data));
-  }, [projectData]);
+  }, [latest_project_data]);
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -592,7 +602,7 @@ function DashBoardInfo() {
     )
       .then((response) => response.json())
       .then((Result) => set_team_tasks_overview(Result));
-    // All  Projects Ovuerview
+    // All  Projects Overview
     fetch(
       `${URL}/api/auth/team/project/count?team_id=${localStorage.getItem(
         "team"
@@ -623,7 +633,7 @@ function DashBoardInfo() {
       });
    
     }
-  }, [ LiveIssueData,search_key]);
+  }, [ latest_ive_ssue_data,search_key]);
 
   //  Fetch All Data States(Team Members, Teams, Environment, Task Statuses)
   useEffect(() => {
@@ -764,6 +774,7 @@ function DashBoardInfo() {
           if (Response.status === 200) {
             handleUpdateLiveIssueClose();
             handleCompleteLiveIssueShow();
+            OldData();
           } else if (Response.status === 422) {
             handleShowErrorLiveUpdate();
           } else if (Response.status === 500) {
@@ -791,6 +802,7 @@ function DashBoardInfo() {
           if (Response.status === 200) {
             handleShowsuccessLiveUpdate();
             handleUpdateLiveIssueClose();
+            OldData();
           } else if (Response.status === 422) {
             handleShowErrorLiveUpdate();
           } else if (Response.status === 500) {
@@ -829,6 +841,7 @@ function DashBoardInfo() {
         handleShowsuccessLiveUpdate();
         handleCompleteLiveIssueClose();
         handleUpdateLiveIssueClose();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorLiveUpdate();
       } else if (Response.status === 500) {

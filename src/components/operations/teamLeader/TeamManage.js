@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Card,
   CardGroup,
@@ -107,25 +107,14 @@ function ManageTeam() {
   //project assignemnt Data
   const [assign_projectData, set_assign_ProjectData] = useState({});
   const [assign_bet_projectData, set_assign_bet_ProjectData] = useState([]);
-  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] =
-    useState([]);
-  const [assign_country_projectData, set_assign_country_ProjectData] = useState(
-    []
-  );
-  const [
-    assign_customer_journey_projectData,
-    set_assign_customer_journey_ProjectData,
-  ] = useState([]);
-  const [
-    assign_digital_marketing_projectData,
-    set_assign_digital_marketing_ProjectData,
-  ] = useState([]);
-  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =
-    useState([]);
-  const [
-    assign_payment_methods_projectData,
-    set_assign_payment_methods_ProjectData,
-  ] = useState([]);
+  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] =  useState([]);
+  const [assign_country_projectData, set_assign_country_ProjectData] = useState([]);
+  const [ assign_customer_journey_projectData, set_assign_customer_journey_ProjectData] = useState([]);
+  const [ assign_digital_marketing_projectData, set_assign_digital_marketing_ProjectData] = useState([]);
+  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =  useState([]);
+  const [ assign_payment_methods_projectData, set_assign_payment_methods_ProjectData, ] = useState([]);
+  const [assign_all_projectData,set_assign_all_ProjectData] = useState([])
+ 
       //over due project assignemnt Data
       const [over_due_assign_projectData, set_over_due_assign_ProjectData] = useState({});
       const [over_due_assign_bet_projectData,set_over_due_assign_bet_ProjectData] = useState([])
@@ -135,6 +124,7 @@ function ManageTeam() {
       const [over_due_assign_digital_marketing_projectData,set_over_due_assign_digital_marketing_ProjectData] = useState([])
       const [over_due_assign_integrations_projectData,set_over_due_assign_integrations_ProjectData] = useState([])
       const [over_due_assign_payment_methods_projectData,set_over_due_assign_payment_methods_ProjectData] = useState([])
+      const [over_due_assign_all_projectData,set_over_due_assign_all_ProjectData] = useState([])
  
   //  ########## MODALS ##########3
   // for update modal Task List
@@ -296,7 +286,24 @@ function ManageTeam() {
     active: true,
     id: 0,
   });
-
+  // Keeps track of changes in the database
+  const [old_team_projects_assignment_data, set_old_team_projects_assignment_data] = useState([]);
+  const [old_team_over_due_projects_assignment_data, set_old_team_over_due_projects_assignment_data] = useState([]);
+  const [old_team_tasks_data, set_old_team_tasks_data] = useState([]);
+const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
+  function OldData(){
+    set_old_team_projects_assignment_data(assign_projectData);
+    set_old_team_over_due_projects_assignment_data(over_due_assign_projectData)
+    set_old_team_tasks_data(teamAllTasksData);
+    set_old_user_tasks_data(UserAllTasksData)
+  };
+  
+  const latest_over_due_project_assignment_data = useMemo(() => old_team_over_due_projects_assignment_data, [old_team_over_due_projects_assignment_data]);
+  const latest_project_assignment_data = useMemo(() => old_team_projects_assignment_data, [old_team_projects_assignment_data]);
+ 
+  const latest_team_tasks_data = useMemo(() => old_team_tasks_data, [old_team_tasks_data]);
+  const latest_user_tasks_data = useMemo(() => old_user_tasks_data, [old_user_tasks_data]);
+  
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -321,10 +328,11 @@ function ManageTeam() {
         set_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
         set_assign_integrations_ProjectData(results.integrations_projects)
         set_assign_payment_methods_ProjectData(results.payment_method_projects)
+        set_assign_all_ProjectData(results.all_projects)
       });
       
    
-  }, [assign_projectData]);
+  }, [latest_project_assignment_data]);
     // Over due  Assignment
         // Project Assignments
         useEffect(() => {
@@ -338,7 +346,7 @@ function ManageTeam() {
           };
            //fecth over due team  project assignments 
            fetch(
-            `${URL}/api/auth/project_assignment/over_due/team/all?team_id=${localStorage.getItem('team')}&id=${localStorage.getItem("SUID")}`,
+            `${URL}/api/auth/project_assignment/over_due/team/all?team_id=${localStorage.getItem('team')}`,
             requestOptions
           )
             .then((response) => response.json())
@@ -351,9 +359,11 @@ function ManageTeam() {
               set_over_due_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
               set_over_due_assign_integrations_ProjectData(results.integrations_projects)
               set_over_due_assign_payment_methods_ProjectData(results.payment_method_projects)
+              set_over_due_assign_all_ProjectData(results.all_projects)
+
             });
        
-        }, [over_due_assign_projectData]);
+        }, [latest_over_due_project_assignment_data]);
 
 
   useEffect(() => {
@@ -416,7 +426,7 @@ function ManageTeam() {
         setTeamNotActiveTasksData(Result.not_active_tasks);
       });
     }
-  }, [UserAllTasksData, search_key.task_search]);
+  }, [latest_team_tasks_data, search_key.task_search]);
 
   // User Or Dev Effect
   useEffect(() => {
@@ -441,7 +451,7 @@ function ManageTeam() {
           setUserNotActiveTasksData(Result.not_active_tasks);
         });
       }
-  }, [user.id, UserAllTasksData, search_key.task_search]);
+  }, [user.id, latest_user_tasks_data, search_key.task_search]);
 
   useEffect(() => {
     const requestOptions = {
@@ -492,6 +502,7 @@ function ManageTeam() {
         if (response.status === 201) {
           handleShowsuccessCreate();
           handleAddTaskClose();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorCreate();
         } else if (response.status === 500) {
@@ -532,6 +543,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleShowsuccessUpdate();
           handleUpdateTaskClose();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorUpdate();
         } else if (response.status === 500) {
@@ -563,6 +575,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleShowsuccessActive();
           handleCloseActivateTask();
+          OldData();
         } else if (response.status === 422) {
           handleShowError();
         } else if (response.status === 500) {
@@ -595,6 +608,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleShowsuccessDeActive();
           handleCloseDeActivateTask();
+          OldData();
         } else if (response.status === 422) {
           handleShowError();
         } else if (response.status === 500) {
@@ -626,6 +640,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleShowSuccessDelete();
           handleDeleteTaskClose();
+          OldData();
         } else if (response.status !== 200) {
           handleShowErrorDelete();
           handleDeleteTaskClose();
@@ -682,9 +697,6 @@ function ManageTeam() {
        })
     }
 
-
-
-
     // Time Stamp concatenation
   const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
   const kickoffDate = `${
@@ -723,6 +735,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleCloseUpdateProjectAssign();
           handleShowsuccessUpdate();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorUpdate();
         } else if (response.status === 500) {
@@ -752,6 +765,7 @@ function ManageTeam() {
         if (response.status === 200) {
           handleShowSuccessDelete();
           handleCloseConfirmationDelete();
+          OldData();
         } else if (response.status !== 200) {
           handleShowErrorDelete();
           handleCloseConfirmationDelete();
@@ -1751,6 +1765,75 @@ function ManageTeam() {
                             </tbody>
                           </Table>
                         </Tab>
+                        <Tab eventKey="all" title="All">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th> Due Date </th>
+                                <th> Kickoff Date </th>
+                                <th>Assigned</th>
+                                <th>click</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {assign_all_projectData.map(
+                                (project, Index) => {
+                                  return (
+                                    <tr key={Index}>
+                                      <td>{project.project.name}</td>
+                                      <td> {project.project_type.name}</td>
+                                      <td>{project.user_status.name}</td>
+                                      <td>
+                                        {new Date(
+                                          project.due_date
+                                        ).toDateString()}
+                                      </td>
+                                      <td>
+                                        {new Date(
+                                          project.kickoff_date
+                                        ).toDateString()}
+                                      </td>
+                                      <td>{project.user.name}</td>
+                                      <td className="text-center">
+                                        <button
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            size="sm"
+                                            variant="outline-success"
+                                            onClick={
+                                              handleShowUpdateProjectAssign
+                                            }
+                                          >
+                                            update
+                                          </Button>
+                                        </button>{" "}
+                                        <button
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            size="sm"
+                                            variant="outline-warning"
+                                            onClick={
+                                              handleShowConfirmationDelete
+                                            }
+                                          >
+                                            un-assign
+                                          </Button>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </Tab>
                       </Tabs>
                     </Card.Body>
                   </Card>
@@ -2240,6 +2323,75 @@ function ManageTeam() {
                        </tbody>
                      </Table>
                    </Tab>
+                   <Tab eventKey="all" title="All">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th> Due Date </th>
+                                <th> Kickoff Date </th>
+                                <th>Assigned</th>
+                                <th>click</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {over_due_assign_all_projectData.map(
+                                (project, Index) => {
+                                  return (
+                                    <tr key={Index}>
+                                      <td>{project.project.name}</td>
+                                      <td> {project.project_type.name}</td>
+                                      <td>{project.user_status.name}</td>
+                                      <td>
+                                        {new Date(
+                                          project.due_date
+                                        ).toDateString()}
+                                      </td>
+                                      <td>
+                                        {new Date(
+                                          project.kickoff_date
+                                        ).toDateString()}
+                                      </td>
+                                      <td>{project.user.name}</td>
+                                      <td className="text-center">
+                                        <button
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            size="sm"
+                                            variant="outline-success"
+                                            onClick={
+                                              handleShowUpdateProjectAssign
+                                            }
+                                          >
+                                            update
+                                          </Button>
+                                        </button>{" "}
+                                        <button
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            size="sm"
+                                            variant="outline-warning"
+                                            onClick={
+                                              handleShowConfirmationDelete
+                                            }
+                                          >
+                                            un-assign
+                                          </Button>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </Tab>
                  </Tabs>
                </Card.Body>
              </Card>

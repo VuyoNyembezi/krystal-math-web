@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Card,
   CardGroup,
@@ -55,6 +55,15 @@ function ManageMembers() {
     due_date: "",
     due_time: "",
   });
+  // Keeps track of changes in the database
+  const [old_user_data, set_old_user_data] = useState([]);
+
+  function OldData(){
+    set_old_user_data(TeamMembers);
+
+  };
+  
+  const latest_user_data = useMemo(() => old_user_data, [old_user_data]);
 
   useEffect(() => {
     fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
@@ -82,7 +91,7 @@ function ManageMembers() {
     fetch(`${URL}/api/auth/teams`, requestOptions)
       .then((response) => response.json())
       .then((res) => setTeamValue(res.data));
-  }, []);
+  }, [latest_user_data]);
 
   useEffect(() => {
     const requestOptions = {
@@ -150,6 +159,7 @@ function ManageMembers() {
       if (Response.status === 200) {
         handleShowsuccessUpdate();
         handleUpdateClose();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorUpdate();
       } else if (Response.status === 500) {
@@ -169,7 +179,7 @@ function ManageMembers() {
               <h4>
                 Team Leader:{" "}
                 <b>
-                  <i>name here</i>
+                  <i>{localStorage.getItem('name')}</i>
                 </b>{" "}
               </h4>
               <Card.Body>

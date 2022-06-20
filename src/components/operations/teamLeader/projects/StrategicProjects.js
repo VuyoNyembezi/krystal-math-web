@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Card, CardGroup, Form, FormControl, FormGroup, InputGroup, Modal, Nav, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Input, Label } from 'reactstrap';
@@ -65,7 +65,16 @@ const [projectFormValue, setProjectFormValue] = useState({
 const [search_key,set_search_key] = useState({
   project_search:null,
 })
+  // Keeps track of changes in the database
+  const [old_team_projects_data, set_old_team_projects_data] = useState([]);
 
+  function OldData(){
+    set_old_team_projects_data(projectData);
+  
+
+  };
+  const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
+  
 useEffect(() =>{
   const requestOptions ={
     method:'Get',
@@ -134,30 +143,11 @@ useEffect(() => {
       setDigitalMarketingData(results.digital_marketing_projects)
       setIntegrationsData(results.integrations_projects)
       setPaymentMethodsData(results.payment_method_projects)
+      setStrategic_data(results.all_projects)
     });
   }
  
-}, [projectData,search_key.project_search]);
-
-// Fetch all Strategic Projects
-useEffect(() =>{
-  const requestOptions = {
-    method: "Get",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("key")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  let project_categrory = 2;
-  if(search_key.project_search === null){
-       // fetch operational projects
-      fetch(`${URL}/api/auth/team/projects/category_type/all?team_id=${localStorage.getItem('team')}&category_type=${project_categrory}`,requestOptions)
-      .then(response => response.json())
-      .then(Result => setStrategic_data(Result.data))
-  }
-  
-},[strategic_data,search_key])
+}, [latest_project_data,search_key.project_search]);
 
 
 const handleChange =(event) => {
@@ -245,8 +235,8 @@ fetch(
   response.json()
   if(response.status === 200){
     handleShowsuccessUpdate();
-    
       handleUpdateProjectClose();
+      OldData();
     
   }
   else if(response.status === 422){

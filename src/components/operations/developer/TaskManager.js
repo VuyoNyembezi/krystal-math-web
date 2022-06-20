@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Form,
   Badge,
@@ -144,7 +144,16 @@ const handleCloseSuccessComplete = () => set_success_completed(false);
   const [search_key,set_search_key] = useState({
     task_search:null
   });
+  // Keeps track of changes in the database
+  const [old_tasks_data, set_old_tasks_data] = useState([]);
 
+  function OldData(){
+    set_old_tasks_data(UserAllTasksData);
+   
+  };
+ 
+  const latest_task_data = useMemo(() => old_tasks_data, [old_tasks_data]);
+  
   useEffect(() => {
     fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
       method: "get",
@@ -205,7 +214,7 @@ const handleCloseSuccessComplete = () => set_success_completed(false);
   });
   }
 
-  }, [UserAllTasksData,search_key]);
+  }, [latest_task_data,search_key]);
 
   // Update , Activate and Deactivate Task
   function handleSubmitTaskUpdate(event) {
@@ -240,6 +249,7 @@ else {
         if (response.status === 200) {
           handleShowsuccessUpdate();
           handleUpdateTaskClose();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorUpdate();
         } else if (response.status === 500) {
@@ -290,6 +300,7 @@ else {
               handleShowsuccessComplete();
               handleCloseSuccessCompleted();
               handleUpdateTaskClose();
+              OldData();
             } else if (response.status === 422) {
               handleShowErrorUpdate();
             } else if (response.status === 500) {

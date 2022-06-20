@@ -1,4 +1,4 @@
-import React, { useState,useEffect  } from 'react';
+import React, { useState,useEffect, useMemo  } from 'react';
 import {Tab, Button, Form, Tabs, Card, Table, Modal, Toast, ToastContainer} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import {
@@ -12,8 +12,6 @@ import { URL } from '../../../server_connections/server';
 
 function ProjectManager(){
     const history = useNavigate();
-
-
 // Toast Alerts State Controller
 const [success_updated,set_success_updated] = useState(false);
 const handleShowsuccessUpdate = () => set_success_updated(true);
@@ -84,6 +82,18 @@ const handleCloseServerError = () => set_server_error_updated(false);
         project_name: ""
     })
 
+      // Keeps track of changes in the database
+  const [old_project_assignment_data, set_old_project_assignment_data] = useState([]);
+  const [old_over_due_project_assignment_data, set_old_over_due_project_assignment_data] = useState([]);
+
+  function OldData(){
+    set_old_project_assignment_data(assign_projectData);
+    set_old_over_due_project_assignment_data(over_due_assign_projectData);
+  };
+ 
+  const latest__project_assignment = useMemo(() => old_project_assignment_data, [old_project_assignment_data]);
+  const latest_over_due_project_assignment = useMemo(() => old_over_due_project_assignment_data, [old_over_due_project_assignment_data]);
+
     useEffect(() =>{
         const requestOptions ={
             method:'Get',
@@ -123,18 +133,10 @@ const handleCloseServerError = () => set_server_error_updated(false);
             set_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
             set_assign_integrations_ProjectData(results.integrations_projects)
             set_assign_payment_methods_ProjectData(results.payment_method_projects)
+            set_assign_all_projects_ProjectData(results.all_projects)
           });
-          // fecth all project assignments
-        fetch(
-          `${URL}/api/auth/project_assignment/dev?team_id=${localStorage.getItem(
-            "team"
-          )}&id=${localStorage.getItem("SUID")}`,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((res) => set_assign_all_projects_ProjectData(res.data));
        
-      }, [assign_projectData]);
+      }, [latest__project_assignment]);
     // Over due  Assignment
         // Project Assignments
         useEffect(() => {
@@ -161,14 +163,11 @@ const handleCloseServerError = () => set_server_error_updated(false);
                 set_over_due_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
                 set_over_due_assign_integrations_ProjectData(results.integrations_projects)
                 set_over_due_assign_payment_methods_ProjectData(results.payment_method_projects)
+                set_over_due_assign_all_projects_ProjectData(results.all_projects)
               });
-              // fecth all project assignments
-            //fecth all project assignments 
-          fetch(`${URL}/api/auth/project_assignment/over_due/dev?team_id=${localStorage.getItem('team')}&id=${localStorage.getItem('SUID')}`,requestOptions)
-          .then(response => response.json())
-          .then(res => set_over_due_assign_all_projects_ProjectData(res.data))
+       
            
-          }, [over_due_assign_projectData]);
+          }, [latest_over_due_project_assignment]);
 
  // Update Assignment Details
 function handleSubmitUpdateProject(event){
@@ -192,6 +191,7 @@ function handleSubmitUpdateProject(event){
         if(response.status === 200){
             handleShowsuccessUpdate();
           handleCloseUpdateProjectAssign();
+          OldData();
         }
         else if(response.status === 422){
             handleShowErrorUpdate();

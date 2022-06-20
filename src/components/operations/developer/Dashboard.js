@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Badge,
@@ -22,7 +22,6 @@ import {
 import CountUp from "react-countup";
 import { Input, Label } from "reactstrap";
 import "chart.js/auto";
-
 
 import { Doughnut } from "react-chartjs-2";
 import {
@@ -107,28 +106,13 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
 
   const [assign_projectData, set_assign_ProjectData] = useState({});
   const [assign_bet_projectData, set_assign_bet_ProjectData] = useState([]);
-  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] =
-    useState([]);
-  const [assign_country_projectData, set_assign_country_ProjectData] = useState(
-    []
-  );
-  const [
-    assign_customer_journey_projectData,
-    set_assign_customer_journey_ProjectData,
-  ] = useState([]);
-  const [
-    assign_digital_marketing_projectData,
-    set_assign_digital_marketing_ProjectData,
-  ] = useState([]);
-  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =
-    useState([]);
-  const [
-    assign_payment_methods_projectData,
-    set_assign_payment_methods_ProjectData,
-  ] = useState([]);
-  const [assign_all_projects, set_assign_all_projects_ProjectData] = useState(
-    []
-  );
+  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] = useState([]);
+  const [assign_country_projectData, set_assign_country_ProjectData] = useState([]);
+  const [assign_customer_journey_projectData, set_assign_customer_journey_ProjectData] = useState([]);
+  const [assign_digital_marketing_projectData, set_assign_digital_marketing_ProjectData, ] = useState([]);
+  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =  useState([]);
+  const [assign_payment_methods_projectData, set_assign_payment_methods_ProjectData, ] = useState([]);
+  const [assign_all_projects, set_assign_all_projects_ProjectData] = useState( [] );
   // for update  project assignemnt record
   const [showUpdateProjectAssign, setUpdateProjectAssign] = useState(false);
   const handleShowUpdateProjectAssign = () => setUpdateProjectAssign(true);
@@ -280,6 +264,18 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
 
   const [TaskStatus, setTaskStatus] = useState([]);
   const [UserStatus, setUserStatus] = useState([]);
+  // Keeps track of changes in the database
+  const [old_projects_data, set_old_projects_data] = useState([]);
+  const [old_tasks_data, set_old_tasks_data] = useState([]);
+
+  function OldData(){
+    set_old_tasks_data(UserAllTasksData);
+    set_old_projects_data(assign_projectData);
+  };
+  
+  const latest_project_data = useMemo(() => old_projects_data, [old_projects_data]);
+  const latest_task_data = useMemo(() => old_tasks_data, [old_tasks_data]);
+  
 
   // For DropDown Population
   useEffect(() => {
@@ -326,7 +322,7 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
   });
     }
  
-  }, [search_key.task_search]);
+  }, [latest_task_data,search_key.task_search]);
 
   //Mmeber  COUNTERS
   useEffect(() => {
@@ -359,7 +355,7 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
     )
       .then((response) => response.json())
       .then((Result) => set_user_task_statuses(Result));
-  }, [user_task_statuses, TaskOverviewCounter]);
+  }, [latest_task_data]);
 
   // Project Assignments
   useEffect(() => {
@@ -386,18 +382,10 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
         set_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
         set_assign_integrations_ProjectData(results.integrations_projects)
         set_assign_payment_methods_ProjectData(results.payment_method_projects)
+        set_assign_all_projects_ProjectData(results.all_projects)
       });
-      // fecth all project assignments
-    fetch(
-      `${URL}/api/auth/project_assignment/dev?team_id=${localStorage.getItem(
-        "team"
-      )}&id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((res) => set_assign_all_projects_ProjectData(res.data));
-   
-  }, [assign_projectData]);
+
+  }, [latest_project_data]);
 
 
   useEffect(() => {
@@ -409,8 +397,8 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
         "Content-Type": "application/json",
       },
     };
-
-    //fecth project assignments to Bet projects
+if(projectAssignmentValue.project_id !== 0){
+   //fecth project assignments to Bet projects
     fetch(
       `${URL}/api/auth/project_assignment/details?team_id=${localStorage.getItem(
         "team"
@@ -427,7 +415,9 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
     )
       .then((response) => response.json())
       .then((res) => set_project(res.data));
-  }, [projectAssignmentValue.project_id]);
+}
+   
+  }, [projectAssignmentValue]);
 
   const handleChange = (event) => {
     setProjectAssignment({
@@ -589,6 +579,7 @@ else {
         if (response.status === 200) {
           handleShowsuccessUpdate();
           handleClose_Update_task();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorUpdate();
         } else if (response.status === 500) {
@@ -627,6 +618,7 @@ else {
             handleShowsuccessComplete();
             handleCloseSuccessCompleted();
             handleClose_Update_task();
+            OldData();
           } else if (response.status === 422) {
             handleShowErrorUpdate();
           } else if (response.status === 500) {
@@ -662,6 +654,7 @@ else {
         if (response.status === 200) {
           handleShowsuccessUpdate();
           handleCloseUpdateProjectAssign();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorUpdate();
           handleCloseUpdateProjectAssign();
