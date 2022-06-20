@@ -288,7 +288,7 @@ function OperationalProjects() {
                         placeholder="Search"
                         required
                         onChange={handleChange}
-                        className="me-3"
+                        className="mr-3"
                         aria-label="Search"
                       />
                       <Button variant="outline-success" type="submit" size="sm">

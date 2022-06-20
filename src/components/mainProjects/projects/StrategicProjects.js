@@ -151,7 +151,7 @@ function StrategicProjects() {
                             required
                             placeholder="Search"
                             onChange={handleChange}
-                            className="me-3"
+                            className="mr-3"
                             aria-label="Search"
                           />
                           <Button

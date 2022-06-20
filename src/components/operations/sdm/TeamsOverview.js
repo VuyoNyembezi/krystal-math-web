@@ -433,7 +433,7 @@ return(
                 <Nav  className="justify-content-end">
                  <div  className="col-md-5 col-sm-9">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
-                      <FormControl type="search" required name='project_search' placeholder="Search (Auto)" onChange={handleChange} className="me-3" aria-label="Search" />
+                      <FormControl type="search" required name='project_search' placeholder="Search (Auto)" onChange={handleChange} className="mr-3" aria-label="Search" />
                     </Form>
                   </div>
                   </Nav>

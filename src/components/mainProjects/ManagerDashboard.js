@@ -350,7 +350,7 @@ function ManagerDashboard() {
                                                           name="operational_project_search"
                                                           placeholder="Search"
                                                           onChange={handleChange}
-                                                          className="me-3"
+                                                          className="mr-3"
                                                           aria-label="Search"
                                                         />
                                                         <Button
@@ -681,20 +681,14 @@ function ManagerDashboard() {
                 <Container fluid style={{ backgroundColor: "#F0FFFF" }}>
                   <Row>
                     <div
-                      className="col-md-8 col-sm-12"
-                      style={{
-                        height: "calc(100vh - 290px)",
-                        overflow: "auto",
+                      className="col-md-8 col-sm-12" style={{ height: "calc(100vh - 290px)", overflow: "auto",
                       }}
                     >
                       <Card
                         className="card text-black mb-3"
                         style={{ backgroundColor: "white" }}
                       >
-                        <Card.Header
-                          className="card text-white mb-3"
-                          style={{ backgroundColor: "#3E7DCC" }}
-                        >
+                        <Card.Header className="card text-white mb-3" style={{ backgroundColor: "#3E7DCC" }} >
                           {" "}
                           Strategic Projects{" "}
                         </Card.Header>
@@ -711,7 +705,7 @@ function ManagerDashboard() {
                                                               name="strategic_project_search"
                                                               placeholder="Search"
                                                               onChange={handleChange}
-                                                              className="me-3"
+                                                              className="mr-3"
                                                               aria-label="Search"
                                                             />
                                                             <Button
@@ -1068,7 +1062,7 @@ function ManagerDashboard() {
                                   name="live_issue_search"
                                   placeholder="Search"
                                   onChange={handleChange}
-                                  className="me-3"
+                                  className="mr-3"
                                   aria-label="Search"
                                 />
                                 <Button
@@ -1377,7 +1371,7 @@ function ManagerDashboard() {
                     name="operational_project_search"
                     placeholder="Search"
                     onChange={handleChange}
-                    className="me-3"
+                    className="mr-3"
                     aria-label="Search"
                   />
                   <Button variant="outline-success" type="submit" size="sm">
@@ -1452,7 +1446,7 @@ function ManagerDashboard() {
                     name="strategic_project_search"
                     placeholder="Search"
                     onChange={handleChange}
-                    className="me-3"
+                    className="mr-3"
                     aria-label="Search"
                   />
                   <Button variant="outline-success" type="submit" size="sm">
@@ -1529,7 +1523,7 @@ function ManagerDashboard() {
                     name="operational_project_search"
                     placeholder="Search"
                     onChange={handleChange}
-                    className="me-3"
+                    className="mr-3"
                     aria-label="Search"
                   />
                   <Button variant="outline-success" type="submit" size="sm">

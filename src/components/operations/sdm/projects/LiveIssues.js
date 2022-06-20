@@ -838,7 +838,7 @@ function LiveIssues() {
                               name="project_search"
                               placeholder="Search"
                               onChange={handleChange}
-                              className="me-3"
+                              className="mr-3"
                               required
                               aria-label="Search"
                             />
@@ -1289,7 +1289,7 @@ function LiveIssues() {
                                   name="project_search"
                                   placeholder="Search"
                                   onChange={handleChange}
-                                  className="me-3"
+                                  className="mr-3"
                                   required
                                   aria-label="Search"
                                 />

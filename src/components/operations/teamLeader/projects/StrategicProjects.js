@@ -274,7 +274,7 @@ fetch(
                 <Nav  className="justify-content-end">
                  <div  className="col-md-3 col-sm-9">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
-                      <FormControl type="search" name='project_search' placeholder="Search" required onChange={handleChange} className="me-3" aria-label="Search" />
+                      <FormControl type="search" name='project_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
                     </Form>
                   </div>
