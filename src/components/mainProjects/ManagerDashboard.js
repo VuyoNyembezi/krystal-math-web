@@ -365,7 +365,7 @@ function ManagerDashboard() {
                                                   </Nav>
                         <Card.Body>
                         
-                          <Table size="sm" striped bordered hover>
+                          <Table className="scroll" size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -720,7 +720,7 @@ function ManagerDashboard() {
                                                       </Nav>
                         <Card.Body>
                          
-                          <Table size="sm" striped bordered hover>
+                          <Table className="scroll" size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -1051,7 +1051,7 @@ function ManagerDashboard() {
                           {" "}
                           Live Issues Projects{" "}
                         </Card.Header>
-           <Nav className="justify-content-end">
+                        <Nav className="justify-content-end">
                             <div className="col-md-3 col-sm-9">
                               <Form
                                 onSubmit={handle_Live_Search_Project_Submit}
@@ -1075,9 +1075,9 @@ function ManagerDashboard() {
                               </Form>
                             </div>
                           </Nav>
-                        <Card.Body>
+                        <Card.Body >
                
-                          <Table size="sm" striped bordered hover>
+                          <Table className="scroll" size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -1380,7 +1380,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table striped bordered hover>
+            <Table size='sm'  striped bordered hover>
               <caption>List of operational projects</caption>
               <thead>
                 <tr>
@@ -1455,7 +1455,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table striped bordered hover>
+            <Table size='sm'  striped bordered hover>
               <caption>List of Strategic projects</caption>
               <thead>
                 <tr>
@@ -1532,7 +1532,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table striped bordered hover>
+            <Table size='sm'  striped bordered hover>
               <caption>List of live issues </caption>
               <thead>
                 <tr>

@@ -1062,7 +1062,7 @@ else {
                       <Tab eventKey="bet_projects" title="Bet Projects">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -1274,7 +1274,7 @@ else {
                       <Tab eventKey="country" title="Country">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -1486,7 +1486,7 @@ else {
                       <Tab eventKey="customerJourney" title="Customer">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -1698,7 +1698,7 @@ else {
                       <Tab eventKey="integrations" title="Integrations">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -1910,7 +1910,7 @@ else {
                       <Tab eventKey="pay_methods" title="Payments">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -2122,7 +2122,7 @@ else {
                       <Tab eventKey="digital" title="Digital Marketing">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -2334,7 +2334,7 @@ else {
                       <Tab eventKey="betsoftware" title="Bet Software Partners">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -2546,7 +2546,7 @@ else {
                       <Tab eventKey="all" title="All">
                         <Row md={9}>
                           <Col sm={8}>
-                            <Table striped bordered hover>
+                            <Table size='sm'  striped bordered hover>
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -2783,7 +2783,7 @@ else {
               <Tab eventKey="bet_projects" title="Bet Projects">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -2979,7 +2979,7 @@ else {
               <Tab eventKey="country" title="Country">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3176,7 +3176,7 @@ else {
               <Tab eventKey="customerJourney" title="Customer">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3377,7 +3377,7 @@ else {
               <Tab eventKey="integrations" title="Integrations">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3578,7 +3578,7 @@ else {
               <Tab eventKey="pay_methods" title="Payments">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3779,7 +3779,7 @@ else {
               <Tab eventKey="digital" title="Digital Marketing">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3980,7 +3980,7 @@ else {
               <Tab eventKey="betsoftware" title="Bet Software Partners">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm' striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -4181,7 +4181,7 @@ else {
               <Tab eventKey="all" title="All">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -4537,7 +4537,7 @@ else {
                 </Table>
               </Tab>
               <Tab eventKey="all" title="All">
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th> Name </th>
@@ -4759,7 +4759,7 @@ else {
                 <Row>
                   <Col>
                     Assigned With : <br />{" "}
-                    <Table striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>

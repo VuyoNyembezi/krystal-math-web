@@ -135,7 +135,7 @@ return(
             <Card.Body>
               <Tabs defaultActiveKey="operational_bet_project" id="uncontrolled-tab-example" className="mb-3">
                   <Tab eventKey="operational_bet_project" title="BET Projects">
-                  <Table striped bordered hover>
+                  <Table size='sm' striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -166,7 +166,7 @@ return(
                 </Table>
                   </Tab>
                   <Tab eventKey="operational_country" title="Country">
-                <Table striped bordered hover>
+                <Table size='sm' striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -198,7 +198,7 @@ return(
                   </Tab>
                   <Tab eventKey="operational_customer_journey" title="Customer Journey" >
                 
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -229,7 +229,7 @@ return(
                 </Table>
                   </Tab>
                   <Tab eventKey="operational_integrations" title="Integrations">
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -260,7 +260,7 @@ return(
                 </Table>
                   </Tab>
                   <Tab eventKey="operational_payment_methods" title="Payment Methods/Gateways">
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -291,7 +291,7 @@ return(
                 </Table>
                   </Tab>
                   <Tab eventKey="operational_digital_marketing" title="Digital Marketing" >
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -323,7 +323,7 @@ return(
                   </Tab>
                   <Tab eventKey="operational_bet_software_partners" title="BET Software Partners" >
        
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>
@@ -354,7 +354,7 @@ return(
                 </Table>
                  </Tab>
                  <Tab eventKey="operational_projects" title="All" >          
-                <Table striped bordered hover>
+                <Table size='sm'  striped bordered hover>
                   <thead>
                     <tr>
                       <th>Project Name</th>

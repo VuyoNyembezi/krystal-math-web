@@ -241,7 +241,7 @@ function handleSubmitUpdateProject(event){
                 <Tab eventKey="open" title="Open">
                   <Tabs defaultActiveKey="bet_projects"  className="mb-3">
                     <Tab eventKey="bet_projects" title="Bet Projects">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -274,7 +274,7 @@ function handleSubmitUpdateProject(event){
                     </Table> 
                     </Tab>
                     <Tab eventKey="country" title="Country">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -306,7 +306,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="customerJourney" title="Customer" >
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -338,7 +338,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="integrations" title="Integrations">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -370,7 +370,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="pay_methods" title="Payments">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -403,7 +403,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="digital" title="Digital Marketing">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -435,7 +435,7 @@ function handleSubmitUpdateProject(event){
                     </Table> 
                     </Tab>
                     <Tab eventKey="betsoftware" title="Bet Software Partners">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -466,7 +466,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="all" title="All">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -501,7 +501,7 @@ function handleSubmitUpdateProject(event){
                     <Tab eventKey="over due" title="Over Due">
                     <Tabs defaultActiveKey="over due bet_projects"  className="mb-3">
                     <Tab eventKey="over due bet_projects" title="Bet Projects">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -530,7 +530,7 @@ function handleSubmitUpdateProject(event){
                     </Table> 
                     </Tab>
                     <Tab eventKey="over due country" title="Country">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -558,7 +558,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="over due customerJourney" title="Customer" >
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -586,7 +586,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="over due integrations" title="Integrations">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -612,7 +612,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="over due pay_methods" title="Payments">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -640,7 +640,7 @@ function handleSubmitUpdateProject(event){
                     </Table>  
                     </Tab>
                     <Tab eventKey="over due digital" title="Digital Marketing">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>
@@ -666,7 +666,7 @@ function handleSubmitUpdateProject(event){
                     </Table> 
                     </Tab>
                     <Tab eventKey="over due betsoftware" title="Bet Software Partners">
-                    <Table  striped bordered hover>
+                    <Table size='sm'  striped bordered hover>
                                         <thead>
                                             <tr> 
                                             <th>Name</th>

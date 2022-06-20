@@ -174,7 +174,7 @@ function StrategicProjects() {
                         eventKey="strategic_bet_project"
                         title="BET Projects"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -221,7 +221,7 @@ function StrategicProjects() {
                         </Table>
                       </Tab>
                       <Tab eventKey="strategic_country" title="Country">
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -271,7 +271,7 @@ function StrategicProjects() {
                         eventKey="strategic_customer_journey"
                         title="Customer Journey"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -321,7 +321,7 @@ function StrategicProjects() {
                         eventKey="strategic_integrations"
                         title="Integrations"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -371,7 +371,7 @@ function StrategicProjects() {
                         eventKey="strategic_payment_methods"
                         title="Payment Methods/Gateways"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -421,7 +421,7 @@ function StrategicProjects() {
                         eventKey="strategic_digital_marketing"
                         title="Digital Marketing"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -471,7 +471,7 @@ function StrategicProjects() {
                         eventKey="strategic_bet_software_partners"
                         title="BET Software Partners"
                       >
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
@@ -518,7 +518,7 @@ function StrategicProjects() {
                         </Table>
                       </Tab>
                       <Tab eventKey="strategic_all" title="All">
-                        <Table striped bordered hover>
+                        <Table size='sm'  striped bordered hover>
                           <thead>
                             <tr>
                               <th>Project Name</th>
