@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Badge,
   Button,
@@ -237,6 +237,13 @@ function LiveIssues() {
     project_search: null,
   });
 
+  // Keeps track of changes in the database
+  const [old_project_data, set_old_project_data] = useState([])
+  function OldData(){
+   set_old_project_data(AllLiveIssuesData);
+  };
+  
+  const latest_data = useMemo(() => old_project_data, [old_project_data]);
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -295,7 +302,7 @@ function LiveIssues() {
         });
     }
   }, [
-    AllLiveIssuesData,
+    latest_data,
     search_key.project_search,
     teamValue.team_id_search,
     status_value.project_status_id_search,
@@ -324,7 +331,7 @@ function LiveIssues() {
 
     }
 
-  }, [AllLiveIssuesData, teamValue.team_id_search]);
+  }, [latest_data, teamValue.team_id_search]);
 
   // filter status
   // filter effect
@@ -432,6 +439,7 @@ function LiveIssues() {
         if (Response.status === 201) {
           handleShowsuccessLiveCreate();
           handleAddLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveCreate();
         } else if (Response.status === 401) {
@@ -524,6 +532,7 @@ function LiveIssues() {
         if (Response.status === 200) {
           handleShowsuccessLiveUpdate();
           handleUpdateLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveUpdate();
         }
@@ -560,6 +569,7 @@ function LiveIssues() {
         if (Response.status === 200) {
           handleShowsuccessLiveUpdate();
           handleUpdateLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowServerLiveError();
         }
@@ -595,6 +605,7 @@ function LiveIssues() {
         if (Response.status === 200) {
           handleShowsuccessLiveUpdate();
           handleUpdateLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveUpdate();
         }
@@ -627,6 +638,7 @@ function LiveIssues() {
         if (Response.status === 200) {
           handleShowsuccessLiveUpdate();
           handleUpdateLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveUpdate();
         }
@@ -668,6 +680,7 @@ function LiveIssues() {
           handleShowLiveCompleted();
           handleCompleteLiveIssueClose();
           handleUpdateLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveUpdate();
           handleCompleteLiveIssueClose();
@@ -695,6 +708,7 @@ function LiveIssues() {
         if (response.status === 200) {
           handleShowSuccessDelete();
           handleDeleteLiveIssueClose();
+          OldData();
         } else if (response.status !== 200) {
           handleShowErrorDelete();
           handleDeleteLiveIssueClose();

@@ -117,7 +117,7 @@ return(
         <Container  fluid>
          <Row >
            <Col >
-           <Tab.Container id="left-tabs-example" defaultActiveKey="operational_bet_project" >
+           <Tab.Container defaultActiveKey="operational_bet_project" >
         <Tab.Content>
         <CardGroup>
           <Card>

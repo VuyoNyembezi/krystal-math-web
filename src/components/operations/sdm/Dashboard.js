@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, useMemo} from 'react';
 import { Badge, Button, Card,  Col, Container,  Form, FormControl, FormGroup, InputGroup, Modal, Nav, ProgressBar, Row, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import CountUp from 'react-countup';
 import 'chart.js/auto';
@@ -132,6 +132,20 @@ const [search_key,set_search_key] = useState({
   project_search:null,
 
 })
+
+  // Keeps track of changes in the database
+  const [old_team_projects_data, set_old_team_projects_data] = useState([]);
+  const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([])
+  function OldData(){
+    set_old_team_projects_data(Team_Projects_CounterData);
+    set_old_team_live_issue_data()
+  };
+  
+
+  const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
+  
+  const latest_ive_ssue_data = useMemo(() => old_team_live_issue_data, [old_team_live_issue_data]);
+
 // modal state
 const [show_team_projects, setShowTeamProjects] = useState(false);
 const handleCloseProjects = () => {setShowTeamProjects(false);
@@ -169,7 +183,7 @@ useEffect(()=>{
   .then((response) => response.json())
   .then(Result => set_Team_Live_Issues_Counter_Data(Result))
 
-},[team.id,Team_Projects_CounterData])
+},[team.id,latest_project_data])
 
 useEffect(() =>{
   const requestOptions ={
@@ -195,7 +209,6 @@ useEffect(() =>{
    fetch(`${URL}/api/auth/project_type/all`,requestOptions)
    .then(response => response.json())
    .then(Result => setProjectTypeData(Result.data))
-   
    
 // fetch all project category type
 fetch(`${URL}/api/auth/project_category_type/all`,requestOptions)
@@ -223,9 +236,23 @@ useEffect(() =>{
      .then(response => response.json())
      .then(res => setTeamsData(res.data))
      
-  },[teamsData])
+  },[])
 
 
+useEffect(()=>{
+  const requestOptions ={
+    method:'Get',
+    headers:{
+        'Accept':'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('key')}`
+      ,'Content-Type': 'application/json'},
+  } 
+    //  All Live Issues Statuses
+  
+    fetch(`${URL}/api/auth/live_issues/count/statuses`,requestOptions)
+    .then((response) => response.json())
+    .then(Result => set_live_issues_statsuses(Result))
+},[latest_ive_ssue_data])
 useEffect(()=>{
   const requestOptions ={
     method:'Get',
@@ -239,14 +266,8 @@ useEffect(()=>{
     fetch(`${URL}/api/auth/projects_status/count`,requestOptions)
     .then((response) => response.json())
     .then(Result => set_project_statsuses(Result))
-    //  All Live Issues Statuses
   
-    fetch(`${URL}/api/auth/live_issues/count/statuses`,requestOptions)
-    .then((response) => response.json())
-    .then(Result => set_live_issues_statsuses(Result))
-  
-  
-},[project_statuses,live_issues_statuses])
+},[latest_project_data])
 
 useEffect(() =>{
 
@@ -258,6 +279,7 @@ useEffect(() =>{
       ,'Content-Type': 'application/json'},
   }
   if(search_key.project_search === null){
+  
   // fetch all projects for the team
   fetch(`${URL}/api/auth/team/projects/all?team_id=${team.id}`,requestOptions)
   .then(response => response.json())
@@ -315,7 +337,8 @@ useEffect(() =>{
   response.json()
   if(response.status === 201){
     handleShowsuccessCreate();
-    handleAddProjectClose()
+    handleAddProjectClose();
+    OldData();
   }
   else if(response.status === 422){
     handleShowErrorCreate();

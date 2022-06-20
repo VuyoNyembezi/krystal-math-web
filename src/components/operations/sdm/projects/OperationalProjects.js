@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Card, CardGroup, Form, FormControl, FormGroup, InputGroup, Modal, Nav, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Input, Label } from 'reactstrap';
@@ -108,6 +108,16 @@ const [search_key,set_search_key] = useState({
   project_search:null,
 
 })
+
+const [old_project_data, set_old_project_data] = useState([])
+function OldData(){
+ set_old_project_data(projectData);
+};
+
+const latest_data = useMemo(() => old_project_data, [old_project_data]);
+
+
+
 useEffect(() =>{
   const requestOptions ={
     method:'Get',
@@ -182,7 +192,7 @@ useEffect(() => {
   
   }
  
-}, [projectData,search_key.project_search]);
+}, [latest_data,search_key.project_search]);
 
 
 
@@ -260,6 +270,7 @@ const handleChange =(event) => {
   if(response.status === 201){
     handleShowsuccessCreate();
     handleClose();
+    OldData();
   }
   else if(response.status === 422){
     handleShowErrorCreate();
@@ -306,6 +317,7 @@ const handleChange =(event) => {
   if(response.status === 200){
     handleShowsuccessUpdate();
     handleClose_update_Uproject();
+    OldData();
   }
   else if(response.status === 422){
     handleShowErrorUpdate();
