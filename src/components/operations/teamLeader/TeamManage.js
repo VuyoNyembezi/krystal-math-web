@@ -889,7 +889,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                           <td className="text-center">
                             {/* <button onClick={() => selectUser(user)}><Button variant="outline-success"  onClick={handleAddTaskShow}>Add</Button></button> */}
                             {"  "} {"  "}
-                            <button size="sm" onClick={() => selectUser(user)}>
+                            <button size="sm" className="btn" onClick={() => selectUser(user)}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -899,7 +899,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               </Button>
                             </button>
                             {"  "} {"  "}
-                            <button size="sm" onClick={() => selectUser(user)}>
+                            <button size="sm" className="btn" onClick={() => selectUser(user)}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -987,7 +987,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1038,7 +1038,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1088,7 +1088,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1138,7 +1138,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1188,7 +1188,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1238,7 +1238,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{task.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectTask(task)}
                                       >
                                         <Button
@@ -1316,7 +1316,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                     <td>{project.user.name}</td>
                                     <td className="text-center">
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1330,7 +1330,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                         </Button>
                                       </button>{" "}
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1382,7 +1382,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1396,7 +1396,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1451,7 +1451,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1465,7 +1465,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1520,7 +1520,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1534,7 +1534,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1589,7 +1589,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1603,7 +1603,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1658,7 +1658,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1672,7 +1672,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1730,7 +1730,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1744,7 +1744,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1799,7 +1799,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1813,7 +1813,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -1874,7 +1874,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                <td>{project.user.name}</td>
                                <td className="text-center">
                                  <button
-                                   size="sm"
+                                   size="sm" className="btn"
                                    onClick={() => selectProject(project)}
                                  >
                                    <Button
@@ -1888,7 +1888,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                    </Button>
                                  </button>{" "}
                                  <button
-                                   size="sm"
+                                   size="sm" className="btn"
                                    onClick={() => selectProject(project)}
                                  >
                                    <Button
@@ -1940,7 +1940,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -1954,7 +1954,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2009,7 +2009,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2023,7 +2023,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2078,7 +2078,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2092,7 +2092,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2147,7 +2147,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2161,7 +2161,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2216,7 +2216,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2230,7 +2230,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2288,7 +2288,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                  <td>{project.user.name}</td>
                                  <td className="text-center">
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2302,7 +2302,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                      </Button>
                                    </button>{" "}
                                    <button
-                                     size="sm"
+                                     size="sm" className="btn"
                                      onClick={() => selectProject(project)}
                                    >
                                      <Button
@@ -2357,7 +2357,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                       <td>{project.user.name}</td>
                                       <td className="text-center">
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -2371,7 +2371,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                                           </Button>
                                         </button>{" "}
                                         <button
-                                          size="sm"
+                                          size="sm" className="btn"
                                           onClick={() => selectProject(project)}
                                         >
                                           <Button
@@ -2453,7 +2453,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2462,7 +2462,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Update
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-warning"
@@ -2471,7 +2471,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Deactivate
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"
@@ -2512,7 +2512,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2521,7 +2521,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Update
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-warning"
@@ -2530,7 +2530,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Deactivate
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"
@@ -2571,7 +2571,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2580,7 +2580,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Update
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2589,7 +2589,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Activate
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"
@@ -2630,7 +2630,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2639,7 +2639,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Update
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"
@@ -2680,7 +2680,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2690,7 +2690,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                             </Button>
                           </button>{" "}
                          {" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"
@@ -2731,7 +2731,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <td>{new Date(task.kickoff_date).toDateString()}</td>
                         <td>{task.user.name}</td>
                         <td className="text-center">
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2740,7 +2740,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Update
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-warning"
@@ -2749,7 +2749,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Deactivate
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-success"
@@ -2758,7 +2758,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                               Activate
                             </Button>
                           </button>{" "}
-                          <button size="sm" onClick={() => selectTask(task)}>
+                          <button size="sm" className="btn" onClick={() => selectTask(task)}>
                             <Button
                               size="sm"
                               variant="outline-danger"

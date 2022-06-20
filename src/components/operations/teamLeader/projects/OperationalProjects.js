@@ -328,7 +328,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -379,7 +379,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -433,7 +433,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -484,7 +484,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -538,7 +538,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -592,7 +592,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -646,7 +646,7 @@ function OperationalProjects() {
                               <td>{project.team.name}</td>
                               <td className="text-center">
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button

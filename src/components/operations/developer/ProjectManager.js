@@ -150,7 +150,7 @@ const handleCloseServerError = () => set_server_error_updated(false);
             };
              //fecth team  project assignments 
              fetch(
-              `${URL}/api/auth/project_assignment/dev/all?team_id=${localStorage.getItem('team')}&id=${localStorage.getItem("SUID")}`,
+              `${URL}/api/auth/project_assignment/over_due/dev/all?team_id=${localStorage.getItem('team')}&id=${localStorage.getItem("SUID")}`,
               requestOptions
             )
               .then((response) => response.json())
@@ -165,8 +165,6 @@ const handleCloseServerError = () => set_server_error_updated(false);
                 set_over_due_assign_payment_methods_ProjectData(results.payment_method_projects)
                 set_over_due_assign_all_projects_ProjectData(results.all_projects)
               });
-       
-           
           }, [latest_over_due_project_assignment]);
 
  // Update Assignment Details
@@ -261,7 +259,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size="sm" onClick={() => selectProject(project)}>
+                                                <button className="btn" size="sm" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>  
                                                 </td>  
@@ -295,7 +293,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size='sm' onClick={() => selectProject(project)}>
+                                                <button  className="btn" size='sm' onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>
                                                 </td> 
@@ -327,7 +325,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size='sm' onClick={() => selectProject(project)}>
+                                                <button size='sm' className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>   
                                                 </td> 
@@ -359,7 +357,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size='sm' onClick={() => selectProject(project)}>
+                                                <button size='sm' className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>
                                                 </td> 
@@ -391,7 +389,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size='sm' onClick={() => selectProject(project)}>
+                                                <button size='sm' className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>
                                                 </td> 
@@ -424,7 +422,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size='sm' onClick={() => selectProject(project)}>
+                                                <button size='sm' className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>
                                                 </td> 
@@ -456,7 +454,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button  size='sm'  onClick={() => selectProject(project)}>
+                                                <button  size='sm' className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>
                                                 </td> 
@@ -486,7 +484,7 @@ function handleSubmitUpdateProject(event){
                                                 <td>{new Date(project.due_date).toDateString()}</td>
                                                 <td>{new Date(project.kickoff_date).toDateString()}</td>
                                                 <td className="text-center">
-                                                <button size="sm" onClick={() => selectProject(project)}>
+                                                <button size="sm" className="btn" onClick={() => selectProject(project)}>
                                                 <Button size="sm" variant="outline-success"  onClick={handleShowUpdateProjectAssign}>update</Button>  
                                                 </button>  
                                                 </td>  

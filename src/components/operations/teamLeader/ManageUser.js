@@ -201,7 +201,7 @@ function ManageMembers() {
                           <td>{user.email}</td>
 
                           <td className="text-center">
-                            <button size="sm" onClick={() => selectUser(user)}>
+                            <button size="sm" className="btn" onClick={() => selectUser(user)}>
                               <Button
                                 variant="outline-success"
                                 size="sm"

@@ -3275,7 +3275,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3337,7 +3337,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3399,7 +3399,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3461,7 +3461,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3523,7 +3523,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3585,7 +3585,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3650,7 +3650,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3712,7 +3712,7 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" onClick={handleClose}>
+                            <button size="sm" className="btn" onClick={handleClose}>
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3925,7 +3925,7 @@ function DashBoardInfo() {
                       <td>{task.task_status_id}</td>
                       <td>{new Date(task.due_date).toDateString()}</td>
                       <td className="text-center">
-                        <button size="sm" onClick={() => selectTask(task)}>
+                        <button size="sm" className="btn" onClick={() => selectTask(task)}>
                           <Button
                             variant="outline-success"
                             size="sm"
@@ -4035,7 +4035,7 @@ function DashBoardInfo() {
                         </td>
                         <td className="text-center">
                           <button
-                            size="sm"
+                            size="sm" className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button
@@ -4047,7 +4047,7 @@ function DashBoardInfo() {
                             </Button>
                           </button>{" "}
                           <button
-                            size="sm"
+                            size="sm" className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button
@@ -4095,7 +4095,7 @@ function DashBoardInfo() {
                         <td>{project.user.name}</td>
                         <td className="text-center">
                           <button
-                            size="sm"
+                            size="sm" className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button

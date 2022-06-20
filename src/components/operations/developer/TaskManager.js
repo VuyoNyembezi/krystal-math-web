@@ -432,7 +432,7 @@ else {
                     <td>{new Date(task.due_date).toDateString()}</td>
                     <td>{new Date(task.kickoff_date).toDateString()}</td>
                     <td className="text-center">
-                      <button size="sm" onClick={() => selectTask(task)}>
+                      <button size="sm" className="btn" onClick={() => selectTask(task)}>
                         <Button
                           size="sm"
                           variant="outline-success"
@@ -441,7 +441,7 @@ else {
                           Update
                         </Button>
                       </button>{" "}
-                      <button size="sm" onClick={() => selectTask(task)}>
+                      <button size="sm" className="btn" onClick={() => selectTask(task)}>
                         <Button
                           size="sm"
                           variant="outline-warning"
@@ -480,7 +480,7 @@ else {
                     <td>{new Date(task.due_date).toDateString()}</td>
                     <td>{new Date(task.kickoff_date).toDateString()}</td>
                     <td className="text-center">
-                      <button size="sm" onClick={() => selectTask(task)}>
+                      <button size="sm" className="btn" onClick={() => selectTask(task)}>
                         <Button
                           size="sm"
                           variant="outline-warning"
@@ -519,7 +519,7 @@ else {
                     <td>{new Date(task.due_date).toDateString()}</td>
                     <td>{new Date(task.kickoff_date).toDateString()}</td>
                     <td className="text-center">
-                      <button size="sm" onClick={() => selectTask(task)}>
+                      <button size="sm" className="btn" onClick={() => selectTask(task)}>
                         <Button
                           size="sm"
                           variant="outline-warning"
@@ -558,7 +558,7 @@ else {
                     <td>{new Date(task.due_date).toDateString()}</td>
                     <td>{new Date(task.kickoff_date).toDateString()}</td>
                     <td className="text-center">
-                      <button size="sm" onClick={() => selectTask(task)}>
+                      <button size="sm" className="btn" onClick={() => selectTask(task)}>
                         <Button
                           size="sm"
                           variant="outline-warning"
