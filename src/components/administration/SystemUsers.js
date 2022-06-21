@@ -1,4 +1,4 @@
-import React, { useState,useEffect  } from 'react';
+import React, { useState,useEffect, useMemo  } from 'react';
 import {Card, CardGroup, Table,Tab, Button, Form, Modal, Tabs, Col, Nav, Toast, ToastContainer, InputGroup, FormControl} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../server_connections/server';
@@ -115,7 +115,18 @@ const [formValue, setForm] =useState({
     user_role_id:null,
     is_admin: false
 })
+const [old_all_accounts_data, set_old_all_accounts_data] = useState([]);
+const [old_terminted_accounts_data, set_oterminated_accounts_data] = useState([]);
 
+function OldData(){
+    set_old_all_accounts_data(ActiveUsersData);
+    set_oterminated_accounts_data(TerminatedUsersData);
+
+};
+
+
+const latest_active_accounts_data = useMemo(() => old_all_accounts_data, [old_all_accounts_data]);
+const latest_terminated_accounts_data = useMemo(() => old_terminted_accounts_data, [old_terminted_accounts_data]);
 useEffect(() => {
     const requestOptions ={
            method:'Get',
@@ -137,8 +148,28 @@ useEffect(() => {
    .then(Result => setFilterActiveUsersData(Result.data))
    }
 }, [formValue.user_role_id])
+// Fetch Teams and Roles Values
+useEffect(() => {
+    const requestOptions ={
+           method:'Get',
+           headers:{
+               'Accept':'application/json',
+               'Authorization': `Bearer ${localStorage.getItem('key')}`
+           ,'Content-Type': 'application/json'},
+       }
 
-
+   // fetch teams
+   fetch(`${URL}/api/auth/teams`,requestOptions)
+   .then(response => response.json())
+   .then(res => setTeamValue(res.data))
+     
+   // fetch roles
+   fetch(`${URL}/api/auth/user/roles`,requestOptions)
+   .then(response => response.json())
+   .then(Result => setRolesData(Result.data) )
+   
+}, [])
+// Active Accounts
 useEffect(() => {
          const requestOptions ={
                 method:'Get',
@@ -153,23 +184,28 @@ useEffect(() => {
         .then(Response => Response.json())
         .then(Result => setActiveUsersData(Result.data))  
   
-        // Terminated
-        fetch(`${URL}/api/auth/users/terminated`,requestOptions)
-        .then(Response => Response.json())
-        .then(Result => setTerminatedUsersData(Result.data))
-
-        // fetch teams
-        fetch(`${URL}/api/auth/teams`,requestOptions)
-        .then(response => response.json())
-        .then(res => setTeamValue(res.data))
-          
-        // fetch roles
-        fetch(`${URL}/api/auth/user/roles`,requestOptions)
-        .then(response => response.json())
-        .then(Result => setRolesData(Result.data) )
+    
         
-}, [ ActiveUsersData,FilterActiveUsersData])
+}, [latest_active_accounts_data])
+// Terminated Accounts
+useEffect(() => {
+    const requestOptions ={
+           method:'Get',
+           headers:{
+               'Accept':'application/json',
+               'Authorization': `Bearer ${localStorage.getItem('key')}`
+           ,'Content-Type': 'application/json'},
+       }
 
+
+   // Terminated
+   fetch(`${URL}/api/auth/users/terminated`,requestOptions)
+   .then(Response => Response.json())
+   .then(Result => setTerminatedUsersData(Result.data))
+
+   
+   
+}, [latest_terminated_accounts_data])
 if(!ActiveUsersData){
     return <p>no user</p>
 }
@@ -234,7 +270,8 @@ function handleUpdateUser(event){
         Response.json()
         if(Response.status === 200){
             handleShowsuccessUpdate();
-            handle_update_Close()
+            handle_update_Close();
+            OldData();
         } 
         if(Response.status === 422){
             handleShowError();
@@ -266,7 +303,8 @@ function handleUserTerminateSubmit(event){
         Response.json()
         if(Response.status === 200){
             handleShowsuccessDeActive();
-            handle_terminate_Close()
+            handle_terminate_Close();
+            OldData();
         } 
         if(Response.status === 422){
             handleShowError();
@@ -296,7 +334,8 @@ function handleUserActivateSubmit(event){
         Response.json()
         if(Response.status === 200){
             handleShowsuccessActive();
-            handle_activate_Close()
+            handle_activate_Close();
+            OldData();
         } 
         if(Response.status === 422){
             handleShowError();
@@ -327,7 +366,8 @@ function handleSubmitDeleteUser(event){
         }
         else if(response.status === 422){
             handleShowErrorDelete();
-          handle_delete_Close()
+          handle_delete_Close();
+          OldData();
         }
         else if(response.status === 500){
             handleShowServerError();
@@ -377,9 +417,9 @@ return (
                                             <option value={false}>No</option>
                                         </Form.Select>
                                         </td> 
-                                    <td className="text-center"><button size='sm' onClick={() => selectUser(user)}><Button size='sm' variant="outline-success"  onClick={handle_update_Show}>Update</Button></button> 
+                                    <td className="text-center"><button size='sm' className='btn' onClick={() => selectUser(user)}><Button size='sm' variant="outline-success"  onClick={handle_update_Show}>Update</Button></button> 
                                     {' '}{' '}
-                                    <button size='sm' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_terminate_Show}>Termiante</Button></button>
+                                    <button size='sm' className='btn' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_terminate_Show}>Termiante</Button></button>
                                      </td>
                                      
                             </tr>
@@ -444,9 +484,9 @@ return (
                                             <option value={false}>No</option>
                                         </Form.Select>
                                         </td> 
-                                    <td className="text-center"><button size='sm' onClick={() => selectUser(user)}><Button size='sm' variant="outline-success"  onClick={handle_update_Show}>Update</Button></button> 
+                                    <td className="text-center"><button size='sm' className='btn' onClick={() => selectUser(user)}><Button size='sm' variant="outline-success"  onClick={handle_update_Show}>Update</Button></button> 
                                     {' '}{' '}
-                                    <button size='sm' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_terminate_Show}>Termiante</Button></button>
+                                    <button size='sm' className='btn' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_terminate_Show}>Termiante</Button></button>
                                      </td>
                             </tr>
                         })
@@ -494,9 +534,9 @@ return (
                                         </Form.Select>
                                         </td> 
                                     {/* <td className="text-center"><button  onClick={() => selectUser(user)}>click</button>  </td>  */}
-                                    <td className="text-center"><button size='sm' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show}>DELETE</Button></button> 
+                                    <td className="text-center"><button className='btn' size='sm' onClick={() => selectUser(user)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show}>DELETE</Button></button> 
                                     {' '}
-                                  <button size='sm' onClick={() => selectUser(user)}><Button variant="outline-success" size='sm' onClick={handle_activate_Show}>Activate</Button></button>  </td> 
+                                  <button className='btn' size='sm' onClick={() => selectUser(user)}><Button variant="outline-success" size='sm' onClick={handle_activate_Show}>Activate</Button></button>  </td> 
                             </tr>
                         })
                     } 
@@ -653,15 +693,8 @@ return (
                     <Button size='sm' variant="warning" onClick={handleSubmitDeleteUser}>Yes</Button>
                   </Modal.Footer>
                 </Modal>
-
-
-                    
               {/* Toast Arlets */}
-
-
               <ToastContainer className="p-3" position={'top-end'}>
-           
-
               {/* Successfully Updated */}
                         <Toast onClose={handleCloseSuccessUpdate} show={success_updated} bg={'success'} delay={5000} autohide>
                         <Toast.Header>

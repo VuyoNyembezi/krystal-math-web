@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -170,7 +170,20 @@ function UserTools() {
     name: "",
     team_lead_id: 0,
   });
+  // Keeps track of changes in the database
+  const [old_team_data, set_old_team_data] = useState([])
+  const [old_role_data, set_old_role_data] = useState([])
+  const [old_user_data, set_old_user_data] = useState([])
+  function OldData(){
+    set_old_team_data(teamsData);
+   set_old_role_data(rolesData);
+   set_old_user_data(UsersData);
+  };
+  
 
+  const latest_team_data = useMemo(() => old_team_data, [old_team_data]);
+  const latest_roles_data = useMemo(() => old_role_data, [old_role_data]);
+  const latest_user_data = useMemo(() => old_user_data, [old_user_data]);
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -180,13 +193,6 @@ function UserTools() {
         "Content-Type": "application/json",
       },
     };
-
-    //Fetch all users
-
-    fetch(`${URL}/api/auth/users`, requestOptions)
-      .then((Response) => Response.json())
-      .then((Result) => setUsersData(Result.data));
-
     // fetch all teams
     fetch(`${URL}/api/auth/teams`, requestOptions)
       .then((response) => response.json())
@@ -199,12 +205,39 @@ function UserTools() {
     fetch(`${URL}/api/auth/not_active/teams`, requestOptions)
       .then((response) => response.json())
       .then((Result) => set_not_active_TeamsData(Result.data));
+  }, [latest_team_data]);
 
-    // fetch all roles
+  // Loading users
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    //Fetch all users
+    fetch(`${URL}/api/auth/users`, requestOptions)
+      .then((Response) => Response.json())
+      .then((Result) => setUsersData(Result.data));
+  }, [latest_user_data]);
+
+  // Roles Effect
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
     fetch(`${URL}/api/auth/user/roles`, requestOptions)
       .then((response) => response.json())
       .then((Result) => setRoleData(Result.data));
-  }, [UsersData, teamsData, rolesData]);
+  }, [latest_roles_data]);
 
   // Create Functions
   function handleTeamSubmit(event) {
@@ -228,6 +261,7 @@ function UserTools() {
       if (Response.status === 201) {
         handleShowsuccessCreate();
         handleCloseAddTeam();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorCreate();
       } else if (Response.status === 401) {
@@ -255,6 +289,7 @@ function UserTools() {
       if (Response.status === 201) {
         handleShowsuccessCreate();
         handleCloseAddRole();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorCreate();
       } else if (Response.status === 401) {
@@ -286,6 +321,7 @@ function UserTools() {
       if (Response.status === 200) {
         handleShowsuccessUpdate();
         handle_update_Close_Team();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorUpdate();
       }
@@ -312,6 +348,7 @@ function UserTools() {
       if (Response.status === 200) {
         handleShowsuccessActive();
         handle_active_Close_Team();
+        OldData();
       } else if (Response.status === 422) {
         handleShowError();
       }
@@ -338,6 +375,7 @@ function UserTools() {
       if (Response.status === 200) {
         handleShowsuccessDeActive();
         handle_deactive_Close_Team();
+        OldData();
       } else if (Response.status === 422) {
         handleShowError();
       }
@@ -364,6 +402,7 @@ function UserTools() {
       if (Response.status === 200) {
         handleShowsuccessUpdate();
         handle_update_Close_Role();
+        OldData();
       } else if (Response.status === 422) {
         handleShowErrorUpdate();
       }
@@ -389,6 +428,7 @@ function UserTools() {
         if (response.status === 200) {
           handleShowSuccessDelete();
           handle_delete_Close_Team();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorDelete();
           handle_delete_Close_Team();
@@ -419,6 +459,7 @@ function UserTools() {
         if (response.status === 200) {
           handleShowSuccessDelete();
           handle_delete_Close_role();
+          OldData();
         } else if (response.status === 422) {
           handleShowErrorDelete();
           handle_delete_Close_role();
@@ -495,7 +536,7 @@ function UserTools() {
                                 <td>{tool.team_lead.name}</td>
                                 <td className="text-center">
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -509,7 +550,7 @@ function UserTools() {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -521,7 +562,7 @@ function UserTools() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -558,7 +599,7 @@ function UserTools() {
                                 <td>{tool.team_lead.name}</td>
                                 <td className="text-center">
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -572,7 +613,7 @@ function UserTools() {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -584,7 +625,7 @@ function UserTools() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -621,7 +662,7 @@ function UserTools() {
                                 <td>{tool.team_lead.name}</td>
                                 <td className="text-center">
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -633,7 +674,7 @@ function UserTools() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectTool(tool)}
                                   >
                                     <Button
@@ -676,7 +717,7 @@ function UserTools() {
                             <th scope="row">{tool.id}</th>
                             <td>{tool.name}</td>
                             <td className="text-center">
-                              <button size="sm" onClick={() => seletRole(tool)}>
+                              <button size="sm" className="btn" onClick={() => seletRole(tool)}>
                                 <Button
                                   variant="outline-success"
                                   size="sm"
@@ -685,7 +726,7 @@ function UserTools() {
                                   Update
                                 </Button>
                               </button>{" "}
-                              <button size="sm" onClick={() => seletRole(tool)}>
+                              <button size="sm" className="btn" onClick={() => seletRole(tool)}>
                                 <Button
                                   variant="outline-danger"
                                   size="sm"

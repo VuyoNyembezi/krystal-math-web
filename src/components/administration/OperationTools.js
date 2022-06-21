@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Button, Card, Form, FormControl, InputGroup, Modal, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -131,6 +131,36 @@ const handleCloseErrorDelete = () => set_error_delete(false);
 
 
 // #################################################################
+
+const [old_user_status_data, set_old_user_status_data] = useState([])
+const [old_enviroment_data, set_old_enviroment_data] = useState([])
+const [old_task_status_data, set_old_task_status_data] = useState([])
+function OldData(){
+  set_old_enviroment_data(environmentData);
+  set_old_task_status_data(task_status_Data);
+  set_old_user_status_data(memberStatusData);
+};
+
+
+const latest_enviroment_data = useMemo(() => old_enviroment_data, [old_enviroment_data]);
+const latest_task_statsus_data = useMemo(() => old_task_status_data, [old_task_status_data]);
+const latest_user_status_data = useMemo(() => old_user_status_data, [old_user_status_data]);
+// Enviroment
+useEffect(() =>{
+  const requestOptions ={
+  method:'Get',
+  headers:{
+      'Accept':'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('key')}`
+    ,'Content-Type': 'application/json'},
+}
+
+  // fetch all environments
+      fetch(`${URL}/api/auth/environments`,requestOptions)
+      .then(response => response.json())
+      .then(results => setEnvironmentData(results.data))    
+},[latest_enviroment_data])
+// Task Status
 useEffect(() =>{
   
   const requestOptions ={
@@ -146,18 +176,25 @@ useEffect(() =>{
       .then(Result => setTaskStatus(Result.data))
 
 
-  // fetch all environments
-      fetch(`${URL}/api/auth/environments`,requestOptions)
-      .then(response => response.json())
-      .then(results => setEnvironmentData(results.data))
-     
+
+},[latest_task_statsus_data ])
+
+// Member Status
+useEffect(() =>{
+  
+  const requestOptions ={
+  method:'Get',
+  headers:{
+      'Accept':'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('key')}`
+    ,'Content-Type': 'application/json'},
+}
   // fetch all member status
   fetch(`${URL}/api/auth//user_status/all`,requestOptions)
   .then(response => response.json())
   .then(results => setMemberStatusData(results.data))
  
-
-},[task_status_Data, environmentData ,memberStatusData ])
+},[latest_user_status_data])
 
 // Create Fucntion
   function handleTaskStatusSubmit(event) {
@@ -178,7 +215,8 @@ useEffect(() =>{
     .then((Response ) => {Response.json()
         if (Response.status === 201){
           handleShowsuccessCreate();
-            handleCloseTaskStatus()
+            handleCloseTaskStatus();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -208,7 +246,8 @@ useEffect(() =>{
     .then((Response ) => {Response.json()
         if (Response.status === 201){
           handleShowsuccessCreate();
-            handleCloseEnvironment()
+            handleCloseEnvironment();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -237,7 +276,8 @@ useEffect(() =>{
     .then((Response ) => {Response.json()
         if (Response.status === 201){
           handleShowsuccessCreate();
-            handleCloseEnvironment()
+            handleCloseEnvironment();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -271,7 +311,8 @@ useEffect(() =>{
         Response.json()
         if(Response.status === 200){
           handleShowsuccessUpdate();
-            handle_update_Close_task_status()
+            handle_update_Close_task_status();
+            OldData();
         } 
         else if(Response.status === 422){
           handleShowErrorUpdate();
@@ -300,7 +341,8 @@ function handle_Update_Environment_Submit(event){
       Response.json()
       if(Response.status === 200){
         handleShowsuccessUpdate();
-          handle_update_Close_environment()
+          handle_update_Close_environment();
+          OldData();
       } 
       else if(Response.status === 422){
         handleShowErrorUpdate();
@@ -329,7 +371,8 @@ function handle_Update_Member_Status_Submit(event){
       Response.json()
       if(Response.status === 200){
         handleShowsuccessUpdate();
-        handle_update_Close_member_status()
+        handle_update_Close_member_status();
+        OldData();
       } 
       else if(Response.status === 422){
         handleShowErrorUpdate();
@@ -356,7 +399,8 @@ function handleSubmitDeleteTaskStatus(event){
   {response.json()
       if(response.status === 200){
         handleShowSuccessDelete();
-        handle_delete_Close_task_status()
+        handle_delete_Close_task_status();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -389,7 +433,8 @@ function handleSubmitDeleteEnviroment(event){
   {response.json()
       if(response.status === 200){
         handleShowSuccessDelete();
-        handle_delete_Close_environment()
+        handle_delete_Close_environment();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -422,7 +467,8 @@ function handleSubmitDeleteMemberStatus(event){
   {response.json()
       if(response.status === 200){
         handleShowSuccessDelete();
-        handle_delete_Close_member_status()
+        handle_delete_Close_member_status();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -479,9 +525,9 @@ function handleSubmitDeleteMemberStatus(event){
                                             <th scope="row">{tool.id}</th>
                                             <td>{tool.name}</td>
                                             <td className="text-center">
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_task_status}>Update</Button></button> 
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_task_status}>Update</Button></button> 
                                               {' '} {' '}
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_task_status}>Delete</Button></button>  
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_task_status}>Delete</Button></button>  
                                               </td> 
                                           </tr>
                                         })
@@ -508,9 +554,9 @@ function handleSubmitDeleteMemberStatus(event){
                                           <th scope="row">{tool.id}</th>
                                             <td>{tool.name}</td>
                                             <td className="text-center">
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_environment}>Update</Button></button>  
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_environment}>Update</Button></button>  
                                               {' '} {' '}
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_environment}>Delete</Button></button>
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_environment}>Delete</Button></button>
                                               </td> 
                                           </tr>
                                         })
@@ -537,9 +583,9 @@ function handleSubmitDeleteMemberStatus(event){
                                           <th scope="row">{tool.id}</th>
                                             <td>{tool.name}</td>
                                             <td className="text-center">
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_member_status}>Update</Button></button> 
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_member_status}>Update</Button></button> 
                                               {' '} {' '}
-                                              <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_member_status}>Delete</Button></button>
+                                              <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_member_status}>Delete</Button></button>
                                               </td> 
                                           </tr>
                                         })

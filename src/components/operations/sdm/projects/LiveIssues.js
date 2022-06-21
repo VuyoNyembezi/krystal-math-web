@@ -901,7 +901,7 @@ function LiveIssues() {
                                     Select
                                   </Button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -913,7 +913,7 @@ function LiveIssues() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -961,7 +961,7 @@ function LiveIssues() {
                                     Select
                                   </Button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -973,7 +973,7 @@ function LiveIssues() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1021,7 +1021,7 @@ function LiveIssues() {
                                     Select
                                   </Button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1033,7 +1033,7 @@ function LiveIssues() {
                                     </Button>
                                   </button>{" "}
                                   <button
-                                    size="sm"
+                                    size="sm" className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1080,7 +1080,7 @@ function LiveIssues() {
                                   Select
                                 </Button>{" "}
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -1092,7 +1092,7 @@ function LiveIssues() {
                                   </Button>
                                 </button>{" "}
                                 <button
-                                  size="sm"
+                                  size="sm" className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -1351,7 +1351,7 @@ function LiveIssues() {
                                       Select
                                     </Button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1363,7 +1363,7 @@ function LiveIssues() {
                                       </Button>
                                     </button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1409,7 +1409,7 @@ function LiveIssues() {
                                       Select
                                     </Button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1421,7 +1421,7 @@ function LiveIssues() {
                                       </Button>
                                     </button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1468,7 +1468,7 @@ function LiveIssues() {
                                         Select
                                       </Button>{" "}
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1480,7 +1480,7 @@ function LiveIssues() {
                                         </Button>
                                       </button>{" "}
                                       <button
-                                        size="sm"
+                                        size="sm" className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1527,7 +1527,7 @@ function LiveIssues() {
                                       Select
                                     </Button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1539,7 +1539,7 @@ function LiveIssues() {
                                       </Button>
                                     </button>{" "}
                                     <button
-                                      size="sm"
+                                      size="sm" className="btn"
                                       onClick={() => selectProject(project)}
                                     >
                                       <Button
@@ -1560,9 +1560,6 @@ function LiveIssues() {
                     </Tabs>
                   </Card.Body>
                   <Card.Footer className="text-center">
-                    <Button variant="success" size="sm" onClick={""}>
-                      All
-                    </Button>{" "}
                     <Button
                       variant="danger"
                       size="sm"
@@ -1679,13 +1676,7 @@ function LiveIssues() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleALLLiveIssueClose}
-          >
-            Close
-          </Button>
+     
         </Modal.Footer>
       </Modal>
 

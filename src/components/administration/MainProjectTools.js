@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Card, Form, FormControl, InputGroup, Modal, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -141,7 +141,78 @@ const handleCloseErrorDelete = () => set_error_delete(false);
 
 
 // #################################################################
+const [old_project_type_data, set_old_project_type_data] = useState([]);
+const [old_project_category_data, set_old_project_category_data] = useState([]);
+const [old_project_status_data, set_old_project_status_data] = useState([]);
+const [old_priority_type_data, set_old_priority_type_data] = useState([]);
+function OldData(){
+  set_old_project_type_data(projectTypeData);
+  set_old_project_category_data(projectCategoryTypeData);
+  set_old_project_status_data(statusData);
+  set_old_priority_type_data(priorityData);
+};
 
+
+const latest_project_type_data = useMemo(() => old_project_type_data, [old_project_type_data]);
+const latest_project_category_type_data = useMemo(() => old_project_category_data, [old_project_category_data]);
+const latest_project_status_data = useMemo(() => old_project_status_data, [old_project_status_data]);
+const latest_priority_type_data = useMemo(() => old_priority_type_data, [old_priority_type_data]);
+// project type
+useEffect(() =>{
+  
+  const requestOptions ={
+  method:'Get',
+  headers:{
+      'Accept':'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('key')}`
+    ,'Content-Type': 'application/json'},
+}
+
+  // fetch all project types
+      fetch(`${URL}/api/auth/project_type/all`,requestOptions)
+      .then(response => response.json())
+      .then(Result =>{ setProjectTypeData(Result.data)})
+     
+},[latest_project_type_data])
+// project category
+useEffect(() =>{
+  
+  const requestOptions ={
+  method:'Get',
+  headers:{
+      'Accept':'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('key')}`
+    ,'Content-Type': 'application/json'},
+}
+
+
+      // fetch all project category types
+     fetch(`${URL}/api/auth/project_category_type/all`,requestOptions)
+     .then(response => response.json())
+     .then(Result =>{ setProjectCategoryTypeData(Result.data)})
+
+   
+
+},[latest_project_category_type_data])
+// project status
+useEffect(() =>{
+  
+  const requestOptions ={
+  method:'Get',
+  headers:{
+      'Accept':'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('key')}`
+    ,'Content-Type': 'application/json'},
+}
+
+    // fetch all statuses
+    fetch(`${URL}/api/auth/project_status/all`,requestOptions)
+    .then(response => response.json())
+    .then(Result => set_Project_Status(Result.data))  
+
+
+},[ latest_project_status_data])
+// priority type
 useEffect(() =>{
   
   const requestOptions ={
@@ -158,25 +229,9 @@ useEffect(() =>{
     set_Project_Priority_Data(Result.data)
   })
 
-  // fetch all project types
-      fetch(`${URL}/api/auth/project_type/all`,requestOptions)
-      .then(response => response.json())
-      .then(Result =>{ setProjectTypeData(Result.data)})
-     
-      // fetch all project category types
-     fetch(`${URL}/api/auth/project_category_type/all`,requestOptions)
-     .then(response => response.json())
-     .then(Result =>{ setProjectCategoryTypeData(Result.data)})
 
-    // fetch all statuses
-    fetch(`${URL}/api/auth/project_status/all`,requestOptions)
-    .then(response => response.json())
-    .then(Result => set_Project_Status(Result.data))  
+},[latest_priority_type_data])
 
-
- 
-
-},[priorityData, projectCategoryTypeData,projectTypeData, statusData])
 
   function handleAddProjectTypeSubmit(event) {
     event.preventDefault()
@@ -198,6 +253,7 @@ useEffect(() =>{
         if (Response.status === 201){
           handleShowsuccessCreate();
             handle_Close_Project_type();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -230,7 +286,8 @@ useEffect(() =>{
         
         if (Response.status === 201){
           handleShowsuccessCreate();
-            handle_Project_Category_Close()
+            handle_Project_Category_Close();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -263,6 +320,7 @@ useEffect(() =>{
         if (Response.status === 201){
           handleShowsuccessCreate();
             handleCloseProjectStatus();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -294,6 +352,7 @@ useEffect(() =>{
         if (Response.status === 201){
           handleShowsuccessCreate();
             handleClosePriority();
+            OldData();
         }
         else if(Response.status === 422){
           handleShowErrorCreate();
@@ -330,6 +389,7 @@ useEffect(() =>{
         if(Response.status === 200){
           handleShowsuccessUpdate();
             handle_update_Close_status();
+            OldData();
         } 
         else if(Response.status === 422){
           handleShowErrorUpdate();
@@ -361,6 +421,7 @@ function handle_Update_Priority_Submit(event){
       if(Response.status === 200){
         handleShowsuccessUpdate();
           handle_update_Close_priority();
+          OldData();
       } 
       else if(Response.status === 422){
         handleShowErrorUpdate();
@@ -390,7 +451,8 @@ function handle_Update_Project_Type_Submit(event){
       Response.json()
       if(Response.status === 200){
         handleShowsuccessUpdate();
-          handle_update_Close_project_type()
+          handle_update_Close_project_type();
+          OldData();
       } 
       else if(Response.status === 422){
         handleShowErrorUpdate();
@@ -422,6 +484,7 @@ function handle_Update_Project_Category_Type_Submit(event){
       if(Response.status === 200){
         handleShowsuccessUpdate();
         handle_update_Close_project_category_type();
+        OldData();
       } 
       else if(Response.status === 422){
         handleShowErrorUpdate();
@@ -451,6 +514,7 @@ function handleSubmitDeleteProjectType(event){
       if(response.status === 200){
         handleShowSuccessDelete();
         handle_delete_Close_project_type();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -484,6 +548,7 @@ function handleSubmitDeleteProjectCategoryType(event){
       if(response.status === 200){
         handleShowSuccessDelete();
         handle_delete_Close_project_category_type();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -516,7 +581,8 @@ function handleSubmitDeleteProjectStatus(event){
   {response.json()
       if(response.status === 200){
         handleShowSuccessDelete();
-        handle_delete_Close_status()
+        handle_delete_Close_status();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -550,7 +616,8 @@ function handleSubmitDeletePriorityType(event){
   {response.json()
       if(response.status === 200){
         handleShowSuccessDelete();
-        handle_delete_Close_priority()
+        handle_delete_Close_priority();
+        OldData();
       }
       else if(response.status === 422){
         handleShowErrorDelete();
@@ -608,9 +675,9 @@ function handleSubmitDeletePriorityType(event){
                                         <th scope="row">{tool.id}</th>
                                         <td>{tool.name}</td>
                                         <td className="text-center">
-                                          <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_project_type}>Update</Button></button>  
+                                          <button size='sm' className='btn'  onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_project_type}>Update</Button></button>  
                                         {' '} {' '}
-                                      <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_project_type}>Delete</Button></button>  </td> 
+                                      <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_project_type}>Delete</Button></button>  </td> 
                                         
                                         
                                       </tr>
@@ -637,9 +704,9 @@ function handleSubmitDeletePriorityType(event){
                                         <th scope="row">{tool.id}</th>
                                         <td>{tool.name}</td>
                                         <td className="text-center">
-                                          <button size='sm'  onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm'  onClick={handle_update_Show_project_category_type}>Update</Button></button>  
+                                          <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm'  onClick={handle_update_Show_project_category_type}>Update</Button></button>  
                                           {' '} {' '}
-                                      <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_project_category_type}>Delete</Button></button>
+                                      <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_project_category_type}>Delete</Button></button>
                                           </td> 
                                       
                                       </tr>
@@ -664,9 +731,9 @@ function handleSubmitDeletePriorityType(event){
                                       return <tr key={key}>
                                         <th scope="row">{tool.id}</th>
                                         <td>{tool.name}</td>
-                                        <td className="text-center"><button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success"  size='sm' onClick={handle_update_Show_status}>Update</Button></button>  
+                                        <td className="text-center"><button className='btn' size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success"  size='sm' onClick={handle_update_Show_status}>Update</Button></button>  
                                         {' '} {' '}
-                                      <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_status}>Delete</Button></button>  
+                                      <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_status}>Delete</Button></button>  
                                         </td> 
                                       
                                       </tr>
@@ -694,9 +761,9 @@ function handleSubmitDeletePriorityType(event){
                                         <td>{tool.name}</td>
                                   
                                         <td className="text-center">
-                                          <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_priority}>Update</Button></button>  
+                                          <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-success" size='sm' onClick={handle_update_Show_priority}>Update</Button></button>  
                                           {' '} {' '}
-                                        <button size='sm' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_priority}>Delete</Button></button>  
+                                        <button size='sm' className='btn' onClick={() => selectTool(tool)}><Button variant="outline-danger" size='sm' onClick={handle_delete_Show_priority}>Delete</Button></button>  
                                         </td> 
                                     
                                       </tr>

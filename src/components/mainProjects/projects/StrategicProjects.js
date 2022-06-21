@@ -26,7 +26,6 @@ function StrategicProjects() {
   const [BetSoftwarePartnersData, setBETSoftwarePartnersData] = useState([]);
   const [all_projectData, set_all_ProjectData] = useState([]);
 
-  const [projectData, set_ProjectData] = useState({});
 
   // search state
   const [search_key, set_search_key] = useState({
@@ -47,7 +46,7 @@ function StrategicProjects() {
       fetch(`${URL}/api/auth/projects/strategic`, requestOptions)
         .then((response) => response.json())
         .then((results) => {
-          set_ProjectData(results);
+         
           setBETSoftwareProjectData(results.bet_projects);
           setBETSoftwarePartnersData(results.bet_project_partners_projects);
           setCountryData(results.country_projects);
@@ -55,37 +54,12 @@ function StrategicProjects() {
           setDigitalMarketingData(results.digital_marketing_projects);
           setIntegrationsData(results.integrations_projects);
           setPaymentMethodsData(results.payment_method_projects);
+          set_all_ProjectData(results.all_projects);
         });
-
-      // fetch all projects assigned to the team
-      fetch(
-        `${URL}/api/auth/team/projects/all?team_id=${localStorage.getItem(
-          "team"
-        )}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((res) => set_all_ProjectData(res.data));
     }
-  }, [projectData, search_key.project_search]);
+  }, [search_key.project_search]);
 
-  useEffect(() => {
-    const requestOptions = {
-      method: "Get",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("key")}`,
-        "Content-Type": "application/json",
-      },
-    };
 
-    if (search_key.project_search === null) {
-      // fetch strategic projects
-      fetch(`${URL}/api/auth/projects/strategic/all`, requestOptions)
-        .then((response) => response.json())
-        .then((Result) => set_all_ProjectData(Result.data));
-    }
-  }, [all_projectData, search_key]);
 
   const handleChange = (event) => {
     set_search_key({

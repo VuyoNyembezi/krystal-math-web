@@ -386,7 +386,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button className="btn" size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   })
                                   } 
@@ -418,7 +418,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button className="btn" size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   })
                                   }
@@ -448,7 +448,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button size='sm' className="btn" onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   }) 
                                   }
@@ -478,7 +478,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button size='sm' className="btn" onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   }) 
                                   }
@@ -508,7 +508,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button size='sm' className="btn" onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   }) 
                                   }
@@ -538,7 +538,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button size='sm' className="btn" onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   })
                                   }
@@ -568,7 +568,7 @@ const handleChange =(event) => {
                                       <td>{project.project_status.name}</td>
                                       <td>{project.user.name}</td>
                                       <td>{project.team.name}</td>
-                                      <td className='text-center'><button size='sm' onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
+                                      <td className='text-center'><button size='sm' className="btn" onClick={() => selectProject(project)}><Button variant="outline-success" size='sm' onClick={handleShow_update_Project}>Update</Button></button></td>
                                     </tr>
                                   })       
                                   }

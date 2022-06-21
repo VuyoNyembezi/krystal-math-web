@@ -996,7 +996,7 @@ return(
                                <td> {project.project_category_type.name}</td>
                                <td> {project.project_type.name}</td>
                                <td>{project.user.name}</td>
-                               <td className="text-center"><button size='sm' onClick={handleCloseProjects}><Button variant="outline-success" size='sm'  onClick={() => selectProject(project) }>Select</Button> </button> </td> 
+                               <td className="text-center"><button className="btn" size='sm' onClick={handleCloseProjects}><Button variant="outline-success" size='sm'  onClick={() => selectProject(project) }>Select</Button> </button> </td> 
                                </tr>
                              })
                            }   
@@ -1029,7 +1029,7 @@ return(
                                return <tr key={Index} >
                                <td>{team.name}</td>
                                <td>{team.team_lead.name}</td>
-                               <td className="text-center"><button size='sm' onClick={handleCloseTeams}><Button variant="outline-success" size='sm' onClick={() => selectTeam(team)} >Select</Button></button>  </td> 
+                               <td className="text-center"><button className="btn" size='sm' onClick={handleCloseTeams}><Button variant="outline-success" size='sm' onClick={() => selectTeam(team)} >Select</Button></button>  </td> 
                           
                                </tr>
                              })
