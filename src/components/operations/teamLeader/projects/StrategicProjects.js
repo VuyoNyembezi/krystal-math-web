@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Card, CardGroup, Form, FormControl, FormGroup, InputGroup, Modal, Nav, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
+import { Button, Card, Container, Form, FormControl,  InputGroup, Modal, Nav, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Input, Label } from 'reactstrap';
 import { FcApproval } from "react-icons/fc";
 
 
@@ -255,14 +254,13 @@ fetch(
 
     return(
         <>
-         <Tab.Container id="left-tabs-example" defaultActiveKey="default" >
-        <Tab.Content>
-        <CardGroup>
-          <Card>
+        <div className="mt-3">
+  <Container fluid>
+         <Card>
             <Card.Header>
                 <h6>Strategic Projects</h6>
                 <Nav  className="justify-content-end">
-                 <div  className="col-md-3 col-sm-9">
+                 <div  className="col-md-3 col-sm-9 me-2">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
                       <FormControl type="search" name='project_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
@@ -270,7 +268,7 @@ fetch(
                   </div>
                   </Nav>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="scroll">
             <Tabs defaultActiveKey="strategic_bet_project" id="uncontrolled-tab-example" className="mb-3">
                   <Tab eventKey="strategic_bet_project" title="BET Projects">
                   <Table size="sm" striped bordered hover>
@@ -519,9 +517,12 @@ fetch(
                 </Tabs>
             </Card.Body> 
           </Card>
-        </CardGroup>
-        </Tab.Content>
-        </Tab.Container>
+      
+       </Container>
+
+        </div>
+     
+         
 
 
 {/* MODALS  */}
@@ -538,115 +539,197 @@ fetch(
          </Modal.Header>
          <Modal.Body>
          <Form onSubmit={handle_Update_Project_Submit}>
-         <FormGroup>
-             <Label >  Project Category : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_category_type_id"  onChange={handleChange} id="project_category_type_id" value={projectFormValue.project_category_type_id} disabled  required>
-                         <option value="">Select Project Category</option>
-                         {projectCategoryTypeData.map((project_category_type, key) =>{
-                         return <option key={key} value={project_category_type.id}>{project_category_type.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-                 <FormGroup>
-             <Label >  Project Type : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_type_id" onChange={handleChange} id="project_type_id" value={projectFormValue.project_type_id}  required>
-                         <option value="">Select Project Type</option>
-                         {projectTypeData.map((project_type, key) =>{
-                         return <option key={key} value={project_type.id}>{project_type.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <br/>
-         <InputGroup className="mb-3">
+        
+
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_category_type_id">
+              {" "}
+              Project Category:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                               name="project_category_type_id"
+                               onChange={handleChange}
+                               id="project_category_type_id"
+                               value={projectFormValue.project_category_type_id}
+                               disabled
+                               required
+                            >
+                                <option value="">Select Project Category</option>
+              {projectCategoryTypeData.map((project_category_type, key) => {
+                return (
+                  <option key={key} value={project_category_type.id}>
+                    {project_category_type.name}
+                  </option>
+                );
+              })}
+                              </Form.Select>
+</InputGroup>
+        
+  
+
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_type_id">
+              {" "}
+              Project Type:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                                name="project_type_id"
+                                onChange={handleChange}
+                                id="project_type_id"
+                                value={projectFormValue.project_type_id}
+                                disabled
+                                required
+                            >
+                                    <option value="">Select Project Type</option>
+              {projectTypeData.map((project_type, key) => {
+                return (
+                  <option key={key} value={project_type.id}>
+                    {project_type.name}
+                  </option>
+                );
+              })}
+                              </Form.Select>
+                              </InputGroup>
+        <br />
+        <InputGroup className="mb-3">
           <InputGroup.Text  className="col-4" id="project-name">Name :</InputGroup.Text>
           <FormControl
             aria-label="Username"
             aria-describedby="project-name"
-            name="name" placeholder="Project Name" 
-            type="text" 
-            onChange={handleChange} 
-            value={projectFormValue.name} 
-            disabled 
-            required />
+            name="name"
+            placeholder="Project Name"
+            type="text"
+            onChange={handleChange}
+            value={projectFormValue.name}
+            disabled
+            required
+          />
         </InputGroup>
-         <Form.Group className="mb-3" >
-       <Form.Label>BRD Available :</Form.Label>
-             <div className="form-group dropdown">
-                 <select className="form-control" name="business_request_document_status" id="business_request_document_status" onChange={handleChange} value={projectFormValue.business_request_document_status} required>
-                   <option value="">BRD Status</option>
-                   <option value={true}>Yes</option>
-                   <option value={false}>No</option>                         
-                 </select>
-             </div>
-       </Form.Group>               
-       <FormGroup>
-         <Label>BRD File</Label>
-             <Form.Control type="file"   name="business_request_document_link" onChange={handleChange}  />
-             <Input  name="business_request_document_link" defaultValue="none" placeholder="file link" type="text" onChange={handleChange} value={projectFormValue.business_request_document_link} />
-       </FormGroup>
-         <FormGroup>
-             <Label >  Team : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="team_id" onChange={handleChange} id="team_id"  value={projectFormValue.team_id}  required>
-                         <option value="">Select Team</option>
-                         {teamsData.map((team, key) =>{
-                         return <option key={key} value={team.id}>{team.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label >PM : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="user_id" onChange={handleChange} id="user_id"   value={projectFormValue.user_id} required>
-                         <option value="">Select PM</option>
-                         {userData.map((user, key) =>{
-                         return <option key={key} value={user.id} >{user.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label>  Status :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_status_id" onChange={handleChange} id="project_status_id"  value={projectFormValue.project_status_id}  required>
-                         <option value="">Assign</option>
-                         <></>
-                         {
-                         statusData.map((status, key) =>{
-                         return <option key={key} value={status.id}>{status.name}</option>
-                         })                
-                         }
-                     </select>
-                 </div>  
-         </FormGroup>
-         <FormGroup>
-             <Label>  Priority :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="priority_type_id" onChange={handleChange} id="priority_type_id"  value={projectFormValue.priority_type_id}  required>
-                         <option value="">Assign</option>
-                         
-                         {
-                         PriorityData.map((priority, key) =>{
-                         return <option key={key} value={priority.id}>{priority.name}</option>
-                         })                
-                         }
-                     </select>
-                 </div>  
-         </FormGroup>
-                           <br />
-         <Button variant="primary" size='sm' type="submit">
-             Update Project
-         </Button>
-         </Form>
+    
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_type_id">
+              {" "}
+              BRD Available:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                                name="business_request_document_status"
+                                id="business_request_document_status"
+                                onChange={handleChange}
+                                value={projectFormValue.business_request_document_status}
+                                required
+                            > <option value="">BRD Status</option>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                              </Form.Select>
+                              </InputGroup>
+                              <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_link">
+              {" "}
+              BRD File:{" "}
+            </InputGroup.Text>
+       
+          <Form.Control
+            type="file"
+            name="business_request_document_link"
+            onChange={handleChange}
+          />
+          
+        </InputGroup>
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                               name="team_id"
+                               onChange={handleChange}
+                               id="team_id"
+                               value={projectFormValue.team_id}
+                               disabled
+                               required
+                            >   <option value="">Select Team</option>
+                            {teamsData.map((team, key) => {
+                              return (
+                                <option key={key} value={team.id}>
+                                  {team.name}
+                                </option>
+                              );
+                            })}
+                            </Form.Select>
+                            </InputGroup>
+     
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_id">
+              {" "}
+              PM:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                              name="user_id"
+                              onChange={handleChange}
+                              id="user_id"
+                              value={projectFormValue.user_id}
+                              required
+                            >     <option value="">Select PM</option>
+                            {userData.map((user, key) => {
+                              return (
+                                <option key={key} value={user.id}>
+                                  {user.name}
+                                </option>
+                              );
+                            })}
+                            </Form.Select>
+                            </InputGroup>
+     
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_status_id">
+              {" "}
+              Status:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                               name="project_status_id"
+                               onChange={handleChange}
+                               id="project_status_id"
+                               value={projectFormValue.project_status_id}
+                               required
+                            >    <option value="">Assign</option>
+                            <></>
+                            {statusData.map((status, key) => {
+                              return (
+                                <option key={key} value={status.id}>
+                                  {status.name}
+                                </option>
+                              );
+                            })}   
+                            </Form.Select>
+                            </InputGroup>
+   
+        <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="priority_type_id">
+              {" "}
+              Priority:{" "}
+            </InputGroup.Text>
+            <Form.Select
+                           name="priority_type_id"
+                           onChange={handleChange}
+                           id="priority_type_id"
+                           value={projectFormValue.priority_type_id}
+                           required
+                            >     <option value="">Assign</option>
+
+                            {PriorityData.map((priority, key) => {
+                              return (
+                                <option key={key} value={priority.id}>
+                                  {priority.name}
+                                </option>
+                              );
+                            })}
+                            </Form.Select>
+                            </InputGroup> 
+        <br />
+        <Button variant="primary" size="sm" type="submit">
+          Update Project
+        </Button>
+      </Form>
          </Modal.Body>
          <Modal.Footer>
            <Button variant="secondary" onClick={handleUpdateProjectClose}>

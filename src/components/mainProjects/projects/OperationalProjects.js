@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  Badge, Button, Card, CardGroup, Col, Container, Form, FormControl, Nav, Row, Tab, Table, Tabs } from 'react-bootstrap';
+import {  Badge, Button, Card, Container, Form, FormControl, Nav, Tab, Table, Tabs } from 'react-bootstrap';
 
 
 import { URL } from '../../../server_connections/server';
@@ -91,18 +91,14 @@ const handleChange =(event) => {
      
 return(
 
-
-        <Container  fluid>
-         <Row >
-           <Col >
-           <Tab.Container defaultActiveKey="operational_bet_project" >
-        <Tab.Content>
-        <CardGroup>
-          <Card>
+<div className="mt-3">
+    <Container  fluid>
+          <Card   style={{ backgroundColor: "white", height: "86%" }}>
             <Card.Header>
+ 
                 <h6>Operational Projects</h6>
                 <Nav  className="justify-content-end">
-                 <div  className="col-md-3 col-sm-9">
+                 <div  className="col-md-3 col-sm-9 me-2">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
                       <FormControl type="search" name='project_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
@@ -110,7 +106,7 @@ return(
                   </div>
                   </Nav>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="scroll">
               <Tabs defaultActiveKey="operational_bet_project" id="uncontrolled-tab-example" className="mb-3">
                   <Tab eventKey="operational_bet_project" title="BET Projects">
                   <Table size='sm' striped bordered hover>
@@ -366,12 +362,11 @@ return(
 
             </Card.Body>          
           </Card>         
-        </CardGroup>  
-        </Tab.Content>
-        </Tab.Container>          
-           </Col>         
-         </Row>
+
         </Container>
+
+</div>
+    
     )
 }
 export default OperationalProjects;

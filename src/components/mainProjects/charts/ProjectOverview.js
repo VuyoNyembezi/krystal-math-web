@@ -163,6 +163,7 @@ function ProjectsOverView() {
   };
 
   const team_data = {
+   
     labels: [
       "No Started",
       "Planning",
@@ -264,10 +265,12 @@ function ProjectsOverView() {
 
   return (
     <>
-      <Container fluid>
-        <Card>
+    <div className="mt-3">
+
+        <Container fluid>
+        <Card  style={{ backgroundColor: "white", height: "86%" }}>
           <Card.Header>Live Chart Overviews</Card.Header>
-          <Card.Body>
+          <Card.Body className="scroll--chars">
             <Row className="row">
               <Col className="col-md-7">
                 <Tabs
@@ -275,23 +278,26 @@ function ProjectsOverView() {
                   transition={true}
                   className="mb-3"
                 >
-                  <Tab eventKey="projects" title="Projects">
-                    <div style={{ width: "500px" }}>
+                  <Tab eventKey="projects" title="Projects"> 
+                  <div style={{ width: "50%" }}>
                       <Pie data={main_project_data} />
                     </div>
                   </Tab>
                   <Tab eventKey="live_issues" title="Live Issues">
-                    <div style={{ width: "500px" }}>
+                    <div style={{ width: "50%" }}>
                       <LiveOverView />
                     </div>
                   </Tab>
                 </Tabs>
               </Col>
               <Col className="col-md-5">
-                <div className="col-md-5 col-sm-9">
-                  <Form.Group className="mb-3">
-                    <Form.Label>Team</Form.Label>
-                    <Form.Select
+                
+                  <Row>
+                    <Col sm={1}>   <Form.Label >Team</Form.Label>
+                    </Col>
+                    <Col>
+                    <div className="col-sm-5"> 
+                     <Form.Select 
                       name="id"
                       id="id"
                       onChange={handleChange}
@@ -306,8 +312,14 @@ function ProjectsOverView() {
                         );
                       })}
                     </Form.Select>
+                    </div>   
+                    </Col>
+                  </Row>
+                  <Form.Group className="mb-3">
+                 
+               
                   </Form.Group>
-                </div>
+                
 
                 <Tabs
                   defaultActiveKey="projects"
@@ -315,11 +327,11 @@ function ProjectsOverView() {
                   className="mb-3"
                 >
                   <Tab eventKey="projects" title="Projects">
-                    <div style={{ width: "500px" }}>
+                    <div style={{ width: "50%", height:"50%" }}>
                       <Pie data={team_data} />
                     </div>
                     <Row>
-                      <>
+                      <Card>
                         <Card.Header>Project Stats</Card.Header>
                         <Card.Body>
                           <Row>
@@ -379,15 +391,15 @@ function ProjectsOverView() {
                             </Col>
                           </Row>
                         </Card.Body>
-                      </>
+                      </Card>
                     </Row>
                   </Tab>
                   <Tab eventKey="live_issues" title="Live Issues">
-                    <div style={{ width: "500px" }}>
+                    <div style={{ width: "50%", height:"50%" }}>
                       <Doughnut data={team_live_data_data} />
                     </div>
                     <Row>
-                      <>
+                      <Card style={{ backgroundColor: "white"}}>
                         <Card.Header>Live Issues Stats</Card.Header>
                         <Card.Body>
                           <Row>
@@ -447,7 +459,7 @@ function ProjectsOverView() {
                             </Col>
                           </Row>
                         </Card.Body>
-                      </>
+                      </Card>
                     </Row>
                   </Tab>
                 </Tabs>
@@ -458,6 +470,8 @@ function ProjectsOverView() {
           </Card.Body>
         </Card>
       </Container>
+    </div>
+    
     </>
   );
 }

@@ -8,7 +8,6 @@ import {
   Container,
   Form,
   FormControl,
-  FormGroup,
   InputGroup,
   Modal,
   Nav,
@@ -25,8 +24,7 @@ import CountUp from "react-countup";
 import { Label } from "reactstrap";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
-import { FcDownload,FcApproval, FcSearch } from "react-icons/fc";
-
+import { FcDownload, FcApproval, FcSearch } from "react-icons/fc";
 
 import { URL } from "../../../server_connections/server";
 import AssignProject from "./AssignProject";
@@ -105,7 +103,7 @@ function DashBoardInfo() {
     });
     setShowLiveIssuesDetails(false);
     set_search_key({
-      live_issue_search:null
+      live_issue_search: null,
     });
   };
   const handleLiveIssuesShow = () => setShowLiveIssues(true);
@@ -179,6 +177,20 @@ function DashBoardInfo() {
     });
   };
   const handleUpdateLiveShow = () => setShowUpdateLiveIssue(true);
+
+  // Members Assigned stats
+  const [showMemberAssignStats, setShowMemberAssignStats] = useState(false);
+  const handleMemberAssignStatsClose = () => setShowMemberAssignStats(false);
+  const handleShow_Members_assign_stats = () => setShowMemberAssignStats(true);
+  // Members Progress stats
+  const [showMemberTaskProgress, setShowMemberTaskProgress] = useState(false);
+  const handleMemberTaskProgressClose = () => setShowMemberTaskProgress(false);
+  const handleShow_MemberTaskProgress = () => setShowMemberTaskProgress(true);
+  // Members Progress stats
+  const [showMemberCalender, setShowMemberCalender] = useState(false);
+  const handleMemberCalenderClose = () => setShowMemberCalender(false);
+  const handleShow_MemberCalender = () => setShowMemberCalender(true);
+
   //  Http Request Data Holders
 
   const [memberTask, setMemberTask] = useState([]);
@@ -229,7 +241,7 @@ function DashBoardInfo() {
   const [LiveIssueData, setLiveIssueData] = useState([]);
   // completed
   const [CompletedLiveIssueData, setCompletedLiveIssueData] = useState([]);
-  // active
+  // live view overview
   const [LiveIssueOverviewData, setActiveOverviewLiveIssue] = useState([]);
   //project assignemnt Data
   const [assign_projectData, set_assign_ProjectData] = useState([]);
@@ -330,8 +342,8 @@ function DashBoardInfo() {
 
   // search state
   const [search_key, set_search_key] = useState({
-    live_issue_search:null,
-    task_search: null
+    live_issue_search: null,
+    task_search: null,
   });
   // projects modal
   const [show, setShow] = useState(false);
@@ -382,23 +394,24 @@ function DashBoardInfo() {
   const handleClose_assign_project = () => setShow_assign_project(false);
   const handleShow_assign_project = () => setShow_assign_project(true);
 
-
-
   // Keeps track of changes in the database
   const [old_team_projects_data, set_old_team_projects_data] = useState([]);
-  const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([])
+  const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([]);
   // const [old_team_tasks_data, set_old_team_tasks_data] = useState([])
-  function OldData(){
+  function OldData() {
     set_old_team_projects_data(projectData);
     set_old_team_live_issue_data(LiveIssueData);
+  }
 
-  };
-  
+  const latest_project_data = useMemo(
+    () => old_team_projects_data,
+    [old_team_projects_data]
+  );
 
-  const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
-  
-  const latest_ive_ssue_data = useMemo(() => old_team_live_issue_data, [old_team_live_issue_data]);
-
+  const latest_ive_ssue_data = useMemo(
+    () => old_team_live_issue_data,
+    [old_team_live_issue_data]
+  );
 
   // Team Members List
   useEffect(() => {
@@ -473,12 +486,26 @@ function DashBoardInfo() {
     fetch(`${URL}/api/auth/project_status/all`, requestOptions)
       .then((response) => response.json())
       .then((Result) => setStatus(Result.data));
+  }, []);
 
-
-      fetch(`${URL}/api/auth/live_issues/team/count/overview?team_id=${localStorage.getItem("team")}`,requestOptions)
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(
+      `${URL}/api/auth/live_issues/team/count/overview?team_id=${localStorage.getItem(
+        "team"
+      )}`,
+      requestOptions
+    )
       .then((response) => response.json())
-      .then((res) => {
-        setActiveOverviewLiveIssue(res);
+      .then((results) => {
+        setActiveOverviewLiveIssue(results);
       });
   }, [LiveIssueOverviewData]);
 
@@ -519,9 +546,6 @@ function DashBoardInfo() {
     )
       .then((response) => response.json())
       .then((Result) => set_user_Strategic_Projects_Assignment(Result));
-
-
-
   }, [memberValue.id]);
   // user task counters
   useEffect(() => {
@@ -555,7 +579,7 @@ function DashBoardInfo() {
     )
       .then((response) => response.json())
       .then((Result) => set_user_task_statuses(Result));
-  }, [memberValue.id, user_task_statuses]);
+  }, [memberValue.id]);
 
   useEffect(() => {
     const requestOptions = {
@@ -582,9 +606,8 @@ function DashBoardInfo() {
         set_digital_marketing_ProjectData(results.digital_marketing_projects);
         set_integrations_ProjectData(results.integrations_projects);
         set_payment_methods_ProjectData(results.payment_method_projects);
-        set_all_ProjectData(results.all_projects)
+        set_all_ProjectData(results.all_projects);
       });
-
   }, [latest_project_data]);
   useEffect(() => {
     const requestOptions = {
@@ -611,7 +634,7 @@ function DashBoardInfo() {
     )
       .then((response) => response.json())
       .then((Result) => set_Team_Projects_Counter_Data(Result));
-  }, [Team_Projects_CounterData, team_tasks_overview]);
+  }, [latest_project_data]);
   // Live Issues
   useEffect(() => {
     const requestOptions = {
@@ -623,17 +646,21 @@ function DashBoardInfo() {
       },
     };
 
-    if (search_key.live_issue_search === null){
-       // fetch all live issues active projects assigned to the team
-    fetch(`${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem("team")}`,requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        setLiveIssueData(res.all_live_issues);
-        setCompletedLiveIssueData(res.completed_live_issues);
-      });
-   
+    if (search_key.live_issue_search === null) {
+      // fetch all live issues active projects assigned to the team
+      fetch(
+        `${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          setLiveIssueData(res.all_live_issues);
+          setCompletedLiveIssueData(res.completed_live_issues);
+        });
     }
-  }, [ latest_ive_ssue_data,search_key]);
+  }, [latest_ive_ssue_data, search_key]);
 
   //  Fetch All Data States(Team Members, Teams, Environment, Task Statuses)
   useEffect(() => {
@@ -726,11 +753,16 @@ function DashBoardInfo() {
       },
     };
     //search for Team Tasks
-      fetch(`${URL}/api/auth/user/search?team_id=${localStorage.getItem('team')}&user_id=${memberValue.id}&search=${search_key.task_search}`,requestOptions)
-      .then(response => response.json())
-      .then(Result => {
+    fetch(
+      `${URL}/api/auth/user/search?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${memberValue.id}&search=${search_key.task_search}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => {
         setMemberTask(Result.all_tasks);
-        })
+      });
   }
 
   // update live issue
@@ -850,33 +882,31 @@ function DashBoardInfo() {
     });
   }
 
-
-
-    // Search Task
-    function handle_Search_Live_Issues_Submit(event){
- 
-      event.preventDefault();
-      const requestOptions ={
-        method:'Get',
-        headers:{
-            'Accept':'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('key')}`
-          ,'Content-Type': 'application/json'},
-      }
+  // Search Task
+  function handle_Search_Live_Issues_Submit(event) {
+    event.preventDefault();
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
     //search for Team Tasks
-     fetch(`${URL}/api/auth/live_issues/team/search?team_id=${localStorage.getItem('team')}&search=${search_key.live_issue_search}`,requestOptions)
-     .then(response => response.json())
-     .then(Result => {
-      setCompletedLiveIssueData(Result.completed_live_issues);
-      setLiveIssueData(Result.all_live_issues);
-       })
-    }
+    fetch(
+      `${URL}/api/auth/live_issues/team/search?team_id=${localStorage.getItem(
+        "team"
+      )}&search=${search_key.live_issue_search}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => {
+        setCompletedLiveIssueData(Result.completed_live_issues);
+        setLiveIssueData(Result.all_live_issues);
+      });
+  }
 
-
-
-
-
-    
   const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
   const kickoffDate = `${
     taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
@@ -1053,1810 +1083,1726 @@ function DashBoardInfo() {
   };
 
   return (
-    <div className="dash-boards">
+    <div className="mt-3">
       <Card className="shadow">
         <Card.Header>
-        <Nav className="justify-content-end">
-        <div className="col-md-1 col-sm-9">
-          <Button
-            variant="info"
-            size="sm"
-            onClick={handleLiveIssuesShow}
-            className="position-relative"
-          >
-            Live Issue
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              <CountUp start={0} end={LiveIssueOverviewData.active} delay={0}>
-                {({ countUpRef }) => (
-                  <div>
-                    <span ref={countUpRef} />
-                  </div>
-                )}
-              </CountUp>
-            </span>
-          </Button>
-        </div>
-      </Nav>
+          <Nav className="justify-content-end">
+            <div className="col-md-1 col-sm-9">
+              <Button
+                variant="info"
+                size="sm"
+                onClick={handleLiveIssuesShow}
+                className="position-relative"
+              >
+                Live Issue
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <CountUp
+                    start={0}
+                    end={LiveIssueOverviewData.active}
+                    delay={0}
+                  >
+                    {({ countUpRef }) => (
+                      <div>
+                        <span ref={countUpRef} />
+                      </div>
+                    )}
+                  </CountUp>
+                </span>
+              </Button>
+            </div>
+          </Nav>
         </Card.Header>
-      <Card.Body>
-            
-            <Tabs defaultActiveKey="home" transition={true} className="mb-3">
-              <Tab eventKey="home" title="Projects">
-                <Container fluid>
+        <Card.Body className="teamlead-dashboard">
+          <Tabs defaultActiveKey="projects" transition={true} className="mb-3">
+            <Tab eventKey="projects" title="Projects">
+              <Row>
+                <Col>
+                  <Card className="shadow">
+                    <Card.Body className="teamlead-dashboard-project-tab">
+                      <Tabs
+                        defaultActiveKey="bet_projects"
+                        id="uncontrolled-tab-example"
+                        className="mb-3"
+                      >
+                        <Tab eventKey="bet_projects" title="Bet Projects">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {bet_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="country" title="Country">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {country_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+                                  {/* 
+                                      <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="customerJourney" title="Customer">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {customer_journey_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="integrations" title="Integrations">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {integrations_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="pay_methods" title="Payments">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {payment_methods_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="digital" title="Digital Marketing">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {digital_marketing_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab
+                          eventKey="betsoftware parteners"
+                          title="Bet Software Partners"
+                        >
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {bet_partners_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                        <Tab eventKey="all" title="All">
+                          <Row md={9}>
+                            <Col>
+                              <Table size="sm" striped bordered hover>
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Priority </th>
+                                    <th> To Complete</th>
+                                    <th>click</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {all_projectData
+                                    .slice(0, 8)
+                                    .map((project, Index) => {
+                                      return (
+                                        <tr key={Index}>
+                                          <td>{project.name}</td>
+                                          <td>
+                                            {" "}
+                                            {project.project_category_type.name}
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              bg={project.priority_type.level}
+                                              size="sm"
+                                            >
+                                              <p>
+                                                {project.priority_type.name}
+                                              </p>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Badge
+                                              style={{ height: "25px" }}
+                                              pill
+                                              bg={project.project_status.level}
+                                            >
+                                              <CountUp
+                                                start={0}
+                                                end={
+                                                  100 -
+                                                  project.project_status.effect
+                                                }
+                                                delay={0}
+                                              >
+                                                {({ countUpRef }) => (
+                                                  <div>
+                                                    <span ref={countUpRef} />%
+                                                  </div>
+                                                )}
+                                              </CountUp>
+                                            </Badge>
+                                          </td>
+                                          <td className="text-center">
+                                            <Button
+                                              variant="outline-success"
+                                              size="sm"
+                                              onClick={() =>
+                                                selectProject(project)
+                                              }
+                                            >
+                                              Select
+                                            </Button>{" "}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col>
+                              <Card>
+                                <Card.Header>Project Details</Card.Header>
+                                <Card.Body fluid>
+                                  <Row>
+                                    <Col>Name :</Col>
+                                    <Col>
+                                      <p>{projectValue.name}</p>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>Resources:</Col>
+                                    <Col>
+                                      {" "}
+                                      <Table size="sm" striped bordered hover>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {assign_projectData
+                                            .slice(0, 3)
+                                            .map((project, Index) => {
+                                              return (
+                                                <tr key={Index}>
+                                                  <td>{project.user.name}</td>
+                                                  <td>
+                                                    {" "}
+                                                    {project.user_status.name}
+                                                  </td>
+                                                </tr>
+                                              );
+                                            })}
+                                        </tbody>
+                                      </Table>
+                                    </Col>
+                                  </Row>
+                                  <hr />
+                                  <Row>
+                                    <Col>PM</Col>
+                                    <Col>
+                                      <Label>{projectValue.pm}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Status :</Col>
+                                    <Col>
+                                      <p>{projectValue.project_status}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Status Update</Col>
+                                    <Col>
+                                      <p>{projectValue.last_status_change}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>Last Update</Col>
+                                    <Col>
+                                      <Label>{projectValue.last_update}</Label>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col>
+                                      <Label>BRD: </Label>
+                                    </Col>
+                                    <Col>
+                                      <a
+                                        href={
+                                          projectValue.business_request_document_link
+                                        }
+                                        download
+                                      >
+                                        {" "}
+                                        <h4>
+                                          <FcDownload />
+                                        </h4>{" "}
+                                      </a>
+                                    </Col>
+                                  </Row>
+
+                                  {/* <Row>
+                                        <Col>Progress:</Col>
+                                        <Col>
+                                          <ProgressBar
+                                            now={projectValue.progress}
+                                            variant={projectValue.level}
+                                            label={`${projectValue.progress}%`}
+                                          />
+                                        </Col>
+                                      </Row> */}
+                                  {/* <Row>
+                                  <Col>
+                                To Completition :
+                                </Col>  
+                                <Col>
+                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
+                                          {({ countUpRef }) => (
+                                              <div>
+                                              <span ref={countUpRef}  />%
+                                              </div>
+                                          )}
+                                          </CountUp>
+                                          </Badge>
+                                </Col>     
+                                </Row> */}
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tab>
+                      </Tabs>
+                    </Card.Body>
+                    <Card.Footer className="text-center">
+                      <Button
+                        variant="info"
+                        size="sm"
+                        onClick={handleShow_assign_project}
+                      >
+                        Assign Member
+                      </Button>{" "}
+                      <Button variant="success" size="sm" onClick={handleShow}>
+                        All
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="members" title="Members">
+              <Card>
+                <Card.Body className="teamlead-dashboard-member-tab">
                   <Row>
                     <Col>
-                      <Card className="shadow">
-                        <Card.Header>Team projects</Card.Header>
-                        <Card.Body style={{ height: "700px" }}>
-                          <Tabs
-                            defaultActiveKey="bet_projects"
-                            id="uncontrolled-tab-example"
-                            className="mb-3"
-                          >
-                            <Tab eventKey="bet_projects" title="Bet Projects">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {bet_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="country" title="Country">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {country_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="customerJourney" title="Customer">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {customer_journey_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="integrations" title="Integrations">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {integrations_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="pay_methods" title="Payments">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {payment_methods_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="digital" title="Digital Marketing">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {digital_marketing_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab
-                              eventKey="betsoftware parteners"
-                              title="Bet Software Partners"
-                            >
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {bet_partners_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card style={{ height: "500px" }}>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                            <Tab eventKey="all" title="All">
-                              <Row md={9}>
-                                <Col>
-                                  <Table size="sm" striped bordered hover>
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Priority </th>
-                                        <th> To Complete</th>
-                                        <th>click</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {all_projectData
-                                        .slice(0, 8)
-                                        .map((project, Index) => {
-                                          return (
-                                            <tr key={Index}>
-                                              <td>{project.name}</td>
-                                              <td>
-                                                {" "}
-                                                {project.project_category_type.name}
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  bg={project.priority_type.level}
-                                                  size="sm"
-                                                >
-                                                  <p>{project.priority_type.name}</p>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Badge
-                                                  style={{ height: "25px" }}
-                                                  pill
-                                                  bg={project.project_status.level}
-                                                >
-                                                  <CountUp
-                                                    start={0}
-                                                    end={
-                                                      100 -
-                                                      project.project_status.effect
-                                                    }
-                                                    delay={0}
-                                                  >
-                                                    {({ countUpRef }) => (
-                                                      <div>
-                                                        <span ref={countUpRef} />%
-                                                      </div>
-                                                    )}
-                                                  </CountUp>
-                                                </Badge>
-                                              </td>
-                                              <td className="text-center">
-                                                <Button
-                                                  variant="outline-success"
-                                                  size="sm"
-                                                  onClick={() =>
-                                                    selectProject(project)
-                                                  }
-                                                >
-                                                  Select
-                                                </Button>{" "}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col>
-                                  <Card>
-                                    <Card.Header>Project Details</Card.Header>
-                                    <Card.Body fluid>
-                                      <Row>
-                                        <Col>Name :</Col>
-                                        <Col>
-                                          <p>{projectValue.name}</p>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>Resources:</Col>
-                                        <Col>
-                                          {" "}
-                                          <Table size="sm" striped bordered hover>
-                                            <thead>
-                                              <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              {assign_projectData
-                                                .slice(0, 3)
-                                                .map((project, Index) => {
-                                                  return (
-                                                    <tr key={Index}>
-                                                      <td>{project.user.name}</td>
-                                                      <td>
-                                                        {" "}
-                                                        {project.user_status.name}
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                })}
-                                            </tbody>
-                                          </Table>
-                                        </Col>
-                                      </Row>
-                                      <hr />
-                                      <Row>
-                                        <Col>PM</Col>
-                                        <Col>
-                                          <Label>{projectValue.pm}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Status :</Col>
-                                        <Col>
-                                          <p>{projectValue.project_status}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Status Update</Col>
-                                        <Col>
-                                          <p>{projectValue.last_status_change}</p>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>Last Update</Col>
-                                        <Col>
-                                          <Label>{projectValue.last_update}</Label>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col>
-                                          <Label>BRD: </Label>
-                                        </Col>
-                                        <Col>
-                                          <a
-                                            href={
-                                              projectValue.business_request_document_link
-                                            }
-                                            download
-                                          >
-                                            {" "}
-                                            <h4>
-                                              <FcDownload />
-                                            </h4>{" "}
-                                          </a>
-                                        </Col>
-                                      </Row>
-
-                                      <Row>
-                                        <Col>Progress:</Col>
-                                        <Col>
-                                          <ProgressBar
-                                            now={projectValue.progress}
-                                            variant={projectValue.level}
-                                            label={`${projectValue.progress}%`}
-                                          />
-                                        </Col>
-                                      </Row>
-                                      {/* <Row>
-                                  <Col>
-                                To Completition :
-                                </Col>  
-                                <Col>
-                                <Badge pill bg={projectValue.level}><CountUp start={0} end={100 - projectValue.progress} delay={0}>
-                                          {({ countUpRef }) => (
-                                              <div>
-                                              <span ref={countUpRef}  />%
-                                              </div>
-                                          )}
-                                          </CountUp>
-                                          </Badge>
-                                </Col>     
-                                </Row> */}
-                                    </Card.Body>
-                                    <Card.Footer>
-                                      <small className="text-muted">.</small>
-                                    </Card.Footer>
-                                  </Card>
-                                </Col>
-                              </Row>
-                            </Tab>
-                          </Tabs>
-                        </Card.Body>
-                        <Card.Footer className="text-center">
-                          <Button
-                            variant="info"
-                            size="sm"
-                            onClick={handleShow_assign_project}
-                          >
-                            Assign Member
-                          </Button>{" "}
-                          <Button variant="success" size="sm" onClick={handleShow}>
-                            All
-                          </Button>
-                        </Card.Footer>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Container>
-              </Tab>
-              <Tab eventKey="profile" title="Members">
-                <Container fluid>
-                  <Row>
-                    <Col>
-                      <Card className="shadow">
-                        <Card.Header>Team Members </Card.Header>
-                        <Card.Body>
-                          <div className="col-md-5 col-sm-9">
-                            <Form.Group className="mb-3">
-                              <Form.Select
-                                name="id"
-                                onChange={handleChange}
-                                id="id"
-                                required
+                      {" "}
+                      <Col>
+                        <Card className="shadow">
+                          <Card.Header>Team Members </Card.Header>
+                          <Card.Body className="teamlead-dashboard-team-member-card">
+                            <div className="col-md-5 col-sm-9">
+                              <Form.Group className="mb-3">
+                                <Form.Select
+                                  name="id"
+                                  onChange={handleChange}
+                                  id="id"
+                                  required
+                                >
+                                  <option value={0}>Select Member</option>
+                                  {userData.map((user, key) => {
+                                    return (
+                                      <option key={key} value={user.id}>
+                                        {user.name}
+                                      </option>
+                                    );
+                                  })}
+                                </Form.Select>
+                              </Form.Group>
+                              <Button
+                                variant="success"
+                                size="sm"
+                                onClick={handleShow_Members_assign_stats}
                               >
-                                <option value={0}>Select Member</option>
-                                {userData.map((user, key) => {
-                                  return (
-                                    <option key={key} value={user.id}>
-                                      {user.name}
-                                    </option>
-                                  );
-                                })}
-                              </Form.Select>
-                            </Form.Group>
-                          </div>
-                        </Card.Body>
-                        <Card.Body style={{ height: "250px" }}>
-                          <Card.Header fluid>Assign Stats </Card.Header>
-                          <Table size="sm" striped bordered hover>
-                            <thead>
-                              <tr>
-                                <th>Type</th>
-                                <th>Assigned</th>
-                                <th>Completed</th>
-                                <th>Pending</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>Operational Projects</td>
-                                <td className="text-center">
-                                  <Badge pill bg="secondary">
-                                    <CountUp
-                                      start={0}
-                                      end={
-                                        user_Operational_Projects_Assignment.all_assignments
-                                      }
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="success">
-                                    <CountUp
-                                      start={0}
-                                      end={
-                                        user_Operational_Projects_Assignment.completed
-                                      }
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="warning">
-                                    <CountUp
-                                      start={0}
-                                      end={
-                                        user_Operational_Projects_Assignment.pending
-                                      }
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Strategic Projects</td>
-                                <td className="text-center">
-                                  <Badge pill bg="secondary">
-                                    <CountUp
-                                      start={0}
-                                      end={
-                                        user_Strategic_Projects_Assignment.all_assignments
-                                      }
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="success">
-                                    <CountUp
-                                      start={0}
-                                      end={
-                                        user_Strategic_Projects_Assignment.completed
-                                      }
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="warning">
-                                    <CountUp
-                                      start={0}
-                                      end={user_Strategic_Projects_Assignment.pending}
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Tasks</td>
-                                <td className="text-center">
-                                  <Badge pill bg="secondary">
-                                    <CountUp
-                                      start={0}
-                                      end={UserTaskCounterOverview.all_tasks}
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="success">
-                                    <CountUp
-                                      start={0}
-                                      end={UserTaskCounterOverview.completed}
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                                <td className="text-center">
-                                  <Badge pill bg="warning">
-                                    <CountUp
-                                      start={0}
-                                      end={UserTaskCounterOverview.not_completed}
-                                      delay={0}
-                                    >
-                                      {({ countUpRef }) => (
-                                        <div>
-                                          <span ref={countUpRef} />
-                                        </div>
-                                      )}
-                                    </CountUp>
-                                  </Badge>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </Table>
-                        </Card.Body>
-                        <Card.Footer className="text-center"></Card.Footer>
-                      </Card>
+                                Assign Stats{" "}
+                              </Button>{" "}
+                              <Button
+                                variant="info"
+                                size="sm"
+                                onClick={handleShow_MemberTaskProgress}
+                              >
+                                Task Progress{" "}
+                              </Button>{" "}
+                              <Button
+                                variant="info"
+                                size="sm"
+                                onClick={handleShow_MemberCalender}
+                              >
+                                Calender{" "}
+                              </Button>{" "}
+                            </div>
+
+                            <br />
+                            <Card.Header>
+                              Details for <b>{taskValue.name}</b>{" "}
+                            </Card.Header>
+
+                            <Row>
+                              <Col>Enviroment :</Col>
+                              <Col>
+                                <p>{taskValue.environment}</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>Kick Off Date</Col>
+                              <Col>
+                                <p>{taskValue.kickoff_date}</p>
+                              </Col>
+                            </Row>
+                            {/* <Row>
+                    <Col>
+                    Due Date
+                    </Col>     
+                    <Col>
+                    <p>{taskValue.due_date}</p>
                     </Col>
+                    </Row> */}
+                            <Row>
+                              <Col>Last Updated:</Col>
+                              <Col>
+                                <p>{taskValue.last_update}</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>Days Left :</Col>
+                              <Col>
+                                <Badge pill bg="success">
+                                  <CountUp
+                                    start={0}
+                                    end={taskValue.days_left}
+                                    delay={0}
+                                  >
+                                    {({ countUpRef }) => (
+                                      <div>
+                                        <span ref={countUpRef} />
+                                      </div>
+                                    )}
+                                  </CountUp>
+                                </Badge>
+                              </Col>
+                            </Row>
+                            <br />
+                            <Row>
+                              <Col>Task Duration :</Col>
+                              <Col>
+                                <Badge pill bg="success">
+                                  <CountUp
+                                    start={0}
+                                    end={taskValue.task_duration}
+                                    delay={0}
+                                  >
+                                    {({ countUpRef }) => (
+                                      <div>
+                                        <span ref={countUpRef} />
+                                      </div>
+                                    )}
+                                  </CountUp>
+                                </Badge>
+                              </Col>
+                            </Row>
+                            <br />
+                            <Row>
+                              <Col>Task Comment :</Col>
+                              <Col>
+                                <Form.Control
+                                  readOnly
+                                  as="textarea"
+                                  placeholder="task comment here"
+                                  style={{ height: "auto" }}
+                                  value={taskValue.task_comment}
+                                />
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Col>
+
                     <Col>
                       <Card className="shadow">
                         <Card.Header>
                           <b>{memberValue.name}</b> Task list{" "}
-                        </Card.Header>
-                        <Card.Body style={{ height: "300px" }}>
-                          <Nav className="justify-content-end">
-                            <div className="col-md-3 col-sm-9">
-                              <Form
-                                onSubmit={handle_Search_Task_Submit}
-                                className="d-flex"
+                        </Card.Header>{" "}
+                        <Nav className="justify-content-end">
+                          <div className="col-md-3 col-sm-9">
+                            <Form
+                              onSubmit={handle_Search_Task_Submit}
+                              className="d-flex"
+                            >
+                              <FormControl
+                                type="search"
+                                name="task_search"
+                                placeholder="Search"
+                                required
+                                onChange={handleChange}
+                                className="mr-3"
+                                aria-label="Search"
+                              />
+                              <Button
+                                variant="outline-success"
+                                type="submit"
+                                size="sm"
                               >
-                                <FormControl
-                                  type="search"
-                                  name="task_search"
-                                  placeholder="Search"
-                                  required
-                                  onChange={handleChange}
-                                  className="mr-3"
-                                  aria-label="Search"
-                                />
-                                <Button
-                                  variant="outline-success"
-                                  type="submit"
-                                  size="sm"
-                                >
-                                  Search
-                                </Button>
-                              </Form>
-                            </div>
-                          </Nav>
+                                Search
+                              </Button>
+                            </Form>
+                          </div>
+                        </Nav>
+                        <Card.Body className="teamlead-dashboard-task-list-card">
+                          {/* style={{height:"calc(100vh - 563px)"}} */}
                           <Table size="sm" striped bordered hover>
                             <thead>
                               <tr>
@@ -2872,7 +2818,9 @@ function DashBoardInfo() {
                                   <tr key={Index}>
                                     <td>{task.name}</td>
                                     <td>{task.task_status.name}</td>
-                                    <td>{new Date(task.due_date).toDateString()}</td>
+                                    <td>
+                                      {new Date(task.due_date).toDateString()}
+                                    </td>
                                     <td className="text-center">
                                       <Button
                                         size="sm"
@@ -2909,313 +2857,268 @@ function DashBoardInfo() {
                       </Card>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col sm={6}>
-                      <Card className="shadow">
-                        <Card.Header>
-                          Details for <b>{taskValue.name}</b>{" "}
-                        </Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col>Enviroment :</Col>
-                            <Col>
-                              <p>{taskValue.environment}</p>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>Kick Off Date</Col>
-                            <Col>
-                              <p>{taskValue.kickoff_date}</p>
-                            </Col>
-                          </Row>
-                          {/* <Row>
-                    <Col>
-                    Due Date
-                    </Col>     
-                    <Col>
-                    <p>{taskValue.due_date}</p>
-                    </Col>
-                    </Row> */}
-                          <Row>
-                            <Col>Last Updated:</Col>
-                            <Col>
-                              <p>{taskValue.last_update}</p>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>Days Left :</Col>
-                            <Col>
-                              <Badge pill bg="success">
-                                <CountUp
-                                  start={0}
-                                  end={taskValue.days_left}
-                                  delay={0}
-                                >
-                                  {({ countUpRef }) => (
-                                    <div>
-                                      <span ref={countUpRef} />
-                                    </div>
-                                  )}
-                                </CountUp>
-                              </Badge>
-                            </Col>
-                          </Row>
-                          <br />
-                          <Row>
-                            <Col>Task Duration :</Col>
-                            <Col>
-                              <Badge pill bg="success">
-                                <CountUp
-                                  start={0}
-                                  end={taskValue.task_duration}
-                                  delay={0}
-                                >
-                                  {({ countUpRef }) => (
-                                    <div>
-                                      <span ref={countUpRef} />
-                                    </div>
-                                  )}
-                                </CountUp>
-                              </Badge>
-                            </Col>
-                          </Row>
-                          <br />
-                          <Row>
-                            <Col>Task Comment :</Col>
-                            <Col>
-                              <Form.Control
-                                readOnly
-                                as="textarea"
-                                placeholder="task comment here"
-                                style={{ height: "100px" }}
-                                value={taskValue.task_comment}
-                              />
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                    <Col>
-                      <Card className="shadow">
-                        <Card.Header>
-                          {" "}
-                          <b>{memberValue.name}</b> Task progress
-                        </Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col>
-                              <div style={{ width: "300px" }}>
-                                <Doughnut data={data} />
-                              </div>
-                            </Col>
-                            <Col>
-                              <Card>
-                                <Card.Header>
-                                  <Badge pill bg="danger">
-                                    Not Available
-                                  </Badge>{" "}
-                                </Card.Header>
-                                <Card.Body>
-                                  <Calendar
-                                    readOnly
-                                    onChange={setDate}
-                                    value={date}
-                                  />
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Container>
-              </Tab>
-              <Tab eventKey="team_overview" title="Team Overview">
-                <Container fluid>
-                  <Row>
-                    <Col>
-                      <Card className="shadow">
-                        <Card.Header>Overviews</Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col>
-                              <Tabs
-                                defaultActiveKey="projects"
-                                transition={true}
-                                className="mb-3"
-                              >
-                                <Tab eventKey="projects" title="Projects">
-                                  <ProjectOverviewChart />
-                                </Tab>
-                                <Tab eventKey="live_issues" title="Live Issues">
-                                  <TeamLiveIssuesOverviewChart />
-                                </Tab>
-                              </Tabs>
-                            </Col>
-                            <Col>
-                              <TaskOverviewChart />
-                            </Col>
-                          </Row>
-                          <Row>
+                </Card.Body>
+              </Card>
+            </Tab>
+            <Tab eventKey="team_overview" title="Team Overview">
+              <Container fluid>
+                <Row>
+                  <Col>
+                    <Card className="shadow">
+                      <Card.Body className="teamlead-dashboard-overview-tab">
+                        <Row>
+                          <Col>
                             <Card>
-                              <Card.Header className="text-center">
-                                Project and Task Stats
-                              </Card.Header>
-                              <Card.Body>
+                              <Card.Body className="teamlead-dashboard-overview-tab-project-overview-card ">
+                                <Tabs
+                                  defaultActiveKey="projects"
+                                  transition={true}
+                                  className="mb-3"
+                                >
+                                  <Tab eventKey="projects" title="Projects">
+                                    <ProjectOverviewChart />
+                                    <Row>
+                                      <Card.Header>Project Stats</Card.Header>
+
+                                      <Row>
+                                        <Col>Not Completed</Col>
+                                        <Col>
+                                          <Badge pill bg="danger">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                Team_Projects_CounterData.pending
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                      <br />
+                                      <Row>
+                                        <Col>Completed</Col>
+                                        <Col>
+                                          <Badge pill bg="success">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                Team_Projects_CounterData.completed
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                      <br />
+                                      <Row>
+                                        <Col>Assigned</Col>
+                                        <Col>
+                                          <Badge pill bg="warning">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                Team_Projects_CounterData.all_project
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                    </Row>
+                                  </Tab>
+                                  <Tab
+                                    eventKey="live_issues"
+                                    title="Live Issues"
+                                  >
+                                    <div
+                                      style={{ widht: "30%", heigth: "30%" }}
+                                    >
+                                      <TeamLiveIssuesOverviewChart />
+                                    </div>
+                                    <Row>
+                                      <Card.Header>Project Stats</Card.Header>
+
+                                      <Row>
+                                        <Col>Not Completed</Col>
+                                        <Col>
+                                          <Badge pill bg="danger">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                LiveIssueOverviewData.pending
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                      <br />
+                                      <Row>
+                                        <Col>Completed</Col>
+                                        <Col>
+                                          <Badge pill bg="success">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                LiveIssueOverviewData.completed
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                      <br />
+                                      <Row>
+                                        <Col>Assigned</Col>
+                                        <Col>
+                                          <Badge pill bg="warning">
+                                            <CountUp
+                                              start={0}
+                                              end={
+                                                LiveIssueOverviewData.all_project
+                                              }
+                                              delay={0}
+                                            >
+                                              {({ countUpRef }) => (
+                                                <div>
+                                                  <span ref={countUpRef} />
+                                                </div>
+                                              )}
+                                            </CountUp>
+                                          </Badge>
+                                        </Col>
+                                      </Row>
+                                    </Row>
+                                  </Tab>
+                                </Tabs>
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                          <Col>
+                            <Card className="shadow">
+                              <Card.Header>Task Overview</Card.Header>
+                              <Card.Body className="teamlead-dashboard-overview-tab-task-overview-card">
+                                <div style={{ widht: "30%", heigth: "30%" }}>
+                                  <TaskOverviewChart />
+                                </div>
                                 <Row>
+                                  <Col>Not Completed</Col>
                                   <Col>
-                                    <Row>
-                                      <Col>Not Completed</Col>
-                                      <Col>
-                                        <Badge pill bg="danger">
-                                          <CountUp
-                                            start={0}
-                                            end={Team_Projects_CounterData.pending}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
-                                    <br />
-                                    <Row>
-                                      <Col>Completed</Col>
-                                      <Col>
-                                        <Badge pill bg="success">
-                                          <CountUp
-                                            start={0}
-                                            end={Team_Projects_CounterData.completed}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
-                                    <br />
-                                    <Row>
-                                      <Col>Total</Col>
-                                      <Col>
-                                        <Badge pill bg="warning">
-                                          <CountUp
-                                            start={0}
-                                            end={
-                                              Team_Projects_CounterData.all_project
-                                            }
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
+                                    <Badge pill bg="secondary">
+                                      <CountUp
+                                        start={0}
+                                        end={team_tasks_overview.not_completed}
+                                        delay={0}
+                                      >
+                                        {({ countUpRef }) => (
+                                          <div>
+                                            <span ref={countUpRef} />
+                                          </div>
+                                        )}
+                                      </CountUp>
+                                    </Badge>
                                   </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col>Over Due</Col>
                                   <Col>
-                                    <Row>
-                                      <Col>Not Completed</Col>
-                                      <Col>
-                                        <Badge pill bg="secondary">
-                                          <CountUp
-                                            start={0}
-                                            end={team_tasks_overview.not_completed}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
-                                    <br />
-                                    <Row>
-                                      <Col>Over Due</Col>
-                                      <Col>
-                                        <Badge pill bg="danger">
-                                          <CountUp
-                                            start={0}
-                                            end={team_tasks_overview.over_due}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
-                                    <br />
-                                    <Row>
-                                      <Col>Completed</Col>
-                                      <Col>
-                                        <Badge pill bg="success">
-                                          <CountUp
-                                            start={0}
-                                            end={team_tasks_overview.completed}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
-                                    <br />
-                                    <Row>
-                                      <Col>Total</Col>
-                                      <Col>
-                                        <Badge pill bg="info">
-                                          <CountUp
-                                            start={0}
-                                            end={team_tasks_overview.all_tasks}
-                                            delay={0}
-                                          >
-                                            {({ countUpRef }) => (
-                                              <div>
-                                                <span ref={countUpRef} />
-                                              </div>
-                                            )}
-                                          </CountUp>
-                                        </Badge>
-                                      </Col>
-                                    </Row>
+                                    <Badge pill bg="danger">
+                                      <CountUp
+                                        start={0}
+                                        end={team_tasks_overview.over_due}
+                                        delay={0}
+                                      >
+                                        {({ countUpRef }) => (
+                                          <div>
+                                            <span ref={countUpRef} />
+                                          </div>
+                                        )}
+                                      </CountUp>
+                                    </Badge>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col>Completed</Col>
+                                  <Col>
+                                    <Badge pill bg="success">
+                                      <CountUp
+                                        start={0}
+                                        end={team_tasks_overview.completed}
+                                        delay={0}
+                                      >
+                                        {({ countUpRef }) => (
+                                          <div>
+                                            <span ref={countUpRef} />
+                                          </div>
+                                        )}
+                                      </CountUp>
+                                    </Badge>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col>Total</Col>
+                                  <Col>
+                                    <Badge pill bg="info">
+                                      <CountUp
+                                        start={0}
+                                        end={team_tasks_overview.all_tasks}
+                                        delay={0}
+                                      >
+                                        {({ countUpRef }) => (
+                                          <div>
+                                            <span ref={countUpRef} />
+                                          </div>
+                                        )}
+                                      </CountUp>
+                                    </Badge>
                                   </Col>
                                 </Row>
                               </Card.Body>
                             </Card>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Container>
-              </Tab>
-            </Tabs>
-      </Card.Body>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Container>
+            </Tab>
+          </Tabs>
+        </Card.Body>
       </Card>
-
-
 
       <div>
         {/* Team Projects */}
@@ -3275,7 +3178,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3337,7 +3244,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3399,7 +3310,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3461,7 +3376,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3523,7 +3442,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3585,7 +3508,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3650,7 +3577,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3712,7 +3643,11 @@ function DashBoardInfo() {
                             </Badge>
                           </td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={handleClose}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={handleClose}
+                            >
                               <Button
                                 variant="outline-success"
                                 size="sm"
@@ -3744,7 +3679,10 @@ function DashBoardInfo() {
           <Modal.Body>
             <Form onSubmit={handleSubmitTaskCreate}>
               <InputGroup className="mb-3">
-                <InputGroup.Text  className="col-4" id="project-name"> Name : </InputGroup.Text>
+                <InputGroup.Text className="col-4" id="project-name">
+                  {" "}
+                  Name:{" "}
+                </InputGroup.Text>
                 <FormControl
                   aria-label="Name"
                   aria-describedby="project-name"
@@ -3756,8 +3694,13 @@ function DashBoardInfo() {
                   required
                 />
               </InputGroup>
-              <Form.Group className="mb-3">
-                <Form.Label>Task Status</Form.Label>
+         
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="task_status_id">
+                  {" "}
+                  Task Status:{" "}
+                </InputGroup.Text>
                 <Form.Select
                   name="task_status_id"
                   id="task_status_id"
@@ -3773,9 +3716,13 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Enviroment</Form.Label>
+                </InputGroup>
+          
+              <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="environment_id">
+                  {" "}
+                  Enviroment:{" "}
+                </InputGroup.Text>
                 <Form.Select
                   name="environment_id"
                   id="environment_id"
@@ -3791,9 +3738,13 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Team</Form.Label>
+                </InputGroup>
+             
+              <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="team_id">
+                  {" "}
+                  Team :{" "}
+                </InputGroup.Text>
                 <Form.Select
                   name="team_id"
                   id="team_id"
@@ -3811,9 +3762,13 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Assign To:</Form.Label>
+                </InputGroup>
+         
+              <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="user_id">
+                  {" "}
+                  Assign To:{" "}
+                </InputGroup.Text>
                 <Form.Select
                   name="user_id"
                   id="user_id"
@@ -3830,9 +3785,9 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-              </Form.Group>
+                </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text  className="col-4" id="project-name">
+                <InputGroup.Text className="col-4" id="project-name">
                   {" "}
                   Start Date:{" "}
                 </InputGroup.Text>
@@ -3854,7 +3809,10 @@ function DashBoardInfo() {
                 />
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text  className="col-4" id="project-name"> Due Date: </InputGroup.Text>
+                <InputGroup.Text className="col-4" id="project-name">
+                  {" "}
+                  Due Date:{" "}
+                </InputGroup.Text>
                 <FormControl
                   aria-label="Name"
                   aria-describedby="project-name"
@@ -3873,7 +3831,7 @@ function DashBoardInfo() {
                 />
               </InputGroup>
               <InputGroup>
-                <InputGroup.Text  className="col-4">Comment :</InputGroup.Text>
+                <InputGroup.Text className="col-4">Comment:</InputGroup.Text>
                 <FormControl
                   as="textarea"
                   aria-label="With textarea"
@@ -3882,13 +3840,15 @@ function DashBoardInfo() {
                   onChange={handleChange}
                 />
               </InputGroup>
-              <br />
-              <Button variant="success" size="sm" type="submit">
+              <br/>
+            <Button variant="success" size="sm" type="submit">
                 Create Task
               </Button>{" "}
             </Form>
           </Modal.Body>
           <Modal.Footer>
+         
+             
             <Button
               variant="secondary"
               size="sm"
@@ -3925,7 +3885,11 @@ function DashBoardInfo() {
                       <td>{task.task_status_id}</td>
                       <td>{new Date(task.due_date).toDateString()}</td>
                       <td className="text-center">
-                        <button size="sm" className="btn" onClick={() => selectTask(task)}>
+                        <button
+                          size="sm"
+                          className="btn"
+                          onClick={() => selectTask(task)}
+                        >
                           <Button
                             variant="outline-success"
                             size="sm"
@@ -3988,7 +3952,10 @@ function DashBoardInfo() {
         <Offcanvas.Body>
           <Nav className="justify-content-end">
             <div className="col-md-5 col-sm-9">
-              <Form onSubmit={handle_Search_Live_Issues_Submit} className="d-flex">
+              <Form
+                onSubmit={handle_Search_Live_Issues_Submit}
+                className="d-flex"
+              >
                 <FormControl
                   type="search"
                   name="live_issue_search"
@@ -4035,7 +4002,8 @@ function DashBoardInfo() {
                         </td>
                         <td className="text-center">
                           <button
-                            size="sm" className="btn"
+                            size="sm"
+                            className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button
@@ -4047,7 +4015,8 @@ function DashBoardInfo() {
                             </Button>
                           </button>{" "}
                           <button
-                            size="sm" className="btn"
+                            size="sm"
+                            className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button
@@ -4095,7 +4064,8 @@ function DashBoardInfo() {
                         <td>{project.user.name}</td>
                         <td className="text-center">
                           <button
-                            size="sm" className="btn"
+                            size="sm"
+                            className="btn"
                             onClick={() => selectLiveIssue(project)}
                           >
                             <Button
@@ -4131,7 +4101,7 @@ function DashBoardInfo() {
                 className="rounded me-2"
                 alt=""
               />
-              <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+              <strong className="me-auto">{<FcApproval />} Successfully</strong>
             </Toast.Header>
             <Toast.Body className="text-white">
               {" "}
@@ -4340,19 +4310,21 @@ function DashBoardInfo() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handle_Update_Live_Issue}>
-            <FormGroup>
-              <Label> Status :</Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="project_status_id"
-                  onChange={handleChange}
-                  id="project_status_id"
-                  value={liveIssueFormValue.project_status_id}
-                  required
-                >
-                  <option value="">Assign</option>
-                  <></>
+        
+            <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="project_status_id">
+                  {" "}
+                  Status:{" "}
+                </InputGroup.Text>
+                <Form.Select
+                                     name="project_status_id"
+                                     onChange={handleChange}
+                                     id="project_status_id"
+                                     value={liveIssueFormValue.project_status_id}
+                                     required
+                                >
+ <option value="">Assign</option>
+                  
                   {statusData.map((status, key) => {
                     return (
                       <option key={key} value={status.id}>
@@ -4360,10 +4332,11 @@ function DashBoardInfo() {
                       </option>
                     );
                   })}
-                </select>
-              </div>
-            </FormGroup>
 
+
+                                </Form.Select>
+               
+                </InputGroup>
             <br />
             <Button variant="success" type="submit">
               Update
@@ -4375,6 +4348,230 @@ function DashBoardInfo() {
             variant="secondary"
             size="sm"
             onClick={handleUpdateLiveIssueClose}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* Member Assigned Stats */}
+      <Modal
+        show={showMemberAssignStats}
+        onHide={handleMemberAssignStatsClose}
+        animation={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Assignment stats </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table size="sm" striped bordered hover>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Assigned</th>
+                <th>Completed</th>
+                <th>Pending</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Operational Projects</td>
+                <td className="text-center">
+                  <Badge pill bg="secondary">
+                    <CountUp
+                      start={0}
+                      end={user_Operational_Projects_Assignment.all_assignments}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="success">
+                    <CountUp
+                      start={0}
+                      end={user_Operational_Projects_Assignment.completed}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="warning">
+                    <CountUp
+                      start={0}
+                      end={user_Operational_Projects_Assignment.pending}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+              </tr>
+              <tr>
+                <td>Strategic Projects</td>
+                <td className="text-center">
+                  <Badge pill bg="secondary">
+                    <CountUp
+                      start={0}
+                      end={user_Strategic_Projects_Assignment.all_assignments}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="success">
+                    <CountUp
+                      start={0}
+                      end={user_Strategic_Projects_Assignment.completed}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="warning">
+                    <CountUp
+                      start={0}
+                      end={user_Strategic_Projects_Assignment.pending}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+              </tr>
+              <tr>
+                <td>Tasks</td>
+                <td className="text-center">
+                  <Badge pill bg="secondary">
+                    <CountUp
+                      start={0}
+                      end={UserTaskCounterOverview.all_tasks}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="success">
+                    <CountUp
+                      start={0}
+                      end={UserTaskCounterOverview.completed}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+                <td className="text-center">
+                  <Badge pill bg="warning">
+                    <CountUp
+                      start={0}
+                      end={UserTaskCounterOverview.not_completed}
+                      delay={0}
+                    >
+                      {({ countUpRef }) => (
+                        <div>
+                          <span ref={countUpRef} />
+                        </div>
+                      )}
+                    </CountUp>
+                  </Badge>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleMemberAssignStatsClose}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Member Task progress */}
+      <Modal
+        show={showMemberTaskProgress}
+        onHide={handleMemberTaskProgressClose}
+        animation={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Member Progress</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div style={{ width: "70%" }}>
+            <Doughnut data={data} />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleMemberTaskProgressClose}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* Member Calender */}
+      <Modal
+        show={showMemberCalender}
+        onHide={handleMemberCalenderClose}
+        animation={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Member Calender</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Calendar readOnly onChange={setDate} value={date} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleMemberCalenderClose}
           >
             Close
           </Button>
@@ -4429,7 +4626,7 @@ function DashBoardInfo() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Assigned Successfully</Toast.Body>
         </Toast>

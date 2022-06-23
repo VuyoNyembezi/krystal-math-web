@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
   Card,
-  CardGroup,
   Table,
   Tab,
   Button,
@@ -14,13 +13,15 @@ import {
   InputGroup,
   FormControl,
   Nav,
+  Container,
+  Row,
 } from "react-bootstrap";
 
 import { FcApproval  } from "react-icons/fc";
 
 
 import { useNavigate } from "react-router-dom";
-import { FormGroup, Input, Label } from "reactstrap";
+import {  Input} from "reactstrap";
 import "chart.js/auto";
 
 import { URL } from "../../../server_connections/server";
@@ -862,13 +863,16 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
 
   return (
     <div>
-      <Tab.Container id="left-tabs-example" defaultActiveKey="default">
-        <CardGroup>
+      <Container fluid>
+       
+        <Card>
+          <Card.Header> Projects & Tasks Portal</Card.Header>
+          <Card.Body className="teamlead-task-manager">
+             <Row>
           <Col sm={4}>
-            <Card className='shadow' style={{ height: "58rem" }}>
-              <Card.Title>Projects & Tasks Portal</Card.Title>
-
-              <Card.Body>
+            <Card className='shadow'>
+             <Card.Header>Members:</Card.Header>
+              <Card.Body className="teamlead-member-display" >
                 <Table size="sm" striped bordered hover>
                   <thead>
                     <tr>
@@ -914,23 +918,19 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                     })}
                   </tbody>
                 </Table>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">
-                  only active users are listed
-                </small>
-              </Card.Footer>
+              </Card.Body>  
             </Card>
           </Col>
           <Col sm={8} >
-            <Card className='shadow' style={{ height: "58rem" }}>
-              <Tabs
+            <Card className='shadow'>
+              <Card.Body className="scroll">
+                   <Tabs
                 defaultActiveKey="tasks"
                 id="uncontrolled-tab-example"
                 className="mb-3"
               >
                 <Tab eventKey="tasks" title="Tasks">
-                  <Card style={{ width: "70rem" }}>
+                  
                     <Card.Header>
                       <Button
                         variant="outline-warning"
@@ -1258,10 +1258,10 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         </Tab>
                       </Tabs>
                     </Card.Body>
-                  </Card>
+                
                 </Tab>
                 <Tab eventKey="project_assignments" title="Project Assignment">
-                <Card>
+                
                   <Card.Header>  <Button
                         variant="outline-warning"
                         size="sm"
@@ -1269,20 +1269,10 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                       >
                         Add Assignmnet
                       </Button></Card.Header>
-                  <Card.Body>
-
-                  </Card.Body>
-                </Card>
-                <Tabs
-                defaultActiveKey="open"
-                id="uncontrolled-tab-example"
-                className="mb-3"
-              >
-                 <Tab eventKey="open" title="Open">
-                  
-                  <Card style={{ width: "80rem" }}>
                
-                    <Card.Body>
+                
+                <Tabs defaultActiveKey="open"className="mb-3" >
+                 <Tab eventKey="open" title="Open">
                       <Tabs defaultActiveKey="bet_projects" className="mb-3">
                         <Tab eventKey="bet_projects" title="Bet Projects">
                           <Table size="sm" striped bordered hover>
@@ -1835,12 +1825,11 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                           </Table>
                         </Tab>
                       </Tabs>
-                    </Card.Body>
-                  </Card>
+                    
+                  
                   </Tab>
                   <Tab eventKey="over due" title="Over due">
-                  <Card style={{ width: "80rem" }}>
-               <Card.Body>
+                
                  <Tabs defaultActiveKey="bet_projects" className="mb-3">
                    <Tab eventKey="bet_projects" title="Bet Projects">
                      <Table size="sm" striped bordered hover>
@@ -2393,16 +2382,22 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                           </Table>
                         </Tab>
                  </Tabs>
-               </Card.Body>
-             </Card>
+            
                   </Tab>
                   </Tabs>
                 </Tab>
               </Tabs>
+              </Card.Body>
+           
             </Card>
           </Col>
-        </CardGroup>
-      </Tab.Container>
+          </Row>
+          </Card.Body>
+         
+        </Card>
+  
+      </Container>
+     
 
       {/* modal for updating record details  */}
       <Modal
@@ -3007,8 +3002,12 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmitTaskUpdate}>
-            <FormGroup>
-              <Label> Name : </Label>
+          <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="name">
+              {" "}
+              Name:{" "}
+            </InputGroup.Text>
+         
               <Input
                 name="name"
                 placeholder="with a Project Or Task Name"
@@ -3017,9 +3016,12 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                 value={taskFormValue.name}
                 required
               />
-            </FormGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>Task Status</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="task_status_id">
+              {" "}
+              Task Status:{" "}
+            </InputGroup.Text>
               <Form.Select
                 name="task_status_id"
                 id="task_status_id"
@@ -3036,9 +3038,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Enviroment</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="environment_id">
+              {" "}
+              Enviroment:{" "}
+            </InputGroup.Text>
+           
               <Form.Select
                 name="environment_id"
                 id="environment_id"
@@ -3055,9 +3061,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+         
               <Form.Select
                 name="team_id"
                 id="team_id"
@@ -3075,9 +3085,12 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Assign To:</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_id">
+              {" "}
+              Assign To:{" "}
+            </InputGroup.Text>
               <Form.Select
                 name="user_id"
                 id="user_id"
@@ -3095,7 +3108,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
+            </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text  className="col-4" id="project-name"> Start Date: </InputGroup.Text>
               <FormControl
@@ -3336,8 +3349,12 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmitTaskCreate}>
-            <FormGroup>
-              <Label> Name : </Label>
+          <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="name">
+              {" "}
+              Name:{" "}
+            </InputGroup.Text>
+           
               <Input
                 name="name"
                 placeholder="with a Project Or Task Name"
@@ -3346,9 +3363,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                 value={taskFormValue.name}
                 required
               />
-            </FormGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>Task Status</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="task_status_id">
+              {" "}
+              Task Status:{" "}
+            </InputGroup.Text>
+            
               <Form.Select
                 name="task_status_id"
                 id="task_status_id"
@@ -3364,9 +3385,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Enviroment</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="environment_id">
+              {" "}
+              Enviroment:{" "}
+            </InputGroup.Text>
+             
               <Form.Select
                 name="environment_id"
                 id="environment_id"
@@ -3382,9 +3407,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+            
               <Form.Select
                 name="team_id"
                 id="team_id"
@@ -3402,9 +3431,13 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Assign To:</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_id">
+              {" "}
+              Assign To:{" "}
+            </InputGroup.Text>
+             
               <Form.Select
                 name="user_id"
                 id="user_id"
@@ -3421,7 +3454,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                   );
                 })}
               </Form.Select>
-            </Form.Group>
+            </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text  className="col-4" id="project-name"> Start Date: </InputGroup.Text>
               <FormControl
@@ -3461,7 +3494,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
               />
             </InputGroup>
             <InputGroup>
-              <InputGroup.Text>Comment :</InputGroup.Text>
+              <InputGroup.Text className="col-4">Comment :</InputGroup.Text>
               <FormControl
                 as="textarea"
                 aria-label="With textarea"

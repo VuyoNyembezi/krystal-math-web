@@ -70,7 +70,7 @@ function LiveOverView() {
   };
   return (
     <>
-      <div style={{ width: "500px" }}>
+      <div >
         <Doughnut data={main_live_issues_data} />
       </div>
     </>

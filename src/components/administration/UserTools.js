@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
+  Container,
   Form,
   FormControl,
   InputGroup,
@@ -171,15 +172,14 @@ function UserTools() {
     team_lead_id: 0,
   });
   // Keeps track of changes in the database
-  const [old_team_data, set_old_team_data] = useState([])
-  const [old_role_data, set_old_role_data] = useState([])
-  const [old_user_data, set_old_user_data] = useState([])
-  function OldData(){
+  const [old_team_data, set_old_team_data] = useState([]);
+  const [old_role_data, set_old_role_data] = useState([]);
+  const [old_user_data, set_old_user_data] = useState([]);
+  function OldData() {
     set_old_team_data(teamsData);
-   set_old_role_data(rolesData);
-   set_old_user_data(UsersData);
-  };
-  
+    set_old_role_data(rolesData);
+    set_old_user_data(UsersData);
+  }
 
   const latest_team_data = useMemo(() => old_team_data, [old_team_data]);
   const latest_roles_data = useMemo(() => old_role_data, [old_role_data]);
@@ -499,254 +499,267 @@ function UserTools() {
   }
 
   return (
-    <>
-      <></>
-      <Tab.Container id="left-tabs-example" defaultActiveKey="teams">
-        <Tab.Content>
-          <Card>
-            <Card.Header>user Tools</Card.Header>
-            <Card.Body>
-              <Tabs defaultActiveKey="team" className="mb-3">
-                <Tab eventKey="team" title="Teams">
-                  <Button
-                    variant="outline-success"
-                    size="sm"
-                    onClick={handleShowTeam}
-                  >
-                    Add new Team
-                  </Button>
-                  <br />
-                  <Tabs defaultActiveKey="active" className="mb-3">
-                    <Tab eventKey="active" title="Active">
-                      <Table size="sm" striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th className="text-center">Id</th>
-                            <th className="text-center">name</th>
-                            <th className="text-center">Team Leader</th>
-                            <th className="text-center">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {active_teamsData.map((tool, Index) => {
-                            return (
-                              <tr key={Index}>
-                                <th scope="row">{tool.id}</th>
-                                <td>{tool.name}</td>
-                                <td>{tool.team_lead.name}</td>
-                                <td className="text-center">
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+    <div className="mt-3">
+      <Container fluid>
+        <Card>
+          <Card.Header className="text-uppercase">user Tools</Card.Header>
+          <Card.Body className="admin-user-tool-card">
+            <Tabs defaultActiveKey="team" className="mb-3">
+              <Tab eventKey="team" title="Teams">
+                <Button className="mt-1 mb-3"
+                  variant="success"
+                  size="sm"
+                  onClick={handleShowTeam}
+                >
+                  + Add New Team
+                </Button>
+                <br />
+                <Tabs defaultActiveKey="active" className="mb-3">
+                  <Tab eventKey="active" title="Active">
+                    <Table size="sm" striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th className="text-center">Id</th>
+                          <th className="text-center">name</th>
+                          <th className="text-center">Team Leader</th>
+                          <th className="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {active_teamsData.map((tool, Index) => {
+                          return (
+                            <tr key={Index}>
+                              <th scope="row">{tool.id}</th>
+                              <td>{tool.name}</td>
+                              <td>{tool.team_lead.name}</td>
+                              <td className="text-center">
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-warning"
+                                    size="sm"
+                                    onClick={handle_deactive_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-warning"
-                                      size="sm"
-                                      onClick={handle_deactive_Show_Team}
-                                    >
-                                      Deactivate
-                                    </Button>
-                                  </button>
-                                </td>
-                                <td className="text-center">
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Deactivate
+                                  </Button>
+                                </button>
+                              </td>
+                              <td className="text-center">
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    onClick={handle_update_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={handle_update_Show_Team}
-                                    >
-                                      Update
-                                    </Button>
-                                  </button>{" "}
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Update
+                                  </Button>
+                                </button>{" "}
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    onClick={handle_delete_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-danger"
-                                      size="sm"
-                                      onClick={handle_delete_Show_Team}
-                                    >
-                                      Delete
-                                    </Button>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    </Tab>
-                    <Tab eventKey="not active" title="Not Active">
-                      <Table size="sm" striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th className="text-center">Id</th>
-                            <th className="text-center">name</th>
-                            <th className="text-center">Team Leader</th>
-                            <th className="text-center">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {not_active_teamsData.map((tool, Index) => {
-                            return (
-                              <tr key={Index}>
-                                <th scope="row">{tool.id}</th>
-                                <td>{tool.name}</td>
-                                <td>{tool.team_lead.name}</td>
-                                <td className="text-center">
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Delete
+                                  </Button>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </Tab>
+                  <Tab eventKey="not active" title="Not Active">
+                    <Table size="sm" striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th className="text-center">Id</th>
+                          <th className="text-center">name</th>
+                          <th className="text-center">Team Leader</th>
+                          <th className="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {not_active_teamsData.map((tool, Index) => {
+                          return (
+                            <tr key={Index}>
+                              <th scope="row">{tool.id}</th>
+                              <td>{tool.name}</td>
+                              <td>{tool.team_lead.name}</td>
+                              <td className="text-center">
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    onClick={handle_active_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={handle_active_Show_Team}
-                                    >
-                                      Activate
-                                    </Button>
-                                  </button>
-                                </td>
-                                <td className="text-center">
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Activate
+                                  </Button>
+                                </button>
+                              </td>
+                              <td className="text-center">
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    onClick={handle_update_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={handle_update_Show_Team}
-                                    >
-                                      Update
-                                    </Button>
-                                  </button>{" "}
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Update
+                                  </Button>
+                                </button>{" "}
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    onClick={handle_delete_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-danger"
-                                      size="sm"
-                                      onClick={handle_delete_Show_Team}
-                                    >
-                                      Delete
-                                    </Button>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    </Tab>
-                    <Tab eventKey="all" title="All">
-                      <Table size="sm" striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th className="text-center">Id</th>
-                            <th className="text-center">name</th>
-                            <th className="text-center">Team Leader</th>
-                            <th className="text-center">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {teamsData.map((tool, Index) => {
-                            return (
-                              <tr key={Index}>
-                                <th scope="row">{tool.id}</th>
-                                <td>{tool.name}</td>
-                                <td>{tool.team_lead.name}</td>
-                                <td className="text-center">
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Delete
+                                  </Button>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </Tab>
+                  <Tab eventKey="all" title="All">
+                    <Table size="sm" striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th className="text-center">Id</th>
+                          <th className="text-center">name</th>
+                          <th className="text-center">Team Leader</th>
+                          <th className="text-center">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {teamsData.map((tool, Index) => {
+                          return (
+                            <tr key={Index}>
+                              <th scope="row">{tool.id}</th>
+                              <td>{tool.name}</td>
+                              <td>{tool.team_lead.name}</td>
+                              <td className="text-center">
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    onClick={handle_update_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={handle_update_Show_Team}
-                                    >
-                                      Update
-                                    </Button>
-                                  </button>{" "}
-                                  <button
-                                    size="sm" className="btn"
-                                    onClick={() => selectTool(tool)}
+                                    Update
+                                  </Button>
+                                </button>{" "}
+                                <button
+                                  size="sm"
+                                  className="btn"
+                                  onClick={() => selectTool(tool)}
+                                >
+                                  <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    onClick={handle_delete_Show_Team}
                                   >
-                                    <Button
-                                      variant="outline-danger"
-                                      size="sm"
-                                      onClick={handle_delete_Show_Team}
-                                    >
-                                      Delete
-                                    </Button>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    </Tab>
-                  </Tabs>
-                </Tab>
+                                    Delete
+                                  </Button>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </Tab>
+                </Tabs>
+              </Tab>
 
-                <Tab eventKey="roles" title="Roles">
-                  <Button
-                    variant="outline-info"
-                    size="sm"
-                    onClick={handleShowRole}
-                  >
-                    Add Roles
-                  </Button>
-                  <Table size="sm" striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rolesData.map((tool, Index) => {
-                        return (
-                          <tr key={Index}>
-                            <th scope="row">{tool.id}</th>
-                            <td>{tool.name}</td>
-                            <td className="text-center">
-                              <button size="sm" className="btn" onClick={() => seletRole(tool)}>
-                                <Button
-                                  variant="outline-success"
-                                  size="sm"
-                                  onClick={handle_update_Show_Role}
-                                >
-                                  Update
-                                </Button>
-                              </button>{" "}
-                              <button size="sm" className="btn" onClick={() => seletRole(tool)}>
-                                <Button
-                                  variant="outline-danger"
-                                  size="sm"
-                                  onClick={handle_delete_Show_role}
-                                >
-                                  Delete
-                                </Button>
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                </Tab>
-              </Tabs>
-            </Card.Body>
-          </Card>
-        </Tab.Content>
-      </Tab.Container>
+              <Tab eventKey="roles" title="Roles">
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={handleShowRole}
+                >
+                  Add Roles
+                </Button>
+                <Table size="sm" striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rolesData.map((tool, Index) => {
+                      return (
+                        <tr key={Index}>
+                          <th scope="row">{tool.id}</th>
+                          <td>{tool.name}</td>
+                          <td className="text-center">
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => seletRole(tool)}
+                            >
+                              <Button
+                                variant="outline-success"
+                                size="sm"
+                                onClick={handle_update_Show_Role}
+                              >
+                                Update
+                              </Button>
+                            </button>{" "}
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => seletRole(tool)}
+                            >
+                              <Button
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={handle_delete_Show_role}
+                              >
+                                Delete
+                              </Button>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+        </Card>
+      </Container>
 
       {/* Modals */}
 
@@ -758,7 +771,9 @@ function UserTools() {
         <Modal.Body>
           <Form onSubmit={handleRoleSubmit}>
             <InputGroup className="mb-3">
-              <InputGroup.Text   className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="Name"
                 aria-describedby="name"
@@ -795,7 +810,9 @@ function UserTools() {
         <Modal.Body>
           <Form onSubmit={handleTeamSubmit}>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="team_name">Name</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="team_name">
+                Name
+              </InputGroup.Text>
               <FormControl
                 aria-label="team_name"
                 aria-describedby="name"
@@ -854,7 +871,9 @@ function UserTools() {
         <Modal.Body>
           <Form onSubmit={handle_Update_Team_Submit}>
             <InputGroup className="mb-3">
-              <InputGroup.Text   className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="Username"
                 aria-describedby="name"
@@ -960,7 +979,9 @@ function UserTools() {
         <Modal.Body>
           <Form onSubmit={handle_Update_Role_Submit}>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-describedby="name"
                 type="text"
@@ -1053,7 +1074,7 @@ function UserTools() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Created Successfully</Toast.Body>
         </Toast>
@@ -1093,7 +1114,7 @@ function UserTools() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Updated Successfully</Toast.Body>
         </Toast>
@@ -1152,7 +1173,7 @@ function UserTools() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully </strong>
+            <strong className="me-auto">{<FcApproval />} Successfully </strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Deleted Successfully</Toast.Body>
         </Toast>
@@ -1192,7 +1213,7 @@ function UserTools() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white">
             {" "}
@@ -1213,7 +1234,7 @@ function UserTools() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white">
             Successfully De Activate{" "}
@@ -1239,7 +1260,7 @@ function UserTools() {
           <Toast.Body className="text-white">error occured</Toast.Body>
         </Toast>
       </ToastContainer>
-    </>
+    </div>
   );
 }
 export default UserTools;

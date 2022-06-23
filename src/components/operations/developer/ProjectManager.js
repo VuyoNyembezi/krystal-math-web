@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useMemo  } from 'react';
-import {Tab, Button, Form, Tabs, Card, Table, Modal, Toast, ToastContainer} from 'react-bootstrap'
+import {Tab, Button, Form, Tabs, Card, Table, Modal, Toast, ToastContainer, Container} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import {
 
@@ -228,13 +228,10 @@ function handleSubmitUpdateProject(event){
         
     return(
         <>
- 
-                    <Card fluid>
-                <Card.Header>.
-                </Card.Header> 
-                 <div>
-              </div>
-                <Card.Body>
+ <div className='mt-3'>
+    <Container fluid>
+              <Card >
+                <Card.Body className='dev-project-card '>
                 <Tabs defaultActiveKey="open"  className="mb-3">
                 <Tab eventKey="open" title="Open">
                   <Tabs defaultActiveKey="bet_projects"  className="mb-3">
@@ -718,6 +715,9 @@ function handleSubmitUpdateProject(event){
                   </Tabs>
                 </Card.Body>
               </Card>
+    </Container>
+              
+ </div>
     {/*  Projects */}
         <Modal show={showUpdateProjectAssign} onHide={handleCloseUpdateProjectAssign}  size="lg">
                         <Modal.Header closeButton>

@@ -14,7 +14,8 @@ import {
   InputGroup,
   FormControl,
   Nav,
-  Card
+  Card,
+  Container
 } from "react-bootstrap";
 import {
 
@@ -384,11 +385,11 @@ else {
 
 
   return (
-    <div>
-      <Card>
-        <Card.Header>{localStorage.getItem('name')} Tasks</Card.Header>
-        <Card.Body>
-        <Nav  className="justify-content-end">
+    <div className="mt-3">
+      <Container fluid>
+            <Card>
+        <Card.Header>{localStorage.getItem('name')} Tasks</Card.Header>   
+         <Nav  className="justify-content-end">
                           <div  className="col-md-3 col-sm-9">
                             <Form onSubmit={handle_Search_Task_Submit} className="d-flex">
                                 <FormControl type="search" name='task_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
@@ -396,6 +397,8 @@ else {
                               </Form>
                             </div>
                             </Nav>
+        <Card.Body className="dev-task-card">
+    
   <Tabs
         defaultActiveKey="open"
         id="uncontrolled-tab-example"
@@ -578,6 +581,8 @@ else {
 
         </Card.Body>
       </Card>
+      </Container>
+  
     
       {/* Update Task */}
       <Modal show={showUpdateTask} onHide={handleUpdateTaskClose}>

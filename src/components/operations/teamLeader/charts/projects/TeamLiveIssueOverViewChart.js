@@ -62,11 +62,11 @@ function TeamLiveIssuesOverviewChart() {
     }
     ]};
   return (
-    <Card className='shadow'>
-        <div style={{width: "500px", }}>
+   
+     <div style={{ width: "40%" }}>
         <Doughnut data={data} />
-      </div>
-    </Card>
+     </div>
+
   );
 }
 

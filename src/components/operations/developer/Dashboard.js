@@ -24,14 +24,7 @@ import { Input, Label } from "reactstrap";
 import "chart.js/auto";
 
 import { Doughnut } from "react-chartjs-2";
-import {
-  FcDownload,
-  FcInfo,
-  FcApproval,
-  FcHighPriority,
-  FcCircuit,
-} from "react-icons/fc";
-
+import { FcDownload, FcInfo, FcApproval, FcHighPriority } from "react-icons/fc";
 
 import { URL } from "../../../server_connections/server";
 
@@ -42,15 +35,15 @@ function DashBoardDev() {
   const [success_updated, set_success_updated] = useState(false);
   const handleShowsuccessUpdate = () => set_success_updated(true);
   const handleCloseSuccessUpdate = () => set_success_updated(false);
-//   // Toast Alerts State Controller
+  //   // Toast Alerts State Controller
   const [success_completed, set_success_completed] = useState(false);
   const handleShowsuccessComplete = () => set_success_completed(true);
   const handleCloseSuccessComplete = () => set_success_completed(false);
 
   // update  error toast controller
-const [duplicate_updated,set_duplicate_live_updated] = useState(false); 
-const handleShowDuplicateUpdate = () => set_duplicate_live_updated(true);
-const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
+  const [duplicate_updated, set_duplicate_live_updated] = useState(false);
+  const handleShowDuplicateUpdate = () => set_duplicate_live_updated(true);
+  const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
 
   // update  error toast controller
   const [error_updated, set_error_updated] = useState(false);
@@ -70,31 +63,32 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
   const [UserOverDueTasksData, setUserOverDueTasksData] = useState([]);
   const [UserOpenTasksData, setUserOpenTasksData] = useState([]);
 
-  // search state 
-  const [search_key,set_search_key] = useState({
-    task_search:null,
-
+  // search state
+  const [search_key, set_search_key] = useState({
+    task_search: null,
   });
-    // Complete Confirmation Live Issue
-    const [show_Complete_Task, setCompleteTask] = useState(false);
-    const handleCompleteTaskShow = () => setCompleteTask(true);
-    const handleCloseSuccessCompleted = () => {setCompleteTask(false);
-      setTaskValue({
-        id: 0,
-        name: "",
-        team_id: localStorage.getItem("team"),
-        user_id: 0,
-        task_status_id: 0,
-        environment_id: 0,
-        due_date: "",
-        due_time: "",
-        kickoff_date: "",
-        kickoff_time: "",
-        task_comment: "",
-        days_left: 0,
-        task_duration: 0,
-        active: true,
-      });};
+  // Complete Confirmation Live Issue
+  const [show_Complete_Task, setCompleteTask] = useState(false);
+  const handleCompleteTaskShow = () => setCompleteTask(true);
+  const handleCloseSuccessCompleted = () => {
+    setCompleteTask(false);
+    setTaskValue({
+      id: 0,
+      name: "",
+      team_id: localStorage.getItem("team"),
+      user_id: 0,
+      task_status_id: 0,
+      environment_id: 0,
+      due_date: "",
+      due_time: "",
+      kickoff_date: "",
+      kickoff_time: "",
+      task_comment: "",
+      days_left: 0,
+      task_duration: 0,
+      active: true,
+    });
+  };
   // user overview task status
   const [user_task_statuses, set_user_task_statuses] = useState([]);
 
@@ -106,13 +100,28 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
 
   const [assign_projectData, set_assign_ProjectData] = useState({});
   const [assign_bet_projectData, set_assign_bet_ProjectData] = useState([]);
-  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] = useState([]);
-  const [assign_country_projectData, set_assign_country_ProjectData] = useState([]);
-  const [assign_customer_journey_projectData, set_assign_customer_journey_ProjectData] = useState([]);
-  const [assign_digital_marketing_projectData, set_assign_digital_marketing_ProjectData, ] = useState([]);
-  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =  useState([]);
-  const [assign_payment_methods_projectData, set_assign_payment_methods_ProjectData, ] = useState([]);
-  const [assign_all_projects, set_assign_all_projects_ProjectData] = useState( [] );
+  const [assign_bet_partners_projectData, set_assign_bet_partners_ProjectData] =
+    useState([]);
+  const [assign_country_projectData, set_assign_country_ProjectData] = useState(
+    []
+  );
+  const [
+    assign_customer_journey_projectData,
+    set_assign_customer_journey_ProjectData,
+  ] = useState([]);
+  const [
+    assign_digital_marketing_projectData,
+    set_assign_digital_marketing_ProjectData,
+  ] = useState([]);
+  const [assign_integrations_projectData, set_assign_integrations_ProjectData] =
+    useState([]);
+  const [
+    assign_payment_methods_projectData,
+    set_assign_payment_methods_ProjectData,
+  ] = useState([]);
+  const [assign_all_projects, set_assign_all_projects_ProjectData] = useState(
+    []
+  );
   // for update  project assignemnt record
   const [showUpdateProjectAssign, setUpdateProjectAssign] = useState(false);
   const handleShowUpdateProjectAssign = () => setUpdateProjectAssign(true);
@@ -237,17 +246,18 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
 
   // member tasks modal
   const [show_member_task, setShow_Member_task] = useState(false);
-  const handleClose_Member_task = () => {setShow_Member_task(false);
+  const handleClose_Member_task = () => {
+    setShow_Member_task(false);
     set_search_key({
-      task_search:null,
-  
-    });};
+      task_search: null,
+    });
+  };
   const handleShow_Members_task = () => {
     set_search_key({
-      task_search:null,
-  
+      task_search: null,
     });
-    setShow_Member_task(true);};
+    setShow_Member_task(true);
+  };
 
   // member tasks progress chart
   const [show_member_progress_chart, setShow_Member_progress_chart] =
@@ -268,14 +278,16 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
   const [old_projects_data, set_old_projects_data] = useState([]);
   const [old_tasks_data, set_old_tasks_data] = useState([]);
 
-  function OldData(){
+  function OldData() {
     set_old_tasks_data(UserAllTasksData);
     set_old_projects_data(assign_projectData);
-  };
-  
-  const latest_project_data = useMemo(() => old_projects_data, [old_projects_data]);
+  }
+
+  const latest_project_data = useMemo(
+    () => old_projects_data,
+    [old_projects_data]
+  );
   const latest_task_data = useMemo(() => old_tasks_data, [old_tasks_data]);
-  
 
   // For DropDown Population
   useEffect(() => {
@@ -300,7 +312,6 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
   }, []);
   // User Or Dev Effect
   useEffect(() => {
-   
     const requestOptions = {
       method: "Get",
       headers: {
@@ -309,20 +320,23 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
         "Content-Type": "application/json",
       },
     };
-    if (search_key.task_search === null){
-
-  // fetch user tasks
-  fetch(`${URL}/api/auth/user/tasks?id=${localStorage.getItem("team")}&user_id=${localStorage.getItem('SUID')}`,requestOptions)
-  .then((response) => response.json())
-  .then((Result) => {
-    setUserOpenTasksData(Result.open_tasks)
-    setUserAllTasksData(Result.all_tasks);
-    setUserOverDueTasksData(Result.over_due_tasks);
-    setUserCompletedTasksData(Result.completed_tasks)
-  });
+    if (search_key.task_search === null) {
+      // fetch user tasks
+      fetch(
+        `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
+          "team"
+        )}&user_id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => {
+          setUserOpenTasksData(Result.open_tasks);
+          setUserAllTasksData(Result.all_tasks);
+          setUserOverDueTasksData(Result.over_due_tasks);
+          setUserCompletedTasksData(Result.completed_tasks);
+        });
     }
- 
-  }, [latest_task_data,search_key.task_search]);
+  }, [latest_task_data, search_key.task_search]);
 
   //Mmeber  COUNTERS
   useEffect(() => {
@@ -367,26 +381,32 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
         "Content-Type": "application/json",
       },
     };
-     //fecth team  project assignments 
-     fetch(
-      `${URL}/api/auth/project_assignment/dev/all?team_id=${localStorage.getItem('team')}&id=${localStorage.getItem("SUID")}`,
+    //fecth team  project assignments
+    fetch(
+      `${URL}/api/auth/project_assignment/dev/all?team_id=${localStorage.getItem(
+        "team"
+      )}&id=${localStorage.getItem("SUID")}`,
       requestOptions
     )
       .then((response) => response.json())
       .then((results) => {
-        set_assign_ProjectData(results)
-        set_assign_bet_ProjectData(results.bet_projects)
-        set_assign_bet_partners_ProjectData(results.bet_project_partners_projects)
-        set_assign_country_ProjectData(results.country_projects)
-        set_assign_customer_journey_ProjectData(results.customer_journey_projects)
-        set_assign_digital_marketing_ProjectData(results.digital_marketing_projects)
-        set_assign_integrations_ProjectData(results.integrations_projects)
-        set_assign_payment_methods_ProjectData(results.payment_method_projects)
-        set_assign_all_projects_ProjectData(results.all_projects)
+        set_assign_ProjectData(results);
+        set_assign_bet_ProjectData(results.bet_projects);
+        set_assign_bet_partners_ProjectData(
+          results.bet_project_partners_projects
+        );
+        set_assign_country_ProjectData(results.country_projects);
+        set_assign_customer_journey_ProjectData(
+          results.customer_journey_projects
+        );
+        set_assign_digital_marketing_ProjectData(
+          results.digital_marketing_projects
+        );
+        set_assign_integrations_ProjectData(results.integrations_projects);
+        set_assign_payment_methods_ProjectData(results.payment_method_projects);
+        set_assign_all_projects_ProjectData(results.all_projects);
       });
-
   }, [latest_project_data]);
-
 
   useEffect(() => {
     const requestOptions = {
@@ -397,26 +417,25 @@ const handleCloseDuplicateUpdate = () => set_duplicate_live_updated(false);
         "Content-Type": "application/json",
       },
     };
-if(projectAssignmentValue.project_id !== 0){
-   //fecth project assignments to Bet projects
-    fetch(
-      `${URL}/api/auth/project_assignment/details?team_id=${localStorage.getItem(
-        "team"
-      )}&id=${projectAssignmentValue.project_id}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((res) => set_assigned_members_projects_ProjectData(res.data));
+    if (projectAssignmentValue.project_id !== 0) {
+      //fecth project assignments to Bet projects
+      fetch(
+        `${URL}/api/auth/project_assignment/details?team_id=${localStorage.getItem(
+          "team"
+        )}&id=${projectAssignmentValue.project_id}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((res) => set_assigned_members_projects_ProjectData(res.data));
 
-    //fecth project assignments to Bet projects
-    fetch(
-      `${URL}/api/auth/project?&id=${projectAssignmentValue.project_id}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((res) => set_project(res.data));
-}
-   
+      //fecth project assignments to Bet projects
+      fetch(
+        `${URL}/api/auth/project?&id=${projectAssignmentValue.project_id}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((res) => set_project(res.data));
+    }
   }, [projectAssignmentValue]);
 
   const handleChange = (event) => {
@@ -440,10 +459,10 @@ if(projectAssignmentValue.project_id !== 0){
       [event.target.name]: event.target.value,
     });
 
-    set_search_key ({
+    set_search_key({
       ...search_key,
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   };
   function selectTask(task) {
     const now_date = new Date();
@@ -476,14 +495,13 @@ if(projectAssignmentValue.project_id !== 0){
       days_left: Task_due_in,
       team_id: task.team.id,
       active: task.active,
-      user: task.user.name
+      user: task.user.name,
     });
 
     setTaskFormValue({
       id: task.id,
       name: task.name,
       task_status_id: task.task_status.id,
-     
     });
   }
 
@@ -548,55 +566,15 @@ if(projectAssignmentValue.project_id !== 0){
   // Update Task Status
   function handleSubmitTaskUpdate(event) {
     event.preventDefault();
-const completed_task = "5";
+    const completed_task = "5";
 
-if(taskFormValue.task_status_id === completed_task){
-  handleCompleteTaskShow();
-  handleClose_Update_task();
-}
-else if (taskFormValue.task_status_id === taskValue.task_status_id){
-  handleClose_Update_task();
-  handleShowDuplicateUpdate();
-}
-else {
-     fetch(`${URL}/api/auth/task/dev/update`, {
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("key")}`,
-      },
-      body: JSON.stringify({
-        id: taskValue.id,
-        task: {
-          task_status_id: taskFormValue.task_status_id,
-          active: taskValue.active,
-        },
-      }),
-    })
-      .then((response) => {
-        response.json();
-        if (response.status === 200) {
-          handleShowsuccessUpdate();
-          handleClose_Update_task();
-          OldData();
-        } else if (response.status === 422) {
-          handleShowErrorUpdate();
-        } else if (response.status === 500) {
-          handleShowServerError();
-          handleClose_Update_task();
-        } else if (response.status === 401) {
-          alert("session expired");
-          history("/");
-        }
-      })
-      .then((results) => results.json());
-  }
-}
-    // Complete Task Status
-    function handle_Complete_Task(event) {
-      event.preventDefault();
-  
+    if (taskFormValue.task_status_id === completed_task) {
+      handleCompleteTaskShow();
+      handleClose_Update_task();
+    } else if (taskFormValue.task_status_id === taskValue.task_status_id) {
+      handleClose_Update_task();
+      handleShowDuplicateUpdate();
+    } else {
       fetch(`${URL}/api/auth/task/dev/update`, {
         method: "put",
         headers: {
@@ -608,15 +586,14 @@ else {
           id: taskValue.id,
           task: {
             task_status_id: taskFormValue.task_status_id,
-            active: false,
+            active: taskValue.active,
           },
         }),
       })
         .then((response) => {
           response.json();
           if (response.status === 200) {
-            handleShowsuccessComplete();
-            handleCloseSuccessCompleted();
+            handleShowsuccessUpdate();
             handleClose_Update_task();
             OldData();
           } else if (response.status === 422) {
@@ -631,6 +608,45 @@ else {
         })
         .then((results) => results.json());
     }
+  }
+  // Complete Task Status
+  function handle_Complete_Task(event) {
+    event.preventDefault();
+
+    fetch(`${URL}/api/auth/task/dev/update`, {
+      method: "put",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+      },
+      body: JSON.stringify({
+        id: taskValue.id,
+        task: {
+          task_status_id: taskFormValue.task_status_id,
+          active: false,
+        },
+      }),
+    })
+      .then((response) => {
+        response.json();
+        if (response.status === 200) {
+          handleShowsuccessComplete();
+          handleCloseSuccessCompleted();
+          handleClose_Update_task();
+          OldData();
+        } else if (response.status === 422) {
+          handleShowErrorUpdate();
+        } else if (response.status === 500) {
+          handleShowServerError();
+          handleClose_Update_task();
+        } else if (response.status === 401) {
+          alert("session expired");
+          history("/");
+        }
+      })
+      .then((results) => results.json());
+  }
 
   // Update Assignment Details
   function handleSubmitUpdateProject(event) {
@@ -667,54 +683,72 @@ else {
       })
       .then((results) => results.json());
   }
-// search Dev Tasks 
-     
-     function handle_Search_Task_Submit(event){
-      event.preventDefault();
-      const requestOptions ={
-        method:'Get',
-        headers:{
-            'Accept':'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('key')}`
-          ,'Content-Type': 'application/json'},
-      }
+  // search Dev Tasks
+
+  function handle_Search_Task_Submit(event) {
+    event.preventDefault();
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
     //search for Team Tasks
-     fetch(`${URL}/api/auth/team/tasks/search?team_id=${localStorage.getItem('team')}&user_id=${localStorage.getItem('SUID')}&search=${search_key.task_search}`,requestOptions)
-     .then(response => response.json())
-     .then(Result => setUserOpenTasksData(Result.data) )
+    fetch(
+      `${URL}/api/auth/team/tasks/search?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}&search=${
+        search_key.task_search
+      }`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => setUserOpenTasksData(Result.data));
 
-
-
-
-  //search for Team Tasks
-  fetch(`${URL}/api/auth/user/search?team_id=${localStorage.getItem('team')}&user_id=${localStorage.getItem('SUID')}&search=${search_key.task_search}`,requestOptions)
-  .then(response => response.json())
-  .then(Result => {
-    setUserOpenTasksData(Result.open_tasks);
-    })
-    }
-
-
-
-    function handle_Search_Task_Modal_Submit(event){
-      event.preventDefault();
-      const requestOptions ={
-        method:'Get',
-        headers:{
-            'Accept':'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('key')}`
-          ,'Content-Type': 'application/json'},
-      }
     //search for Team Tasks
-    fetch(`${URL}/api/auth/user/search?team_id=${localStorage.getItem('team')}&user_id=${localStorage.getItem('SUID')}&search=${search_key.task_search}`,requestOptions)
-     .then(response => response.json())
-     .then(Result => {
-      setUserAllTasksData(Result.all_tasks);
-      setUserCompletedTasksData(Result.completed_tasks);
-      setUserOverDueTasksData(Result.over_due_tasks);
-       setUserOpenTasksData(Result.open_tasks);
-       })
-    }
+    fetch(
+      `${URL}/api/auth/user/search?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}&search=${
+        search_key.task_search
+      }`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => {
+        setUserOpenTasksData(Result.open_tasks);
+      });
+  }
+
+  function handle_Search_Task_Modal_Submit(event) {
+    event.preventDefault();
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    //search for Team Tasks
+    fetch(
+      `${URL}/api/auth/user/search?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}&search=${
+        search_key.task_search
+      }`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => {
+        setUserAllTasksData(Result.all_tasks);
+        setUserCompletedTasksData(Result.completed_tasks);
+        setUserOverDueTasksData(Result.over_due_tasks);
+        setUserOpenTasksData(Result.open_tasks);
+      });
+  }
   // Charts
   const task_overview_data = {
     labels: ["Not Started", "On Hold", "In Progress", "Testing", "Completed"],
@@ -740,2027 +774,2079 @@ else {
   };
 
   return (
-    <div>
-      <Card>
-
-        <Card.Body>
+    <div className="mt-3">
+      <Container fluid>
+        <Card>
+          <Card.Body className="dev-dashboard-card">
             <Tabs defaultActiveKey="tasks" transition={true} className="mb-3">
-        <Tab eventKey="tasks" title="Taks">
-          <Container fluid>
-            <Row>
-              <Col sm={7}>
-                <Card fluid className="flex shadow">
-                  <Card.Header>Assign Stats </Card.Header>
-                  <Card.Body>
-                    <Row>
-                      <div className="col-md-3 col-sm-11">
-                        <Card
-                          className="card text-white mb-3 py-3 shadow"
-                          style={{ backgroundColor: "#010101" }}
-                        >
-                          <Card.Body>
-                            <Row>
-                              <Col>
-                                <span className="h6">Assigned </span>
-                                <span className="h5 font-bold mb-0">
-                                  <CountUp
-                                    start={0}
-                                    end={TaskOverviewCounter.all_tasks}
-                                    delay={0}
-                                  >
-                                    {({ countUpRef }) => (
-                                      <div>
-                                        <span ref={countUpRef} />
-                                      </div>
-                                    )}
-                                  </CountUp>
-                                </span>
-                              </Col>
-                              <Col>
-                                <h1>
-                                  <FcCircuit />
-                                </h1>
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </div>
-                      <div className="col-md-3 col-sm-12">
-                        <Card
-                          className="card text-white mb-3 py-3 shadow"
-                          style={{ backgroundColor: "#010101" }}
-                        >
-                          <Card.Body>
-                            <Row>
-                              <Col>
-                                <span className="h6 ">Completed </span>
-                                <span className="h5 font-bold mb-0">
-                                  <CountUp
-                                    start={0}
-                                    end={TaskOverviewCounter.completed}
-                                    delay={0}
-                                  >
-                                    {({ countUpRef }) => (
-                                      <div>
-                                        <span ref={countUpRef} />
-                                      </div>
-                                    )}
-                                  </CountUp>
-                                </span>
-                              </Col>
-                              <Col>
-                                <span className="h6 text-white">
-                                  <h1>
-                                    <FcApproval />
-                                  </h1>
-                                </span>
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </div>
-                      <div className="col-md-3 col-sm-12">
-                        <Card
-                          className="card text-white mb-3 py-3 shadow"
-                          style={{ backgroundColor: "#1B1212" }}
-                        >
-                          <Card.Body>
-                            <Row>
-                              <Col>
-                                <span className="h6 ">Pending </span>
-                                <span className="h5 font-bold mb-0">
-                                  <CountUp
-                                    start={0}
-                                    end={TaskOverviewCounter.not_completed}
-                                    delay={0}
-                                  >
-                                    {({ countUpRef }) => (
-                                      <div>
-                                        <span ref={countUpRef} />
-                                      </div>
-                                    )}
-                                  </CountUp>
-                                </span>
-                              </Col>
-                              <Col>
-                                <span className="h6 text-white ">
-                                  <h1>
-                                    <FcInfo />
-                                  </h1>
-                                </span>
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </div>
-                      <div className="col-md-3 col-sm-12">
-                        <Card
-                          className="card text-white mb-3 py-3"
-                          style={{ backgroundColor: "#391A1A" }}
-                        >
-                          <Card.Body>
-                            <Row>
-                              <Col>
-                                <span className="h6 ">Over Due </span>
-                                <span className="h5 font-bold mb-0">
-                                  <CountUp
-                                    start={0}
-                                    end={TaskOverviewCounter.over_due}
-                                    delay={0}
-                                  >
-                                    {({ countUpRef }) => (
-                                      <div>
-                                        <span ref={countUpRef} />
-                                      </div>
-                                    )}
-                                  </CountUp>
-                                </span>
-                              </Col>
-                              <Col>
-                                <span className="h6 text-white ">
-                                  <h1>
-                                    <FcHighPriority />
-                                  </h1>
-                                </span>
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </div>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col sm={7}>
-                <Card className="shadow">
-                  <Card.Header>
-                    My Tasks{" "}
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={handleShow_Members_Chart_task}
-                    >
-                      Task progress{" "}
-                    </Button>{" "}
-                  </Card.Header>
-                  <Card.Body style={{ height: "367px" }}>
-                  <Nav  className="justify-content-end">
-                 <div  className="col-md-3 col-sm-9">
-                   <Form onSubmit={handle_Search_Task_Submit} className="d-flex">
-                      <FormControl type="search" name='task_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
-                      <Button variant="outline-success" type='submit' size='sm'>Search</Button>
-                    </Form>
-                  </div>
-                  </Nav>
-                    <Table  size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Name </th>
-                          <th>Status </th>
-                          <th>Completion Date</th>
-                          <th> Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {UserOpenTasksData.slice(0, 5).map((task, Index) => {
-                          return (
-                            <tr key={Index}>
-                              <td>{task.name}</td>
-                              <td>{task.task_status.name}</td>
-                              <td>{new Date(task.due_date).toDateString()}</td>
-                              <td className="text-center">
-                                <Button
-                                  variant="outline-info"
-                                  size="sm"
-                                  onClick={() => selectTask(task)}
-                                >
-                                  Select
-                                </Button>{" "}
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectTask(task)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleShow_update_Task}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Card.Body>
-                  <Card.Footer className="text-center">
-                    <>
-                      <Button
-                        variant="success"
-                        size="sm"
-                        onClick={handleShow_Members_task}
-                      >
-                        All{" "}
-                      </Button>
-                    </>
-                  </Card.Footer>
-                </Card>
-              </Col>
-              <Col>
-                <Card fluid className="shadow">
-                  <Card.Header>
-                    Task Details for <b>{taskValue.name}</b>{" "}
-                  </Card.Header>
-                  <Card.Body style={{ height: "367px" }}>
-                    <Row>
-                      <Col>Enviroment :</Col>
-                      <Col>
-                        <p>{taskValue.environment}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Kick Off Date</Col>
-                      <Col>
-                        <p>{taskValue.kickoff_date}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Due Date</Col>
-                      <Col>
-                        <p>{taskValue.due_date}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Last Updated:</Col>
-                      <Col>
-                        <p>{taskValue.last_update}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Days Left :</Col>
-                      <Col>
-                        <Badge pill bg="success">
-                          <CountUp
-                            start={0}
-                            end={taskValue.days_left}
-                            delay={0}
+              <Tab eventKey="tasks" title="Taks">
+                <Container fluid>
+                  <Row>
+                    <Col sm={7}>
+                      <Card className=" shadow">
+                        <Card.Header>Assign Stats </Card.Header>
+                        <Card.Body>
+                          <Row>
+                            <div className="col-md-3 col-sm-9">
+                              <Card
+                                className="card text-white mb-3 py-3 shadow"
+                                style={{ backgroundColor: "#010101",height:"115px"  }}
+                              >
+                                <Card.Body>
+                                  <Row>
+                                    <Col>
+                                      <span className="h6">Assigned </span>
+                                      <span className="h5 font-bold mb-0">
+                                        <CountUp
+                                          start={0}
+                                          end={TaskOverviewCounter.all_tasks}
+                                          delay={0}
+                                        >
+                                          {({ countUpRef }) => (
+                                            <div>
+                                              <span ref={countUpRef} />
+                                            </div>
+                                          )}
+                                        </CountUp>
+                                      </span>
+                                    </Col>
+                                    <Col>
+                                      <h1>
+                                        <FcInfo />
+                                      </h1>
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+                            </div>
+                            <div className="col-md-3 col-sm-9">
+                              <Card 
+                                className="card text-white mb-3 py-3 shadow"
+                                style={{ backgroundColor: "#010101",height:"115px" }}
+                              >
+                                <Card.Body>
+                                  <Row>
+                                    <Col>
+                                      <span className="h6 ">Completed </span>
+                                      <span className="h5 font-bold mb-0">
+                                        <CountUp
+                                          start={0}
+                                          end={TaskOverviewCounter.completed}
+                                          delay={0}
+                                        >
+                                          {({ countUpRef }) => (
+                                            <div>
+                                              <span ref={countUpRef} />
+                                            </div>
+                                          )}
+                                        </CountUp>
+                                      </span>
+                                    </Col>
+                                    <Col>
+                                      <span className="h6 text-white">
+                                        <h1>
+                                          <FcApproval />
+                                        </h1>
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+                            </div>
+                            <div className="col-md-3 col-sm-9">
+                              <Card
+                                className="card text-white mb-3 py-3"
+                                style={{ backgroundColor: "#391A1A",height:"115px"  }}
+                              >
+                                <Card.Body>
+                                  <Row>
+                                    <Col>
+                                      <span className="h6 ">Over Due </span>
+                                      <span className="h5 font-bold mb-0">
+                                        <CountUp
+                                          start={0}
+                                          end={TaskOverviewCounter.over_due}
+                                          delay={0}
+                                        >
+                                          {({ countUpRef }) => (
+                                            <div>
+                                              <span ref={countUpRef} />
+                                            </div>
+                                          )}
+                                        </CountUp>
+                                      </span>
+                                    </Col>
+                                    <Col>
+                                      <span className="h6 text-white ">
+                                        <h1>
+                                          <FcHighPriority />
+                                        </h1>
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+                            </div>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col sm={7}>
+                      <Card className="shadow">
+                        <Card.Header>
+                          My Tasks{" "}
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={handleShow_Members_Chart_task}
                           >
-                            {({ countUpRef }) => (
-                              <div>
-                                <span ref={countUpRef} />
-                              </div>
-                            )}
-                          </CountUp>
-                        </Badge>
-                      </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                      <Col>Task Comment :</Col>
-                      <Col>
-                        <Form.Control
-                          readOnly
-                          as="textarea"
-                          placeholder="task comment here"
-                          style={{ height: "100px" }}
-                          value={taskValue.task_comment}
-                        />
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                  <Card.Footer className="text-center"></Card.Footer>
-                </Card>
-              </Col>
-            </Row>
-            -
-          </Container>
-        </Tab>
-        <Tab eventKey="projects" title="Projects">
-          <Container fluid>
-            <Row>
-              <Col>
-                <Card fluid className="shadow">
-                  <Card.Header>Assigned projects</Card.Header>
-                  <Card.Body>
-                    <Tabs
-                      defaultActiveKey="bet_projects"
-                      id="uncontrolled-tab-example"
-                      className="mb-3"
-                    >
-                      <Tab eventKey="bet_projects" title="Bet Projects">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_bet_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm" className="btn"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="country" title="Country">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_country_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="customerJourney" title="Customer">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_customer_journey_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm" className="btn"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="integrations" title="Integrations">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_integrations_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="pay_methods" title="Payments">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_payment_methods_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm" className="btn"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="digital" title="Digital Marketing">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_digital_marketing_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm" className="btn"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="betsoftware" title="Bet Software Partners">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Category</th>
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_bet_partners_projectData.map(
-                                  (project, Index) => {
-                                    return (
-                                      <tr key={Index}>
-                                        <td>{project.project.name}</td>
-                                        <td> {project.project_type.name}</td>
-                                        <td>{project.user_status.name}</td>
-                                        <td>
-                                          {new Date(
-                                            project.due_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td>
-                                          {new Date(
-                                            project.kickoff_date
-                                          ).toDateString()}
-                                        </td>
-                                        <td className="text-center">
-                                          <button
-                                            size="sm" className="btn"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            <Button
-                                              size="sm"
-                                              variant="outline-success"
-                                              onClick={
-                                                handleShowUpdateProjectAssign
-                                              }
-                                            >
-                                              update
-                                            </Button>
-                                          </button>{" "}
-                                          <Button
-                                            variant="outline-success"
-                                            size="sm"
-                                            onClick={() =>
-                                              selectProjectAssignment(project)
-                                            }
-                                          >
-                                            Select
-                                          </Button>
-                                        </td>
-                                      </tr>
-                                    );
-                                  }
-                                )}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
-
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                      <Tab eventKey="all" title="All">
-                        <Row md={9}>
-                          <Col sm={8}>
-                            <Table size='sm'  striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-
-                                  <th>Status</th>
-                                  <th> Due Date </th>
-                                  <th> Kickoff Date </th>
-                                  <th>action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {assign_all_projects.map((project, Index) => {
+                            Task progress{" "}
+                          </Button>{" "}
+                        </Card.Header>{" "}
+                        <Nav className="justify-content-end">
+                          <div className="col-md-3 col-sm-9">
+                            <Form
+                              onSubmit={handle_Search_Task_Submit}
+                              className="d-flex"
+                            >
+                              <FormControl
+                                type="search"
+                                name="task_search"
+                                placeholder="Search"
+                                required
+                                onChange={handleChange}
+                                className="mr-3"
+                                aria-label="Search"
+                              />
+                              <Button
+                                variant="outline-success"
+                                type="submit"
+                                size="sm"
+                              >
+                                Search
+                              </Button>
+                            </Form>
+                          </div>
+                        </Nav>
+                        <Card.Body className="dev-dashboard-card-tasks">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name </th>
+                                <th>Status </th>
+                                <th>Completion Date</th>
+                                <th> Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {UserOpenTasksData.slice(0, 5).map(
+                                (task, Index) => {
                                   return (
                                     <tr key={Index}>
-                                      <td>{project.project.name}</td>
-                                      <td>{project.user_status.name}</td>
+                                      <td>{task.name}</td>
+                                      <td>{task.task_status.name}</td>
                                       <td>
-                                        {new Date(
-                                          project.due_date
-                                        ).toDateString()}
-                                      </td>
-                                      <td>
-                                        {new Date(
-                                          project.kickoff_date
-                                        ).toDateString()}
+                                        {new Date(task.due_date).toDateString()}
                                       </td>
                                       <td className="text-center">
-                                        <button
-                                          size="sm" className="btn"
-                                          onClick={() =>
-                                            selectProjectAssignment(project)
-                                          }
-                                        >
-                                          <Button
-                                            size="sm"
-                                            variant="outline-success"
-                                            onClick={
-                                              handleShowUpdateProjectAssign
-                                            }
-                                          >
-                                            update
-                                          </Button>
-                                        </button>{" "}
                                         <Button
-                                          variant="outline-success"
+                                          variant="outline-info"
                                           size="sm"
-                                          onClick={() =>
-                                            selectProjectAssignment(project)
-                                          }
+                                          onClick={() => selectTask(task)}
                                         >
                                           Select
-                                        </Button>
+                                        </Button>{" "}
+                                        <button
+                                          size="sm"
+                                          className="btn"
+                                          onClick={() => selectTask(task)}
+                                        >
+                                          <Button
+                                            variant="outline-success"
+                                            size="sm"
+                                            onClick={handleShow_update_Task}
+                                          >
+                                            Update
+                                          </Button>
+                                        </button>
                                       </td>
                                     </tr>
                                   );
-                                })}
-                              </tbody>
-                            </Table>
-                          </Col>
-                          <Col>
-                            <Card fluid className="shadow">
-                              <Card.Header>Project Details</Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>Name :</Col>
-                                  <Col>
-                                    <p>{projectValue.name}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Status :</Col>
-                                  <Col>
-                                    <p>{projectValue.status}</p>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Last Update</Col>
-                                  <Col>
-                                    <p>{projectValue.last_update}</p>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Resources:</Col>
-                                  <Col>
-                                    {" "}
-                                    <Table size="sm" striped bordered hover>
-                                      <thead>
-                                        <tr>
-                                          <th>Name</th>
-                                          <th>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {assigned_members_projects
-                                          .slice(0, 3)
-                                          .map((project, Index) => {
-                                            return (
-                                              <tr key={Index}>
-                                                <td>{project.user.name}</td>
-                                                <td>
-                                                  {" "}
-                                                  {project.user_status.name}
-                                                </td>
-                                              </tr>
-                                            );
-                                          })}
-                                      </tbody>
-                                    </Table>
-                                  </Col>
-                                </Row>
-                                <hr />
-                                <Row>
-                                  <Col>Progress:</Col>
-                                  <Col>
-                                    <ProgressBar
-                                      now={projectValue.progress}
-                                      variant={projectValue.level}
-                                      label={`${projectValue.progress}%`}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>To Completition :</Col>
-                                  <Col>
-                                    <Badge pill bg="danger">
-                                      <CountUp
-                                        start={0}
-                                        end={100 - projectValue.progress}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />%
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col>
-                                    <Label>BRD: </Label>
-                                  </Col>
-                                  <Col>
-                                    <a
-                                      href={
-                                        projectValue.business_request_document_link
-                                      }
-                                      download
-                                    >
-                                      <h3>
-                                        <FcDownload />
-                                      </h3>{" "}
-                                    </a>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>PM</Col>
-                                  <Col>
-                                    <Label>{projectValue.pm}</Label>
-                                  </Col>
-                                </Row>
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </Card.Body>
+                        <Card.Footer className="text-center">
+                          <>
+                            <Button
+                              variant="success"
+                              size="sm"
+                              onClick={handleShow_Members_task}
+                            >
+                              All{" "}
+                            </Button>
+                          </>
+                        </Card.Footer>
+                      </Card>
+                    </Col>
+                    <Col>
+                      <Card fluid className="shadow">
+                        <Card.Header>
+                          Task Details for <b>{taskValue.name}</b>{" "}
+                        </Card.Header>
+                        <Card.Body className="dev-dashboard-card-tasks-details">
+                          <Row>
+                            <Col>Enviroment :</Col>
+                            <Col>
+                              <p>{taskValue.environment}</p>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>Kick Off Date</Col>
+                            <Col>
+                              <p>{taskValue.kickoff_date}</p>
+                            </Col>
+                          </Row>
 
-                                <Row>
-                                  <Col>Priority :</Col>
-                                  <Col>
-                                    <Label>{projectValue.priority_type}</Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Due Date</Col>
-                                  <Col>
-                                    <Label>
-                                      {projectAssignmentValue.due_date}
-                                    </Label>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>Days Left :</Col>
-                                  <Col>
-                                    <Badge pill bg="success">
-                                      <CountUp
-                                        start={0}
-                                        end={projectAssignmentValue.days_left}
-                                        delay={0}
-                                      >
-                                        {({ countUpRef }) => (
-                                          <div>
-                                            <span ref={countUpRef} />
-                                          </div>
-                                        )}
-                                      </CountUp>
-                                    </Badge>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                              <Card.Footer>
-                                <small className="text-muted">.</small>
-                              </Card.Footer>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </Tab>
-                    </Tabs>
-                  </Card.Body>
-                  <Card.Footer className="text-center">
-                    <Button variant="success" onClick={handleProjectsShow}>
-                      All
-                    </Button>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </Tab>
-      </Tabs>
-        </Card.Body>
-      </Card>
-    
+                          <Row>
+                            <Col>Last Updated:</Col>
+                            <Col>
+                              <p>{taskValue.last_update}</p>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>Days Left :</Col>
+                            <Col>
+                              <Badge pill bg="success">
+                                <CountUp
+                                  start={0}
+                                  end={taskValue.days_left}
+                                  delay={0}
+                                >
+                                  {({ countUpRef }) => (
+                                    <div>
+                                      <span ref={countUpRef} />
+                                    </div>
+                                  )}
+                                </CountUp>
+                              </Badge>
+                            </Col>
+                          </Row>
+                          <br />
+                          <Row>
+                            <Col>Task Comment :</Col>
+                            <Col>
+                              <Form.Control
+                                readOnly
+                                as="textarea"
+                                placeholder="task comment here"
+                                style={{ height: "100px" }}
+                                value={taskValue.task_comment}
+                              />
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+                </Container>
+              </Tab>
+              <Tab eventKey="projects" title="Projects">
+                <Row>
+                  <Col>
+                    <Card fluid className="shadow">
+                      <Card.Header>Assigned projects</Card.Header>
+                      <Card.Body className="dev-dashboard-card-projects-assign-card">
+                        <Tabs
+                          defaultActiveKey="bet_projects"
+                          id="uncontrolled-tab-example"
+                          className="mb-3"
+                        >
+                          <Tab eventKey="bet_projects" title="Bet Projects">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_bet_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="country" title="Country">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_country_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="customerJourney" title="Customer">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_customer_journey_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="integrations" title="Integrations">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_integrations_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="pay_methods" title="Payments">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_payment_methods_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="digital" title="Digital Marketing">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_digital_marketing_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab
+                            eventKey="betsoftware"
+                            title="Bet Software Partners"
+                          >
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Category</th>
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_bet_partners_projectData.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>
+                                              {" "}
+                                              {project.project_type.name}
+                                            </td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                          <Tab eventKey="all" title="All">
+                            <Row md={9}>
+                              <Col sm={8}>
+                                <Table size="sm" striped bordered hover>
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+
+                                      <th>Status</th>
+                                      <th> Due Date </th>
+                                      <th> Kickoff Date </th>
+                                      <th>action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {assign_all_projects.map(
+                                      (project, Index) => {
+                                        return (
+                                          <tr key={Index}>
+                                            <td>{project.project.name}</td>
+                                            <td>{project.user_status.name}</td>
+                                            <td>
+                                              {new Date(
+                                                project.due_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td>
+                                              {new Date(
+                                                project.kickoff_date
+                                              ).toDateString()}
+                                            </td>
+                                            <td className="text-center">
+                                              <button
+                                                size="sm"
+                                                className="btn"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                <Button
+                                                  size="sm"
+                                                  variant="outline-success"
+                                                  onClick={
+                                                    handleShowUpdateProjectAssign
+                                                  }
+                                                >
+                                                  update
+                                                </Button>
+                                              </button>{" "}
+                                              <Button
+                                                variant="outline-success"
+                                                size="sm"
+                                                onClick={() =>
+                                                  selectProjectAssignment(
+                                                    project
+                                                  )
+                                                }
+                                              >
+                                                Select
+                                              </Button>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
+                                  </tbody>
+                                </Table>
+                              </Col>
+                              <Col>
+                                <Card fluid className="shadow">
+                                  <Card.Header>Project Details</Card.Header>
+                                  <Card.Body>
+                                    <Row>
+                                      <Col>Name :</Col>
+                                      <Col>
+                                        <p>{projectValue.name}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Status :</Col>
+                                      <Col>
+                                        <p>{projectValue.status}</p>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Last Update</Col>
+                                      <Col>
+                                        <p>{projectValue.last_update}</p>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Resources:</Col>
+                                      <Col>
+                                        {" "}
+                                        <Table size="sm" striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>Name</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {assigned_members_projects
+                                              .slice(0, 3)
+                                              .map((project, Index) => {
+                                                return (
+                                                  <tr key={Index}>
+                                                    <td>{project.user.name}</td>
+                                                    <td>
+                                                      {" "}
+                                                      {project.user_status.name}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              })}
+                                          </tbody>
+                                        </Table>
+                                      </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                      <Col>Progress:</Col>
+                                      <Col>
+                                        <ProgressBar
+                                          now={projectValue.progress}
+                                          variant={projectValue.level}
+                                          label={`${projectValue.progress}%`}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>To Completition :</Col>
+                                      <Col>
+                                        <Badge pill bg="danger">
+                                          <CountUp
+                                            start={0}
+                                            end={100 - projectValue.progress}
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />%
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                      <Col>
+                                        <Label>BRD: </Label>
+                                      </Col>
+                                      <Col>
+                                        <a
+                                          href={
+                                            projectValue.business_request_document_link
+                                          }
+                                          download
+                                        >
+                                          <h3>
+                                            <FcDownload />
+                                          </h3>{" "}
+                                        </a>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>PM</Col>
+                                      <Col>
+                                        <Label>{projectValue.pm}</Label>
+                                      </Col>
+                                    </Row>
+
+                                    <Row>
+                                      <Col>Priority :</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectValue.priority_type}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Due Date</Col>
+                                      <Col>
+                                        <Label>
+                                          {projectAssignmentValue.due_date}
+                                        </Label>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col>Days Left :</Col>
+                                      <Col>
+                                        <Badge pill bg="success">
+                                          <CountUp
+                                            start={0}
+                                            end={
+                                              projectAssignmentValue.days_left
+                                            }
+                                            delay={0}
+                                          >
+                                            {({ countUpRef }) => (
+                                              <div>
+                                                <span ref={countUpRef} />
+                                              </div>
+                                            )}
+                                          </CountUp>
+                                        </Badge>
+                                      </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            </Row>
+                          </Tab>
+                        </Tabs>
+                      </Card.Body>
+                      <Card.Footer className="text-center">
+                        <Button variant="success" onClick={handleProjectsShow}>
+                          All
+                        </Button>
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                </Row>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+        </Card>
+      </Container>
+
       <div>
         {/* Team Projects */}
         <Modal show={show} onHide={handleProjectsClose} fullscreen={true}>
@@ -2776,7 +2862,7 @@ else {
               <Tab eventKey="bet_projects" title="Bet Projects">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -2801,7 +2887,8 @@ else {
                               </td>
                               <td className="text-center">
                                 <button
-                                  size="sm" className="btn"
+                                  size="sm"
+                                  className="btn"
                                   onClick={() =>
                                     selectProjectAssignment(project)
                                   }
@@ -2972,7 +3059,7 @@ else {
               <Tab eventKey="country" title="Country">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -2998,7 +3085,8 @@ else {
                               </td>
                               <td className="text-center">
                                 <button
-                                  size="sm" className="btn"
+                                  size="sm"
+                                  className="btn"
                                   onClick={() =>
                                     selectProjectAssignment(project)
                                   }
@@ -3169,7 +3257,7 @@ else {
               <Tab eventKey="customerJourney" title="Customer">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3198,7 +3286,8 @@ else {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() =>
                                       selectProjectAssignment(project)
                                     }
@@ -3370,7 +3459,7 @@ else {
               <Tab eventKey="integrations" title="Integrations">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3399,7 +3488,8 @@ else {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() =>
                                       selectProjectAssignment(project)
                                     }
@@ -3571,7 +3661,7 @@ else {
               <Tab eventKey="pay_methods" title="Payments">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3600,7 +3690,8 @@ else {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() =>
                                       selectProjectAssignment(project)
                                     }
@@ -3772,7 +3863,7 @@ else {
               <Tab eventKey="digital" title="Digital Marketing">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -3801,7 +3892,8 @@ else {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() =>
                                       selectProjectAssignment(project)
                                     }
@@ -3973,7 +4065,7 @@ else {
               <Tab eventKey="betsoftware" title="Bet Software Partners">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm' striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -4002,7 +4094,8 @@ else {
                                 </td>
                                 <td className="text-center">
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() =>
                                       selectProjectAssignment(project)
                                     }
@@ -4174,7 +4267,7 @@ else {
               <Tab eventKey="all" title="All">
                 <Row md={9}>
                   <Col sm={8}>
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -4199,7 +4292,8 @@ else {
                               </td>
                               <td className="text-center">
                                 <button
-                                  size="sm" className="btn"
+                                  size="sm"
+                                  className="btn"
                                   onClick={() =>
                                     selectProjectAssignment(project)
                                   }
@@ -4387,14 +4481,27 @@ else {
             <Modal.Title>Tasks </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Nav  className="justify-content-end">
-                 <div  className="col-md-3 col-sm-9">
-                   <Form onSubmit={handle_Search_Task_Modal_Submit} className="d-flex">
-                      <FormControl type="search" name='task_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
-                      <Button variant="outline-success" type='submit' size='sm'>Search</Button>
-                    </Form>
-                  </div>
-                  </Nav>
+            <Nav className="justify-content-end">
+              <div className="col-md-3 col-sm-9">
+                <Form
+                  onSubmit={handle_Search_Task_Modal_Submit}
+                  className="d-flex"
+                >
+                  <FormControl
+                    type="search"
+                    name="task_search"
+                    placeholder="Search"
+                    required
+                    onChange={handleChange}
+                    className="mr-3"
+                    aria-label="Search"
+                  />
+                  <Button variant="outline-success" type="submit" size="sm">
+                    Search
+                  </Button>
+                </Form>
+              </div>
+            </Nav>
             <Tabs
               defaultActiveKey="open"
               id="uncontrolled-tab-example"
@@ -4423,27 +4530,32 @@ else {
                           <td>{new Date(task.due_date).toDateString()}</td>
                           <td>{new Date(task.kickoff_date).toDateString()}</td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={() => selectTask(task)}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => selectTask(task)}
+                            >
                               <Button
                                 size="sm"
                                 variant="outline-success"
                                 onClick={handleClose_Member_task}
                               >
                                 Select
-                              </Button>{' '}
-                              
-                            </button>{' '}<button
-                                  size="sm" className="btn"
-                                  onClick={() => selectTask(task)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleShow_update_Task}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
+                              </Button>{" "}
+                            </button>{" "}
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => selectTask(task)}
+                            >
+                              <Button
+                                variant="outline-success"
+                                size="sm"
+                                onClick={handleShow_update_Task}
+                              >
+                                Update
+                              </Button>
+                            </button>
                           </td>
                         </tr>
                       );
@@ -4474,7 +4586,11 @@ else {
                           <td>{new Date(task.due_date).toDateString()}</td>
                           <td>{new Date(task.kickoff_date).toDateString()}</td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={() => selectTask(task)}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => selectTask(task)}
+                            >
                               <Button
                                 size="sm"
                                 variant="outline-success"
@@ -4513,7 +4629,11 @@ else {
                           <td>{new Date(task.due_date).toDateString()}</td>
                           <td>{new Date(task.kickoff_date).toDateString()}</td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={() => selectTask(task)}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => selectTask(task)}
+                            >
                               <Button
                                 size="sm"
                                 variant="outline-success"
@@ -4530,7 +4650,7 @@ else {
                 </Table>
               </Tab>
               <Tab eventKey="all" title="All">
-                <Table size='sm'  striped bordered hover>
+                <Table size="sm" striped bordered hover>
                   <thead>
                     <tr>
                       <th> Name </th>
@@ -4552,7 +4672,11 @@ else {
                           <td>{new Date(task.due_date).toDateString()}</td>
                           <td>{new Date(task.kickoff_date).toDateString()}</td>
                           <td className="text-center">
-                            <button size="sm" className="btn" onClick={() => selectTask(task)}>
+                            <button
+                              size="sm"
+                              className="btn"
+                              onClick={() => selectTask(task)}
+                            >
                               <Button
                                 size="sm"
                                 variant="outline-success"
@@ -4752,7 +4876,7 @@ else {
                 <Row>
                   <Col>
                     Assigned With : <br />{" "}
-                    <Table size='sm'  striped bordered hover>
+                    <Table size="sm" striped bordered hover>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -4856,23 +4980,35 @@ else {
             </label>
           </Modal.Footer>
         </Modal>
-{/* Completed Confirmation Live Issue */}
-   {/*  Task */}
-   <Modal  show={show_Complete_Task}  onHide={handleCloseSuccessCompleted} backdrop="static" size='md' keyboard={false}  >
-                  <Modal.Header closeButton>
-                    <Modal.Title>Confirmation</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                  confirm that <b>{taskValue.user} completed </b><b>{taskValue.name}</b> task. 
-                  Are you Sure?
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" size='sm'  onClick={handleCloseSuccessCompleted}>
-                      No
-                    </Button>
-                    <Button variant="primary" size='sm'  onClick={handle_Complete_Task}>Yes</Button>
-                  </Modal.Footer>
-                   {/*  Error Update  */}
+        {/* Completed Confirmation Live Issue */}
+        {/*  Task */}
+        <Modal
+          show={show_Complete_Task}
+          onHide={handleCloseSuccessCompleted}
+          backdrop="static"
+          size="md"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            confirm that <b>{taskValue.user} completed </b>
+            <b>{taskValue.name}</b> task. Are you Sure?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleCloseSuccessCompleted}
+            >
+              No
+            </Button>
+            <Button variant="primary" size="sm" onClick={handle_Complete_Task}>
+              Yes
+            </Button>
+          </Modal.Footer>
+          {/*  Error Update  */}
           <Toast
             onClose={handleCloseErrorUpdate}
             show={error_updated}
@@ -4892,7 +5028,7 @@ else {
               please check input or task already assigned
             </Toast.Body>
           </Toast>
-                </Modal>
+        </Modal>
         {/* Toast Arlets */}
 
         <ToastContainer className="p-3" position={"top-end"}>
@@ -4910,7 +5046,7 @@ else {
                 className="rounded me-2"
                 alt=""
               />
-              <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+              <strong className="me-auto">{<FcApproval />} Successfully</strong>
             </Toast.Header>
             <Toast.Body className="text-white">
               {" "}
@@ -4937,20 +5073,27 @@ else {
               please check input or task already assigned
             </Toast.Body>
           </Toast>
-                    {/* Duplicate Toast */}
-          <Toast onClose={handleCloseDuplicateUpdate} show={duplicate_updated} bg={'warning'} delay={5000} autohide>
-                              <Toast.Header>
-                                <img
-                                  src="holder.js/20x20?text=%20"
-                                  className="rounded me-2"
-                                  alt=""
-                                />
-                                <strong className="me-auto">Error</strong>
-                              
-                              </Toast.Header>
-                              <Toast.Body className='text-white'>status already assigned</Toast.Body>
-                            </Toast>
-                              {/* Successfully Completed */}
+          {/* Duplicate Toast */}
+          <Toast
+            onClose={handleCloseDuplicateUpdate}
+            show={duplicate_updated}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              status already assigned
+            </Toast.Body>
+          </Toast>
+          {/* Successfully Completed */}
           <Toast
             onClose={handleCloseSuccessComplete}
             show={success_completed}
@@ -4964,7 +5107,7 @@ else {
                 className="rounded me-2"
                 alt=""
               />
-              <strong className="me-auto">{<FcApproval/>}{' '}Completed</strong>
+              <strong className="me-auto">{<FcApproval />} Completed</strong>
             </Toast.Header>
             <Toast.Body className="text-white">
               {" "}

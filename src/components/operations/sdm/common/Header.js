@@ -12,7 +12,7 @@ function logout() {
     return (
 <>
 
-<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+<Navbar  role="navigation" collapseOnSelect expand="lg" bg="secondary" variant="dark" >
 <Container fluid>
 
 <Navbar.Brand href='/sdm/operations'>
@@ -38,15 +38,14 @@ function logout() {
     </Nav>
  
     <Navbar.Collapse className="justify-content-end">
-      <Navbar.Text>
+      <Navbar.Text  className="me-2">
         Hi: {localStorage.getItem('name')} {' '}
-        <Link onClick={() => logout()} to="/">
+      </Navbar.Text>
+         <Link onClick={() => logout()} to="/">
           <Button  size='sm' variant='warning'>
             Log out
           </Button>
         </Link>
-      </Navbar.Text>
-      
     </Navbar.Collapse>
     </Navbar.Collapse>
   

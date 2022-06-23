@@ -3,12 +3,10 @@ import {
   Badge,
   Button,
   Card,
-  CardGroup,
   Container,
   Form,
   FormControl,
   Nav,
-  Row,
   Tab,
   Table,
   Tabs,
@@ -104,17 +102,15 @@ function StrategicProjects() {
   }
 
   return (
-    <>
+    <div className="mt-3">
       <Container fluid>
-        <Row>
-          <Tab.Container id="left-tabs-example" defaultActiveKey="default">
-            <Tab.Content>
-              <CardGroup>
-                <Card>
+      
+      
+                <Card  style={{ backgroundColor: "white", height: "86%" }}>
                   <Card.Header>
                     <h6>Strategic Projects</h6>
                     <Nav className="justify-content-end">
-                      <div className="col-md-3 col-sm-9">
+                      <div className="col-md-3 col-sm-9 me-2">
                         <Form
                           onSubmit={handle_Search_Project_Submit}
                           className="d-flex"
@@ -139,7 +135,7 @@ function StrategicProjects() {
                       </div>
                     </Nav>
                   </Card.Header>
-                  <Card.Body>
+                  <Card.Body className="scroll">
                     <Tabs
                       defaultActiveKey="strategic_bet_project"
                       className="mb-3"
@@ -541,12 +537,9 @@ function StrategicProjects() {
                     </Tabs>
                   </Card.Body>
                 </Card>
-              </CardGroup>
-            </Tab.Content>
-          </Tab.Container>
-        </Row>
+         
       </Container>
-    </>
+    </div>
   );
 }
 export default StrategicProjects;

@@ -24,7 +24,7 @@ function logout() {
     return (
 <>
 <header >
-<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >  
+<Navbar  role="navigation" collapseOnSelect expand="lg" bg="secondary" variant="dark" >  
 <Container fluid>
   <Navbar.Brand href='/dev'>
       <img
@@ -49,7 +49,7 @@ function logout() {
       </>
     </Nav>
     <Navbar.Collapse className="justify-content-end">
-      <Navbar.Text>
+      <Navbar.Text  className="me-2">
         Hi: {localStorage.getItem('name')}
       </Navbar.Text>
     </Navbar.Collapse>

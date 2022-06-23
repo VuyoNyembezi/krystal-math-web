@@ -1,12 +1,11 @@
 import React,{useState,useEffect, useMemo} from 'react';
-import { Badge, Button, Card,  Col, Container,  Form, FormControl, FormGroup, InputGroup, Modal, Nav, ProgressBar, Row, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
+import { Badge, Button, Card,  Col, Container,  Form, FormControl, InputGroup, Modal, Nav, ProgressBar, Row, Tab, Table, Tabs, Toast, ToastContainer } from 'react-bootstrap';
 import CountUp from 'react-countup';
 import 'chart.js/auto';
 import { useNavigate } from 'react-router-dom';
 
 import { URL } from '../../../server_connections/server';
 import { Doughnut } from 'react-chartjs-2';
-import { Input, Label } from 'reactstrap';
 import { FcApproval } from "react-icons/fc";
 
 
@@ -40,6 +39,31 @@ const handleCloseErrorCreate = () => set_error_create(false);
       project_type_id:0,
       project_category_type_id: 0
     });
+    setProject({
+      name: "",
+      business_request_document_link: "",
+      business_request_document_status: false
+      ,inserted_at: "",
+      project_type: "",
+      status: "",
+      progress: 0,
+      last_update: "",
+      pm: "",
+      status_level: "",
+      priority_level:"",
+      last_status_change: ""
+    });
+    setLiveIssueFormValue({
+      name:"",
+      team_id:0,
+      pm_id:0,
+      business_request_document_status:false,
+      project_status_id:0,
+      business_request_document_link:"",
+      priority_type_id: 0 ,
+      last_status_change:"",
+      assigned_date:""
+    });
   };
   const handleAddProjectShow = () => setShowAddProject(true);
 // Add Live Issue
@@ -56,6 +80,32 @@ const handleAddLiveIssueClose = () => {setShowAddLiveIssue(false);
     last_status_change:"",
     assigned_date:""
   });
+  setProjectFormValue({
+    name:"",
+    team_id:0,
+    user_id:0,
+    business_request_document_status:false,
+    project_status_id:0,
+    business_request_document_link:"",
+    priority_type_id: 0 ,
+    project_type_id:0,
+    project_category_type_id: 0
+  });
+  setProject({
+    name: "",
+    business_request_document_link: "",
+    business_request_document_status: false
+    ,inserted_at: "",
+    project_type: "",
+    status: "",
+    progress: 0,
+    last_update: "",
+    pm: "",
+    status_level: "",
+    priority_level:"",
+    last_status_change: ""
+  });
+  
 };
 const handleAddLiveShow = () => setShowAddLiveIssue(true);
 
@@ -536,30 +586,32 @@ const live_issues_data ={
 ]};
 
 return(
-<div className='dash-boards'>
-  
-    <Card>
-      <Card.Body><Nav  className="justify-content-end">
+<>
+  <main className='mt-3'>
+<Container fluid>
+    <Card className="shadow border-0 mb-7"  >
+        <Nav  className="justify-content-end">
                  <div  className="col-md-1 col-sm-9">
                   <Button variant="danger" size='sm' onClick={handleAddLiveShow} >
                                       Add Live Issue
                   </Button>
                   </div>
                   </Nav>
+      <Card.Body className='sdm-dashboard'>
    <Tabs defaultActiveKey="home" transition={true}  className="mb-3">
-   
   <Tab eventKey="home" title="Projects">
-  
   <Container fluid>
   <Row>
     <Col sm={8}> 
-    <Card className="shadow" style={{height: "750px"}}>
-    <Card.Header>Teams   </Card.Header>  
-    <Card.Body style={{height: "100px"}}> 
+
+    <Card className="shadow">
+      <Card.Body className='sdm-dashboard-projects-tab-project-teams-card'>
+          <Card.Header>Teams   </Card.Header>  
+    <Card.Body > 
                 <Form>
                 <Row>
                   <Col>
-                  <div  className="col-md-6 col-sm-9">
+                  <div  className="col-md-4 col-sm-6">
                   <Form.Group className="mb-3">
                     <Form.Select     name="id" onChange={handleChange} id="id"   required>
                     <option value={0}>Select Team</option>
@@ -572,39 +624,22 @@ return(
                   </Form.Group>
                   </div>
                   </Col>
-                  <Col>  
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Control size='sm' placeholder="Selected Team" readOnly />
-                  </Col>
-                   <Col>
-                    <Form.Control  size='sm' placeholder="Team Leader" readOnly/>
-                  </Col>
-                  <Col><Button size='sm' variant="info" >
-                      Overview
-                    </Button>
-                  </Col>
-                </Row>
+                             </Row>
               </Form>    
     </Card.Body>
-    <Card.Footer  className="text-center">
-      <Button variant="success" size='sm' onClick={handleShow_Teams} >
-                          All
-      </Button>
-    </Card.Footer>
-    <Card.Header><b>{team.name}</b> projects </Card.Header> 
-    <Card.Body style={{height: "347px"}}> 
+  
+    <Card  >
+          <Card.Header> projects </Card.Header> 
+    <br/>
     <Nav  className="justify-content-end">
-                 <div  className="col-md-5 col-sm-9">
+                 <div  className="col-md-5 col-sm-9 me-2">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
                       <FormControl type="search" name='project_search' placeholder="Search" onChange={handleChange} required className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
                     </Form>
                   </div>
                   </Nav>
-                  <br/>
+    <Card.Body className='sdm-dashboard-projects-tab-project-teams-card-projects-card' > 
               <Table size="sm" striped bordered hover>
                         <thead>
                             <tr> 
@@ -617,7 +652,7 @@ return(
                         </thead> 
                         <tbody>
                         {
-                             projectData.slice(0, 5).map((project, Index) =>{
+                             projectData.slice(0, 9).map((project, Index) =>{
                                return <tr key={Index} >
                                <td>{project.name}</td>
                                <td> {project.project_category_type.name}</td>
@@ -641,12 +676,16 @@ return(
                           Add Project
       </Button>
     </Card.Footer>
+    </Card>
+      </Card.Body>
+  
+
   </Card>
   </Col>
     <Col >
-    <Card className="shadow" style={{height: "750px"}}>
+    <Card className="shadow">
       <Card.Header><b>{projectValue.name}</b> Project Details</Card.Header>
-    <Card.Body  >
+    <Card.Body className='sdm-dashboard-projects-tab-project-details-card' >
               <Row>
               <Col>
              Name :
@@ -741,11 +780,7 @@ return(
       </Card>
     </Col>  
   </Row>
-  <Row>
- 
-    <Col sm={6}>
-  </Col>
-  </Row>
+
   
 </Container>
 
@@ -753,19 +788,22 @@ return(
   </Tab>
   <Tab eventKey="overview" title="Teams & Projects Overview" >
   <Container fluid>
-    <Row>
+    <Card>
+      <Card.Body className='sdm-dashboard-overview-tab '>
+      <Row>
     <Col>
     <Card className="shadow" fluid>
       <Card.Header>Projects Overview</Card.Header>
       
-   <Card.Body ><Tabs defaultActiveKey="projects" transition={true}  className="mb-3">
+   <Card.Body className='sdm-dashboard-overview-tab-project-chart-card'>
+    <Tabs defaultActiveKey="projects" transition={true}  className="mb-3">
           <Tab eventKey="projects" title="Projects">
-              <div style={{width: "400px", }}>
+              <div style={{width: "54%", }}>
                 <Doughnut data={project_data} />
               </div> 
              </Tab>
              <Tab eventKey="live_issues" title="Live Issues">
-              <div style={{width: "400px", }}>
+              <div style={{width: "54%", }}>
                 <Doughnut data={live_issues_data} />
               </div> 
              </Tab> 
@@ -780,19 +818,20 @@ return(
     <Card className="shadow" >
       <Card.Header>Projects On Teams Overview
  </Card.Header>
-     <Row>
-    <Card.Body  style={{height: "300px"}}>
+ <Card.Body className='sdm-dashboard-overview-tab-project-team-overview-card'>
+
+   <Row>
+  
       <Table size='sm' striped bordered hover>
                         <thead>
                             <tr> 
                             <th className='text-center'>Team</th>
                             <th className='text-center'>select</th>
-                            
                             </tr>    
                         </thead> 
                         <tbody>
                         {
-                             teamsData.map((team, Index) =>{
+                             teamsData.slice(0,3).map((team, Index) =>{
                                return <tr key={Index} >
                                <td>{team.name}</td>
                                <td className="text-center">
@@ -805,19 +844,22 @@ return(
                          
                     </tbody>
                 </Table>     
-      </Card.Body>
+    
      
-     </Row> <Card.Footer  className="text-center"> 
-       <Button variant="success" size='sm' onClick={handleShow_Teams} >
+     </Row> 
+     
+     
+     <Card.Footer   className="text-center"> 
+       <Button variant="success" size='sm'  onClick={handleShow_Teams} >
                             All
         </Button>
       </Card.Footer>
-     <Card.Header><b>{team.name}</b> Projects Counters</Card.Header>
-     <Row>
       
-      <Card.Body>
-     
-    <Row>
+         <Row>
+        <Col>
+        <Card.Header><b>{team.name}</b> Projects Counters</Card.Header>
+        <Card.Body>
+            <Row>
               <Col>
               Pending
               </Col>     
@@ -831,7 +873,6 @@ return(
                                       )}
                               </CountUp>
                             </Badge>
-                         
               </Col>
               </Row>
               <br/>
@@ -869,15 +910,14 @@ return(
                       </Badge>
                     
               </Col>     
-              </Row>    
-</Card.Body>
-     </Row>
-     <Card.Header><b>{team.name}</b> Live Issues Counters</Card.Header>
-     <Row>
-      
+              </Row> 
+     </Card.Body>
+        </Col>
+        <Col>     
+        <Card.Header><b>{team.name}</b> Live Issues Counters</Card.Header>
+    
       <Card.Body>
-     
-    <Row>
+              <Row>
               <Col>
               Pending
               </Col>     
@@ -931,16 +971,36 @@ return(
               </Col>     
               </Row>    
 </Card.Body>
-     </Row>
+    
+        </Col>
+      </Row>
+    
+     
+
+
+
+
+  </Card.Body>    
+
+
     </Card>
     </Col>
     </Row>
+      </Card.Body>
+    </Card>
+ 
     </Container>
   </Tab>
 </Tabs>
 
       </Card.Body>
     </Card>
+</Container>
+    
+  
+  </main>
+ 
+  
   
 
  
@@ -968,7 +1028,7 @@ return(
                   </Col>
               </Col>
               <Col> <Nav  className="justify-content-end">
-                 <div  className="col-md-6 col-sm-8">
+                 <div  className="col-md-6 col-sm-8 me-2">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
                       <FormControl type="search" name='project_search' placeholder="Search" onChange={handleChange} className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
@@ -1053,30 +1113,45 @@ return(
          </Modal.Header>
          <Modal.Body>
          <Form onSubmit={handle_Add_Project_Submit}>
-         <FormGroup>
-             <Label >  Project Category : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_category_type_id"  onChange={handleChange} id="project_category_type_id" value={projectFormValue.project_category_type_id}  required>
-                         <option value="">Select Project Category</option>
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_category_type_id">
+              {" "}
+              Project Category:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                  name="project_category_type_id"  
+                  onChange={handleChange} 
+                  id="project_category_type_id" 
+                  value={projectFormValue.project_category_type_id}  
+                  required
+              >    
+               <option value="">Select Project Category</option>
                          {projectCategoryTypeData.map((project_category_type, key) =>{
                          return <option key={key} value={project_category_type.id}>{project_category_type.name}</option>
                          })                  
                          }
-                     </select>
-                 </div> 
-         </FormGroup>
-                 <FormGroup>
-             <Label >  Project Type : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_type_id" onChange={handleChange} id="project_type_id" value={projectFormValue.project_type_id}  required>
-                         <option value="">Select Project Type</option>
+              </Form.Select>
+              </InputGroup>
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_type_id">
+              {" "}
+              Project Type:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                  name="project_type_id" 
+                  onChange={handleChange} 
+                  id="project_type_id" 
+                  value={projectFormValue.project_type_id} 
+                   required
+              >    
+                <option value="">Select Project Type</option>
                          {projectTypeData.map((project_type, key) =>{
                          return <option key={key} value={project_type.id}>{project_type.name}</option>
                          })                  
                          }
-                     </select>
-                 </div> 
-         </FormGroup>
+              </Form.Select>
+
+              </InputGroup>
          <br/>
          <InputGroup className="mb-3">
           <InputGroup.Text  className="col-4" id="name">Name :</InputGroup.Text>
@@ -1090,74 +1165,102 @@ return(
             value={projectFormValue.name} 
             required
           />
-        </InputGroup>
-         <Form.Group className="mb-3" >
-       <Form.Label>BRD Available :</Form.Label>
-             <div className="form-group dropdown">
-                 <select className="form-control" name="business_request_document_status" id="business_request_document_status" onChange={handleChange} value={projectFormValue.business_request_document_status} required>
-                   <option value="">BRD Status</option>
-                   <option value={true}>Yes</option>
-                   <option value={false}>No</option>                         
-                 </select>
-             </div>
-       </Form.Group>               
-       <FormGroup>
-         <Label>BRD File</Label>
-             <Form.Control type="file"   name="business_request_document_link" onChange={handleChange}  />
-             <Input  name="business_request_document_link" defaultValue="none" placeholder="file link" type="text" onChange={handleChange} value={projectFormValue.business_request_document_link} />
-       </FormGroup>
-         <FormGroup>
-             <Label >  Team : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="team_id" onChange={handleChange} id="team_id"   required>
-                         <option value="">Select Team</option>
-                         {teamsData.map((team, key) =>{
-                         return <option key={key} value={team.id}>{team.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label >PM : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="user_id" onChange={handleChange} id="user_id"   required>
-                         <option value="">Select PM</option>
-                         {userData.map((user, key) =>{
-                         return <option key={key} value={user.id} >{user.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label>  Status :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_status_id" onChange={handleChange} id="project_status_id"   required>
-                         <option value="">Assign</option>
-                         <></>
-                         {
-                         statusData.map((status, key) =>{
-                         return <option key={key} value={status.id}>{status.name}</option>
-                         })                
-                         }
-                     </select>
-                 </div>  
-         </FormGroup>
-         <FormGroup>
-             <Label>  Priority :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="priority_type_id" onChange={handleChange} id="priority_type_id"   required>
-                         <option value="">Assign</option>
+        </InputGroup>     
+       <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_status">
+              {" "}
+              BRD Available:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="business_request_document_status" 
+                 id="business_request_document_status" 
+                 onChange={handleChange} 
+                 value={projectFormValue.business_request_document_status} 
+                 required
+              >       <option value="">BRD Status</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+              </Form.Select>
+              </InputGroup>         
+             <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              BRD File:{" "}
+            </InputGroup.Text> <Form.Control type="file"   name="business_request_document_link" onChange={handleChange}  />
+            </InputGroup>
+     
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                name="team_id" 
+                onChange={handleChange} 
+                id="team_id"   
+                required
+              >       <option value="">Select Team</option>
+              {teamsData.map((team, key) =>{
+              return <option key={key} value={team.id}>{team.name}</option>
+              })                  
+              }
+              </Form.Select>
+              </InputGroup>
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_id">
+              {" "}
+              PM:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="user_id" 
+               onChange={handleChange} 
+               id="user_id"   
+               required
+              >       <option value="">Select PM</option>
+              {userData.map((user, key) =>{
+              return <option key={key} value={user.id} >{user.name}</option>
+              })                  
+              }
+              </Form.Select>
+              </InputGroup>
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_status_id">
+              {" "}
+              Status:{" "}
+            </InputGroup.Text>
+              <Form.Select
+            name="project_status_id" 
+            onChange={handleChange} 
+            id="project_status_id"   
+            required
+              >       <option value="">Assign</option>
+              <></>
+              {
+              statusData.map((status, key) =>{
+              return <option key={key} value={status.id}>{status.name}</option>
+              })                
+              }  </Form.Select>
+              </InputGroup>
+       
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="priority_type_id">
+              {" "}
+              Priority:{" "}
+            </InputGroup.Text>
+              <Form.Select
+           name="priority_type_id"
+            onChange={handleChange} 
+            id="priority_type_id"   
+            required
+              >  <option value="">Assign</option>
                          
-                         {
-                         PriorityData.map((priority, key) =>{
-                         return <option key={key} value={priority.id}>{priority.name}</option>
-                         })                
-                         }
-                     </select>
-                 </div>  
-         </FormGroup>
+              {
+              PriorityData.map((priority, key) =>{
+              return <option key={key} value={priority.id}>{priority.name}</option>
+              })                
+              }
+              </Form.Select>
+              </InputGroup>
                            <br />
          <Button variant="primary" type="submit">
              Create Project
@@ -1190,74 +1293,99 @@ return(
             value={liveIssueFormValue.name} 
             required
           />
-        </InputGroup>
-         <Form.Group className="mb-3" >
-       <Form.Label>BRD Available :</Form.Label>
-             <div className="form-group dropdown">
-                 <select className="form-control" name="business_request_document_status" id="business_request_document_status" onChange={handleChange} value={liveIssueFormValue.business_request_document_status} required>
-                   <option value="">BRD Status</option>
-                   <option value={true}>Yes</option>
-                   <option value={false}>No</option>                         
-                 </select>
-             </div>
-       </Form.Group>          
-       <FormGroup>
-         <Label>BRD File</Label>
+        </InputGroup> 
+       <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_status">
+              {" "}
+              BRD Available:{" "}
+            </InputGroup.Text>
+              <Form.Select
+          name="business_request_document_status" 
+          id="business_request_document_status" 
+          onChange={handleChange} 
+          value={liveIssueFormValue.business_request_document_status} 
+          required
+              >   <option value="">BRD Status</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+              </Form.Select>
+              </InputGroup>        
+              <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              BRD File:{" "}
+            </InputGroup.Text>
              <Form.Control type="file"   name="business_request_document_link" onChange={handleChange}  />
-             <Input  name="business_request_document_link" defaultValue="none" placeholder="file link" type="text" onChange={handleChange} value={liveIssueFormValue.business_request_document_link} />
-       </FormGroup>
-         <FormGroup>
-             <Label >  Team : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="team_id" onChange={handleChange} id="team_id"   required>
-                         <option value="">Select Team</option>
-                         {teamsData.map((team, key) =>{
-                         return <option key={key} value={team.id}>{team.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label >PM : </Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="pm_id" onChange={handleChange} id="pm_id"   required>
-                         <option value="">Select PM</option>
-                         {userData.map((user, key) =>{
-                         return <option key={key} value={user.id} >{user.name}</option>
-                         })                  
-                         }
-                     </select>
-                 </div> 
-         </FormGroup>
-         <FormGroup>
-             <Label>  Status :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="project_status_id" onChange={handleChange} id="project_status_id"   required>
-                         <option value="">Assign</option>
+            </InputGroup>
+      
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                name="team_id" 
+                onChange={handleChange}
+                  id="team_id"   
+                  required
+              >    <option value="">Select Team</option>
+              {teamsData.map((team, key) =>{
+              return <option key={key} value={team.id}>{team.name}</option>
+              })                  
+              }
+              </Form.Select>
+              </InputGroup>
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="pm_id">
+              {" "}
+              PM:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="pm_id" onChange={handleChange} id="pm_id"   required
+              > <option value="">Select PM</option>
+              {userData.map((user, key) =>{
+              return <option key={key} value={user.id} >{user.name}</option>
+              })                  
+              }
+              </Form.Select>
+              </InputGroup>
+        
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_status_id">
+              {" "}
+              Status:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="project_status_id" onChange={handleChange} id="project_status_id"   required
+              >
+  <option value="">Assign</option>
                          <></>
                          {
                          statusData.map((status, key) =>{
                          return <option key={key} value={status.id}>{status.name}</option>
                          })                
                          }
-                     </select>
-                 </div>  
-         </FormGroup>
-         <FormGroup>
-             <Label>  Priority :</Label>
-             <div className="form-group dropdown">
-                     <select className="form-control" name="priority_type_id" onChange={handleChange} id="priority_type_id"   required>
-                         <option value="">Assign</option>
+
+              </Form.Select>
+              </InputGroup>
+     
+         <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="priority_type_id">
+              {" "}
+              Priority:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                name="priority_type_id" onChange={handleChange} id="priority_type_id"   required
+              >
+                  <option value="">Assign</option>
                          
                          {
                          PriorityData.map((priority, key) =>{
                          return <option key={key} value={priority.id}>{priority.name}</option>
                          })                
                          }
-                     </select>
-                 </div>  
-         </FormGroup>
+              </Form.Select>
+              </InputGroup>
                            <br />
          <Button variant="primary" type="submit">
              Add Live Issue
@@ -1308,7 +1436,7 @@ return(
 
      </ToastContainer>
 
-</div>
+</>
 
 )
 }

@@ -173,9 +173,13 @@ function AssignProject() {
   return (
     <>
       <Form onSubmit={handleSubmitAssignMember}>
-        <Form.Group className="mb-3">
-          <Form.Label>Status :</Form.Label>
-          <Form.Select
+        
+        <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="user_status_id">
+                  {" "}
+                  Status:{" "}
+                </InputGroup.Text>
+                <Form.Select
             name="user_status_id"
             id="user_status_id"
             onChange={handleChange}
@@ -190,10 +194,18 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Category</Form.Label>
-          <Form.Select
+                </InputGroup>
+
+
+
+
+      
+        <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="project_category_type_id">
+                  {" "}
+                  Category:{" "}
+                </InputGroup.Text>
+                <Form.Select
             name="project_category_type_id"
             id="project_category_type_id"
             onChange={handleChange}
@@ -208,10 +220,14 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Project Type</Form.Label>
-          <Form.Select
+                </InputGroup>
+     
+        <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="project_type_id">
+                  {" "}
+                  Project Type:{" "}
+                </InputGroup.Text>
+                <Form.Select
             name="project_type_id"
             id="project_type_id"
             onChange={handleChange}
@@ -226,11 +242,14 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Project</Form.Label>
-          <Form.Select
+                </InputGroup>
+     
+        <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="project_id">
+                  {" "}
+                  Project:{" "}
+                </InputGroup.Text>
+                <Form.Select
             name="project_id"
             id="project_id"
             onChange={handleChange}
@@ -245,10 +264,13 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Assign To :</Form.Label>
-          <Form.Select
+          </InputGroup>
+        <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="user_id">
+                  {" "}
+                  Assign To:{" "}
+                </InputGroup.Text>
+                <Form.Select
             name="user_id"
             id="user_id"
             onChange={handleChange}
@@ -263,8 +285,7 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-        </Form.Group>
-
+                </InputGroup>
         <InputGroup className="mb-3">
           <InputGroup.Text  className="col-4" id="project-name"> Start Date: </InputGroup.Text>
           <FormControl

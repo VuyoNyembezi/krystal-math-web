@@ -105,6 +105,26 @@ function LiveIssues() {
       last_status_change: "",
       assigned_date: "",
     });
+    setLiveIssueValue({
+      name: "",
+      business_request_document_link: "",
+      business_request_document_status: false,
+      inserted_at: "",
+      last_update: "",
+      pm: "",
+      project_status_id: 0,
+      project_status: "",
+      project_progress: 0,
+      project_status_level: "",
+      last_status_update: "",
+      priority_level: "",
+      priority_name: "",
+      team_id: 0,
+      team_name: "",
+      last_status_change: "",
+      assigned_date: "",
+      id: 0,
+    });
   };
   const handleAddLiveShow = () => setShowAddLiveIssue(true);
 
@@ -122,6 +142,26 @@ function LiveIssues() {
       priority_type_id: 0,
       last_status_change: "",
       assigned_date: "",
+    });
+    setLiveIssueValue({
+      name: "",
+      business_request_document_link: "",
+      business_request_document_status: false,
+      inserted_at: "",
+      last_update: "",
+      pm: "",
+      project_status_id: 0,
+      project_status: "",
+      project_progress: 0,
+      project_status_level: "",
+      last_status_update: "",
+      priority_level: "",
+      priority_name: "",
+      team_id: 0,
+      team_name: "",
+      last_status_change: "",
+      assigned_date: "",
+      id: 0,
     });
   };
   const handleUpdateLiveShow = () => setShowUpdateLiveIssue(true);
@@ -377,7 +417,7 @@ function LiveIssues() {
         .then((response) => response.json())
         .then((res) => setLiveIssuesData(res.data));
     }
-  }, [status_value, teamValue]);
+  }, [latest_data,status_value, teamValue]);
 
   // Search
   function handle_Search_Project_Submit(event) {
@@ -474,6 +514,7 @@ function LiveIssues() {
         if (Response.status === 201) {
           handleShowsuccessLiveCreate();
           handleAddLiveIssueClose();
+          OldData();
         } else if (Response.status === 422) {
           handleShowErrorLiveCreate();
         } else if (Response.status === 401) {
@@ -789,16 +830,16 @@ function LiveIssues() {
       <br/>
       <Container  fluid>
         <Row>
-          <Col sm={7}>
+          <Col sm={8}>
             <Card className="shadow">
               <Card.Header>Live Issues </Card.Header>
-              <Card.Body style={{ height: "700px" }}>
+           
                 <Row>
                   <Col>
-                    <FormGroup>
-                      <div className="form-group dropdown">
-                        <select
-                          className="form-control"
+                    <InputGroup>
+                     
+                        <Form.Select
+                       
                           name="project_status_id_search"
                           onChange={handleChange}
                           id="project_status_id_search"
@@ -813,15 +854,15 @@ function LiveIssues() {
                               </option>
                             );
                           })}
-                        </select>
-                      </div>
-                    </FormGroup>
+                        </Form.Select>
+                    
+                    </InputGroup>
                   </Col>
                   <Col>
-                    <FormGroup>
-                      <div className="form-group dropdown">
-                        <select
-                          className="form-control"
+                    <InputGroup>
+                      
+                        <Form.Select
+                         
                           name="team_id_search"
                           onChange={handleChange}
                           id="team_id_search"
@@ -835,14 +876,14 @@ function LiveIssues() {
                               </option>
                             );
                           })}
-                        </select>
-                      </div>
-                    </FormGroup>
+                        </Form.Select>
+                      
+                    </InputGroup>
                   </Col>
                   <Col sm={7}>
                     <>
                       <Nav className="justify-content-end">
-                        <div className="col-md-7 col-sm-9">
+                        <div className="col-md-7 col-sm-9 me-2">
                           <Form
                             onSubmit={handle_Search_Project_Submit}
                             className="d-flex"
@@ -871,6 +912,7 @@ function LiveIssues() {
                     </>
                   </Col>
                 </Row>
+                <Card.Body className="sdm-live-issues-card">
                 <Tabs defaultActiveKey="active" className="mb-3">
                   <Tab eventKey="active" title="Active">
                     <Table size="sm" striped bordered hover>
@@ -892,14 +934,14 @@ function LiveIssues() {
                                 <td> {project.project_status.name}</td>
                                 <td> {project.priority_type.name}</td>
                                 <td>{project.user.name}</td>
-                                <td className="text-center">
+                                <td >
                                   <Button
                                     variant="outline-success"
                                     size="sm"
                                     onClick={() => selectProject(project)}
                                   >
                                     Select
-                                  </Button>{" "}
+                                  </Button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -911,7 +953,7 @@ function LiveIssues() {
                                     >
                                       update
                                     </Button>
-                                  </button>{" "}
+                                  </button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -959,7 +1001,7 @@ function LiveIssues() {
                                     onClick={() => selectProject(project)}
                                   >
                                     Select
-                                  </Button>{" "}
+                                  </Button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -971,7 +1013,7 @@ function LiveIssues() {
                                     >
                                       update
                                     </Button>
-                                  </button>{" "}
+                                  </button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -1019,7 +1061,7 @@ function LiveIssues() {
                                     onClick={() => selectProject(project)}
                                   >
                                     Select
-                                  </Button>{" "}
+                                  </Button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -1031,7 +1073,7 @@ function LiveIssues() {
                                     >
                                       update
                                     </Button>
-                                  </button>{" "}
+                                  </button>
                                   <button
                                     size="sm" className="btn"
                                     onClick={() => selectProject(project)}
@@ -1078,7 +1120,7 @@ function LiveIssues() {
                                   onClick={() => selectProject(project)}
                                 >
                                   Select
-                                </Button>{" "}
+                                </Button>
                                 <button
                                   size="sm" className="btn"
                                   onClick={() => selectProject(project)}
@@ -1090,7 +1132,7 @@ function LiveIssues() {
                                   >
                                     update
                                   </Button>
-                                </button>{" "}
+                                </button>
                                 <button
                                   size="sm" className="btn"
                                   onClick={() => selectProject(project)}
@@ -1124,8 +1166,8 @@ function LiveIssues() {
           </Col>
           <Col>
             <Card className="shadow">
-              <Card.Header>projects </Card.Header>
-              <Card.Body style={{ height: "700px" }}>
+              <Card.Header>projects Details</Card.Header>
+              <Card.Body className="sdm-live-issues-details-card" >
                 <Row>
                   <Col>Name :</Col>
                   <Col>
@@ -1243,13 +1285,12 @@ function LiveIssues() {
               <Col sm={7}>
                 <Card>
                   <Card.Header>Live Issues </Card.Header>
-                  <Card.Body style={{ height: "700px" }}>
+                  <Card.Body >
                     <Row>
                       <Col>
-                        <FormGroup>
-                          <div className="form-group dropdown">
-                            <select
-                              className="form-control"
+                        <InputGroup>
+                       
+                            <Form.Select
                               name="project_status_id_search"
                               onChange={handleChange}
                               id="project_status_id_search"
@@ -1264,15 +1305,14 @@ function LiveIssues() {
                                   </option>
                                 );
                               })}
-                            </select>
-                          </div>
-                        </FormGroup>
+                            </Form.Select>
+                     
+                        </InputGroup>
                       </Col>
                       <Col>
-                        <FormGroup>
-                          <div className="form-group dropdown">
-                            <select
-                              className="form-control"
+                        <InputGroup>
+                          
+                            <Form.Select
                               name="team_id_search"
                               onChange={handleChange}
                               id="team_id_search"
@@ -1286,14 +1326,14 @@ function LiveIssues() {
                                   </option>
                                 );
                               })}
-                            </select>
-                          </div>
-                        </FormGroup>
+                            </Form.Select>
+                          
+                        </InputGroup>
                       </Col>
                       <Col sm={7}>
                         <>
                           <Nav className="justify-content-end">
-                            <div className="col-md-7 col-sm-9">
+                            <div className="col-md-7 col-sm-9 me-2">
                               <Form
                                 onSubmit={handle_Search_Project_Submit}
                                 className="d-flex"
@@ -1573,7 +1613,7 @@ function LiveIssues() {
               <Col>
                 <Card>
                   <Card.Header>Live Issue Details </Card.Header>
-                  <Card.Body style={{ height: "700px" }}>
+                  <Card.Body >
                     <Row>
                       <Col>Name :</Col>
                       <Col>
@@ -1706,125 +1746,112 @@ function LiveIssues() {
                 required
               />
             </InputGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>BRD Available :</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="business_request_document_status"
-                  id="business_request_document_status"
-                  onChange={handleChange}
-                  value={liveIssueFormValue.business_request_document_status}
-                  required
-                >
-                  <option value="">BRD Status</option>
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
-                </select>
-              </div>
-            </Form.Group>
-            <FormGroup>
-              <Label>BRD File</Label>
-              <Form.Control
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_status">
+              {" "}
+              BRD Available:{" "}
+            </InputGroup.Text>
+              <Form.Select
+            name="business_request_document_status"
+            id="business_request_document_status"
+            onChange={handleChange}
+            value={liveIssueFormValue.business_request_document_status}
+            required >     <option value="">BRD Status</option>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
+             </Form.Select>
+             </InputGroup>
+         
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_link">
+              {" "}
+              BRD File:{" "}
+            </InputGroup.Text>
+            <Form.Control
                 type="file"
                 name="business_request_document_link"
                 onChange={handleChange}
               />
-              <Input
-                name="business_request_document_link"
-                defaultValue="none"
-                placeholder="file link"
-                type="text"
-                onChange={handleChange}
-                value={liveIssueFormValue.business_request_document_link}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label> Team : </Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_id"
-                  onChange={handleChange}
-                  id="team_id"
-                  required
-                >
-                  <option value="">Select Team</option>
-                  {teamsData.map((team, key) => {
-                    return (
-                      <option key={key} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label>PM : </Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="pm_id"
-                  onChange={handleChange}
-                  id="pm_id"
-                  required
-                >
-                  <option value="">Select PM</option>
-                  {userData.map((user, key) => {
-                    return (
-                      <option key={key} value={user.id}>
-                        {user.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label> Status :</Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="project_status_id"
-                  onChange={handleChange}
-                  id="project_status_id"
-                  required
-                >
-                  <option value="">Assign</option>
-                  <></>
-                  {statusData.map((status, key) => {
-                    return (
-                      <option key={key} value={status.id}>
-                        {status.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label> Priority :</Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="priority_type_id"
-                  onChange={handleChange}
-                  id="priority_type_id"
-                  required
-                >
-                  <option value="">Assign</option>
+              </InputGroup>
+        
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+             name="team_id"
+             onChange={handleChange}
+             id="team_id"
+             required ><option value="">Select Team</option>
+             {teamsData.map((team, key) => {
+               return (
+                 <option key={key} value={team.id}>
+                   {team.name}
+                 </option>
+               );
+             })}
+              </Form.Select>
+              </InputGroup>
+        
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="pm_id">
+              {" "}
+              PM:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="pm_id"
+               onChange={handleChange}
+               id="pm_id"
+               required >  <option value="">Select PM</option>
+               {userData.map((user, key) => {
+                 return (
+                   <option key={key} value={user.id}>
+                     {user.name}
+                   </option>
+                 );
+               })}
+              </Form.Select>
+              </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_status_id">
+              {" "}
+              Status:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="project_status_id"
+               onChange={handleChange}
+               id="project_status_id"
+               required > <option value="">Assign</option>
+               <></>
+               {statusData.map((status, key) => {
+                 return (
+                   <option key={key} value={status.id}>
+                     {status.name}
+                   </option>
+                 );
+               })} </Form.Select>
+               </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="priority_type_id">
+              {" "}
+              Priority:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="priority_type_id"
+               onChange={handleChange}
+               id="priority_type_id"
+               required >  <option value="">Assign</option>
 
-                  {PriorityData.map((priority, key) => {
-                    return (
-                      <option key={key} value={priority.id}>
-                        {priority.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
+               {PriorityData.map((priority, key) => {
+                 return (
+                   <option key={key} value={priority.id}>
+                     {priority.name}
+                   </option>
+                 );
+               })}
+                </Form.Select>
+                </InputGroup>
             <br />
             <Button variant="primary" type="submit">
               Add Live Issue
@@ -1881,7 +1908,7 @@ function LiveIssues() {
           <Form onSubmit={handle_Update_Live_Issue}>
             <br />
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text  className="col-4" id="name">Name:</InputGroup.Text>
               <FormControl
                 aria-label="ProjectName"
                 aria-describedby="name"
@@ -1893,118 +1920,104 @@ function LiveIssues() {
                 required
               />
             </InputGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>BRD Available :</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="business_request_document_status"
-                  id="business_request_document_status"
-                  onChange={handleChange}
-                  value={liveIssueFormValue.business_request_document_status}
-                  required
-                >
-                  <option value="">BRD Status</option>
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
-                </select>
-              </div>
-            </Form.Group>
-            <FormGroup>
-              <Label>BRD File</Label>
+        
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_status">
+              {" "}
+              BRD Available:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="business_request_document_status"
+               id="business_request_document_status"
+               onChange={handleChange}
+               value={liveIssueFormValue.business_request_document_status}
+               required ><option value="">BRD Status</option>
+               <option value={true}>Yes</option>
+               <option value={false}>No</option></Form.Select>
+               </InputGroup>
+               <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="business_request_document_status">
+              {" "}
+              BRD File:{" "}
+            </InputGroup.Text>
               <Form.Control
                 type="file"
                 name="business_request_document_link"
-                onChange={handleChange}
+                onChange={handleChange} 
               />
-              <Input
-                name="business_request_document_link"
-                defaultValue="none"
-                placeholder="file link"
-                type="text"
-                onChange={handleChange}
-                value={liveIssueFormValue.business_request_document_link}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label> Team : </Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_id"
-                  onChange={handleChange}
-                  id="team_id"
-                  value={liveIssueFormValue.team_id}
-                  required
-                >
-                  <option value="">Select Team</option>
-                  {teamsData.map((team, key) => {
-                    return (
-                      <option key={key} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label>PM : </Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="pm_id"
-                  onChange={handleChange}
-                  id="pm_id"
-                  value={liveIssueFormValue.pm_id}
-                  required
-                >
-                  <option value="">Select PM</option>
-                  {userData.map((user, key) => {
-                    return (
-                      <option key={key} value={user.id}>
-                        {user.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label> Status :</Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="project_status_id"
-                  onChange={handleChange}
-                  id="project_status_id"
-                  value={liveIssueFormValue.project_status_id}
-                  required
-                >
-                  <option value="">Assign</option>
-                  <></>
-                  {statusData.map((status, key) => {
-                    return (
-                      <option key={key} value={status.id}>
-                        {status.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label> Priority :</Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
+            </InputGroup>
+          
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="team_id"
+               onChange={handleChange}
+               id="team_id"
+               value={liveIssueFormValue.team_id}
+               required > <option value="">Select Team</option>
+               {teamsData.map((team, key) => {
+                 return (
+                   <option key={key} value={team.id}>
+                     {team.name}
+                   </option>
+                 );
+               })}</Form.Select>
+               </InputGroup>
+         
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="pm_id">
+              {" "}
+              PM:{" "}
+            </InputGroup.Text>
+              <Form.Select
+               name="pm_id"
+               onChange={handleChange}
+               id="pm_id"
+               value={liveIssueFormValue.pm_id}
+               required ><option value="">Select PM</option>
+               {userData.map((user, key) => {
+                 return (
+                   <option key={key} value={user.id}>
+                     {user.name}
+                   </option>
+                 );
+               })}</Form.Select>
+               </InputGroup>
+           
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="project_status_id">
+              {" "}
+              Status:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="project_status_id"
+                 onChange={handleChange}
+                 id="project_status_id"
+                 value={liveIssueFormValue.project_status_id}
+                 required ><option value="">Assign</option>
+                 <></>
+                 {statusData.map((status, key) => {
+                   return (
+                     <option key={key} value={status.id}>
+                       {status.name}
+                     </option>
+                   );
+                 })}</Form.Select>
+               </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="priority_type_id">
+              {" "}
+              Priority:{" "}
+            </InputGroup.Text>
+              <Form.Select
                   name="priority_type_id"
                   onChange={handleChange}
                   id="priority_type_id"
                   value={liveIssueFormValue.priority_type_id}
-                  required
-                >
-                  <option value="">Assign</option>
+                  required ><option value="">Assign</option>
 
                   {PriorityData.map((priority, key) => {
                     return (
@@ -2012,10 +2025,8 @@ function LiveIssues() {
                         {priority.name}
                       </option>
                     );
-                  })}
-                </select>
-              </div>
-            </FormGroup>
+                  })}</Form.Select>
+                 </InputGroup>
             <br />
             <Button variant="success" type="submit">
               Done

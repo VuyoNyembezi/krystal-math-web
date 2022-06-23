@@ -275,18 +275,18 @@ function ManagerDashboard() {
       {/* Top navigation */}
       <main className="mt-3">
         <Container fluid className="bg-light main-body">
-          <div className="row">
-            <div className="col">
+          <Row>
+            <Col>
               <h4>BET SOFTWARE PROJECTS</h4>
-            </div>
-          </div>
-          <div className="card shadow border-0 mb-7">
+            </Col>
+          </Row>
+          <Card className="shadow border-0 mb-7">
             <Carousel fade indicators={false}>
-              <Carousel.Item style={{ backgroundColor: "#F0FFFF" }}>
+              <Carousel.Item style={{ backgroundColor: "#F0FFFF" }} interval={40000}>
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
                     <Card
-                      className="card text-white mb-3 py-3"
+                      className="text-white mb-3 py-3"
                       style={{ backgroundColor: "#8f9cb3" }}
                     >
                       <Card.Body>
@@ -319,21 +319,9 @@ function ManagerDashboard() {
                 </div>
                 <Container fluid>
                   <Row>
-                    <div
-                      className="col-md-8 col-sm-12"
-                      style={{
-                        height: "calc(100vh - 290px)",
-                        overflow: "auto",
-                      }}
-                    >
-                      <Card
-                        className="card text-black mb-3"
-                        style={{ backgroundColor: "white" }}
-                      >
-                        <Card.Header
-                          className="card text-white mb-3"
-                          style={{ backgroundColor: "#8F9CB3" }}
-                        >
+                    <div  className="col-md-8 col-sm-12"  style={{  height: "calc(100vh - 290px)",  overflow: "auto" }} >
+                      <Card className="text-black mb-3"  style={{ backgroundColor: "white", height: "86%" }} >
+                        <Card.Header  className="card text-white mb-3"  style={{ backgroundColor: "#8F9CB3" }} >
                           {" "}
                           Operational Projects{" "}
                         </Card.Header>
@@ -363,9 +351,9 @@ function ManagerDashboard() {
                                                       </Form>
                                                     </div>
                                                   </Nav>
-                        <Card.Body>
+                        <Card.Body className="scroll">
                         
-                          <Table className="scroll" size="sm" striped bordered hover>
+                          <Table  size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -420,14 +408,14 @@ function ManagerDashboard() {
                         className="text-center"
                         style={{ backgroundColor: "#8F9CB3" }}
                       >
-                        <Button variant="outline-success" onClick={handleShow}>
+                        <Button size="sm" variant="outline-success" onClick={handleShow}>
                           All
                         </Button>
                       </Card.Footer>
                     </div>
                     <div className="col-md-3 col-sm-12">
-                      {/* <Card fluid style={{ height: "35rem" }}> */}
-                      <Card fluid style={{ height: "97%" }}>
+                
+                      <Card fluid style={{ height: "96%" }}>
                         <Card.Header
                           className="card text-white mb-3"
                           style={{ backgroundColor: "#8F9CB3" }}
@@ -640,17 +628,16 @@ function ManagerDashboard() {
 
               <Carousel.Item
                 style={{ backgroundColor: "#F0FFFF" }}
-                interval={60000}
+                interval={40000}
               >
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
-                    <Card
-                      className="card text-white mb-3 py-3"
+                    <Card  className="text-white mb-3 py-3"
                       style={{ backgroundColor: "#3e7dcc" }}
                     >
                       <Card.Body>
-                        <div className="row">
-                          <div className="col">
+                       <Row>
+                        <Col>
                             <span className="h6 ">Strategic </span>
                             <span className="h5 font-bold mb-0">
                               <CountUp
@@ -665,28 +652,27 @@ function ManagerDashboard() {
                                 )}
                               </CountUp>
                             </span>
-                          </div>
-                          <div className="col">
+                          </Col>
+                        <Col>
                             <span className="h6 text-white">
                               <h1>
                                 <FcEngineering />
                               </h1>
                             </span>
-                          </div>
-                        </div>
-                      </Card.Body>
+                         </Col>
+                        </Row>                      </Card.Body>
                     </Card>
                   </div>
                 </div>
-                <Container fluid style={{ backgroundColor: "#F0FFFF" }}>
+                <Container fluid >
                   <Row>
                     <div
                       className="col-md-8 col-sm-12" style={{ height: "calc(100vh - 290px)", overflow: "auto",
                       }}
                     >
                       <Card
-                        className="card text-black mb-3"
-                        style={{ backgroundColor: "white" }}
+                        className="text-black mb-3"
+                        style={{ backgroundColor: "white", height: "86%" }}
                       >
                         <Card.Header className="card text-white mb-3" style={{ backgroundColor: "#3E7DCC" }} >
                           {" "}
@@ -718,9 +704,8 @@ function ManagerDashboard() {
                                                           </Form>
                                                         </div>
                                                       </Nav>
-                        <Card.Body>
-                         
-                          <Table className="scroll" size="sm" striped bordered hover>
+                        <Card.Body className="scroll">
+                          <Table size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -772,7 +757,7 @@ function ManagerDashboard() {
                       </Card>
                       <Card.Footer className="text-center">
                         <Button
-                          v
+                          size="sm"
                           style={{ backgroundColor: "#3E7DCC" }}
                           onClick={handleShowStrategic}
                         >
@@ -781,7 +766,7 @@ function ManagerDashboard() {
                       </Card.Footer>
                     </div>
                     <div className="col-md-3 col-sm-12">
-                      <Card fluid style={{ height: "97%" }}>
+                      <Card fluid style={{ height: "96%" }}>
                         <Card.Header
                           className="card text-white mb-3"
                           style={{ backgroundColor: "#3E7DCC" }}
@@ -992,7 +977,7 @@ function ManagerDashboard() {
 
               <Carousel.Item
                 style={{ backgroundColor: "#F0FFFF" }}
-                interval={60000}
+                interval={40000}
               >
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
@@ -1042,7 +1027,7 @@ function ManagerDashboard() {
                     >
                       <Card
                         className="card text-black mb-3"
-                        style={{ backgroundColor: "white" }}
+                        style={{ backgroundColor: "white", height: "86%" }}
                       >
                         <Card.Header
                           className="card text-white mb-3"
@@ -1075,9 +1060,9 @@ function ManagerDashboard() {
                               </Form>
                             </div>
                           </Nav>
-                        <Card.Body >
+                        <Card.Body  className="scroll">
                
-                          <Table className="scroll" size="sm" striped bordered hover>
+                          <Table size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -1129,6 +1114,7 @@ function ManagerDashboard() {
                       </Card>
                       <Card.Footer className="text-center">
                         <Button
+                           size="sm"
                           style={{ backgroundColor: "#00C8C8" }}
                           onClick={handleShowLiveIssues}
                         >
@@ -1137,7 +1123,7 @@ function ManagerDashboard() {
                       </Card.Footer>
                     </div>
                     <div className="col-md-3 col-sm-12">
-                      <Card fluid style={{ height: "97%" }}>
+                      <Card fluid style={{ height: "96%" }}>
                         <Card.Header
                           className="card text-white mb-3"
                           style={{ backgroundColor: "#00C8C8" }}
@@ -1348,7 +1334,7 @@ function ManagerDashboard() {
                 </Container>
               </Carousel.Item>
             </Carousel>
-          </div>
+          </Card>
         </Container>
       </main>
       {/* Modals */}

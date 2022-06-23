@@ -3,7 +3,6 @@ import {
   Card,
   CardGroup,
   Table,
-  Tab,
   Button,
   Badge,
   Form,
@@ -12,12 +11,10 @@ import {
   ToastContainer,
   InputGroup,
   FormControl,
+  Container,
 } from "react-bootstrap";
 
 import { FcApproval  } from "react-icons/fc";
-
-
-
 import holder from "../../content/images/holder.png";
 import { URL } from "../../../server_connections/server";
 import { Token } from "../../../server_connections/server";
@@ -169,20 +166,21 @@ function ManageMembers() {
   }
 
   return (
-    <div>
-      <Tab.Container id="left-tabs-example" defaultActiveKey="default">
-        <Tab.Content>
-          <h4> Members :</h4>
-
-          <CardGroup>
-            <Card className="shadow" style={{ height: "50rem" }}>
-              <h4>
+    <>
+ 
+<div className="mt-3">
+  <Container fluid>
+    <Card>
+      <Card.Body className="teamlead-member-control-card">
+               <CardGroup>
+            <Card className="shadow" >
+              <Card.Header>
                 Team Leader:{" "}
                 <b>
                   <i>{localStorage.getItem('name')}</i>
                 </b>{" "}
-              </h4>
-              <Card.Body>
+              </Card.Header>
+              <Card.Body className="teamlead-member-control-card-members-card">
                 <Table size="sm" striped bordered hover>
                   <thead>
                     <tr>
@@ -223,39 +221,38 @@ function ManageMembers() {
                 </small>
               </Card.Footer>
             </Card>
-            <Card
-              className="shadow"
-              style={{ maxWidth: "28rem", maxHeight: "70rem" }}
-            >
-              <Card className="shadow" style={{ width: "20rem" }}>
-                <Card.Img variant="top" src={holder} />
-                <Card.Body>
-                  <Card.Title>{}</Card.Title>
+            <Card  className="shadow"  >
+            <Card.Header>Loan..</Card.Header>
+              <Card.Body>
+                <Card className="shadow" style={{ width: "40%" }}>
+                            <Card.Img variant="top" src={holder} />
+                            <Card.Body>
+                              <Card.Title>{}</Card.Title>
 
-                  <Badge className="badge rounded-pill bg-success ">
-                    Request loan
-                  </Badge>
-                  <br />
-                  <>
-                    <Button
-                      variant="outline-success"
-                      size="sm"
-                      onClick={handleLoanRequestShow}
-                    >
-                      Request
-                    </Button>
-                  </>
-                  <hr />
-                </Card.Body>
-              </Card>
-
-              <Card.Footer>
-                <small className="text-muted">overview of your teammates</small>
-              </Card.Footer>
+                              <Badge className="badge rounded-pill bg-success ">
+                                Request loan
+                              </Badge>
+                              <br />
+                        
+                                <Button  variant="outline-success"  size="sm"   onClick={handleLoanRequestShow} >
+                                  Request
+                                </Button>
+                          
+                              <hr />
+                            </Card.Body>
+                          </Card> 
+              </Card.Body>
             </Card>
           </CardGroup>
-        </Tab.Content>
-      </Tab.Container>
+      </Card.Body>
+   
+    </Card>
+
+  </Container>
+  
+</div>
+          
+     
 
       {/* modal for updating record details  */}
       <Modal show={showUpdateUser} onHide={handleUpdateClose}>
@@ -292,18 +289,19 @@ function ManageMembers() {
                 readOnly
               />
             </InputGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_id"
-                  id="team_id"
-                  onChange={handleChange}
-                  value={_user.team_id}
-                  required
-                >
-                  <option value="">Select Team</option>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="team_id"
+                 id="team_id"
+                 onChange={handleChange}
+                 value={_user.team_id}
+                 required
+              >
+              <option value="">Select Team</option>
                   {teamValue.map((team, key) => {
                     return (
                       <option key={key} value={team.id}>
@@ -311,9 +309,9 @@ function ManageMembers() {
                       </option>
                     );
                   })}
-                </select>
-              </div>
-            </Form.Group>
+            </Form.Select>
+            </InputGroup>
+         
             <Button variant="secondary" onClick={handleUpdateClose}>
               Close
             </Button>{" "}
@@ -336,50 +334,49 @@ function ManageMembers() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
+         
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
                   name="team_id"
                   id="team_id"
                   onChange={handleChange}
                   value={requestValue.team_id}
                   required
-                >
-                  <option value="">Select Team</option>
-                  {teamValue.map((team, key) => {
-                    return (
-                      <option key={key} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Member</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="user_id"
-                  id="user_id"
-                  onChange={handleChange}
-                  value={requestValue.user_id}
-                  required
-                >
-                  <option value="">Select Member</option>
-                  {TeamMembersForm.map((member, key) => {
-                    return (
-                      <option key={key} value={member.id}>
-                        {member.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
+              >  <option value="">Select Team</option>
+              {teamValue.map((team, key) => {
+                return (
+                  <option key={key} value={team.id}>
+                    {team.name}
+                  </option>
+                );
+              })}
+                </Form.Select>
+                </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_id">
+              {" "}
+              Member:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                   name="user_id"
+                   id="user_id"
+                   onChange={handleChange}
+                   value={requestValue.user_id}
+                   required
+              >    <option value="">Select Member</option>
+              {TeamMembersForm.map((member, key) => {
+                return (
+                  <option key={key} value={member.id}>
+                    {member.name}
+                  </option>
+                );
+              })}
+              </Form.Select>
+              </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text  className="col-4" id="project-name"> Period: </InputGroup.Text>
               <FormControl
@@ -476,7 +473,7 @@ function ManageMembers() {
           <Toast.Body className="text-white">server error occured</Toast.Body>
         </Toast>
       </ToastContainer>
-    </div>
+    </>
   );
 }
 export default ManageMembers;

@@ -16,8 +16,8 @@ return (
     <Col>
     <Card >
       <Card.Header> Team Projects Overview</Card.Header>
-      <Card.Body >
-          <div style={{height: "640px"}}>
+      <Card.Body className='dev-team-project-overview-card' >
+          <div style={{height: "50%"}}>
             <ProjectOverviewChart/>
           </div>
         
@@ -27,8 +27,8 @@ return (
     <Col>
     <Card>
       <Card.Header>Tasks Overview</Card.Header>
-      <Card.Body >
-      <div style={{height: "640px"}} >
+      <Card.Body className='dev-task-project-overview-card'>
+      <div style={{width: "85%"}} >
           <DevTaskOverviewChart/>
      
       </div>

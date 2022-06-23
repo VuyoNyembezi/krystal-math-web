@@ -46,14 +46,11 @@ function TaskOverviewChart() {
     ],
   };
   return (
-    <Card className="shadow">
-      <Card.Header>Task Overview</Card.Header>
-      <Card.Body>
-        <div style={{ width: "500px" }}>
+    
+        <div style={{ width: "40%" }}>
           <Doughnut data={data} />
         </div>
-      </Card.Body>
-    </Card>
+    
   );
 }
 export default TaskOverviewChart;

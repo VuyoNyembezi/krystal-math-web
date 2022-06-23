@@ -68,7 +68,7 @@ function DevTaskOverviewChart() {
 
   return (
     <>
-     <div style={{width: "400px", }}>
+     <div style={{width: "60%",height:"60%" }}>
         <Pie data={data} />
       </div>
       <>

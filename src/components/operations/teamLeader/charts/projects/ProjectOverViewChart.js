@@ -102,11 +102,12 @@ function ProjectOverviewChart() {
     ],
   };
   return (
-    <Card className='shadow'>
-      <div style={{ width: "500px" }}>
-        <Doughnut data={data} />
-      </div>
-    </Card>
+  
+       <div style={{width: "60%",height:"60%" }}>
+       <Doughnut data={data} />
+       </div>
+     
+     
   );
 }
 

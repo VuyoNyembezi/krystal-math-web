@@ -3,8 +3,9 @@ import 'chart.js/auto';
 
 import { URL } from '../../../../../server_connections/server';
 import { Token } from '../../../../../server_connections/server';
-import {Card, Form } from 'react-bootstrap';
+import {Form } from 'react-bootstrap';
 import { Pie } from 'react-chartjs-2';
+
 
 
 function TeamProjectsOverviewChart() {
@@ -38,12 +39,15 @@ useEffect(() =>{
           'Authorization': `Bearer ${Token}`
         ,'Content-Type': 'application/json'},
     }
-      // team category projects by category
+    if(projectCategory.project_category_type_id !== 0){
+          // team category projects by category
       fetch(`${URL}/api/auth/team_projects/category/count?team_id=${localStorage.getItem('team')}&category_type=${projectCategory.project_category_type_id}`,requestOptions)
       .then((response) => response.json())
       .then(Result => set_team_project_statuses(Result))
+    }
+  
 
-  },[projectCategory.project_category_type_id])
+  },[projectCategory])
 
   const data ={
     
@@ -89,9 +93,8 @@ useEffect(() =>{
       }
   return (
     <>
-     <Card className='shadow'>
-       <Card.Body>
-       <div style={{width: "400px", }}>
+   
+       <div style={{width: "50%",height:"30%" }}>
         <Form.Group className="mb-3">
                     <Form.Select     name="project_category_type_id" id="project_category_type_id" onChange={handleChange}  required>
                                         <option value="">Select Category</option>
@@ -104,8 +107,7 @@ useEffect(() =>{
                 </Form.Group>
         <Pie data={data} />
       </div>
-       </Card.Body>
-    </Card>
+
     </>
   );
 }

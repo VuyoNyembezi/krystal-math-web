@@ -12,7 +12,7 @@ function Header() {
     <>
       <header>
         
-  <Navbar  collapseOnSelect expand="lg" bg="dark" variant="dark">  
+  <Navbar   role="navigation" collapseOnSelect expand="lg" bg="secondary" variant="dark">  
 <Container fluid>
     <Navbar.Brand href='/dev'>
       <img
@@ -49,7 +49,7 @@ function Header() {
             </Nav.Link>
           </Nav>
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>Hi: {localStorage.getItem("name")}</Navbar.Text>
+            <Navbar.Text  className="me-2">Hi: {localStorage.getItem("name")}</Navbar.Text>
           </Navbar.Collapse>
 
           <Link onClick={() => logout()} to="/">
