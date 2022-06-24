@@ -62,7 +62,7 @@ function TeamOverview() {
     )
       .then((response) => response.json())
       .then((Result) => set_Team_Projects_Counter_Data(Result));
-  }, [Team_Projects_CounterData, team_tasks_overview]);
+  }, []);
   return (
     <>
       <Container fluid>

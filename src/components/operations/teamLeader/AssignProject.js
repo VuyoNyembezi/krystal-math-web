@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { FcApproval } from "react-icons/fc";
 
 import { URL } from "../../../server_connections/server";
-import { Token } from "../../../server_connections/server";
 function AssignProject() {
 // create date condition toasts
   // Kick off date less than today/now
@@ -75,7 +74,7 @@ function AssignProject() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
         "Content-Type": "application/json",
       },
     };
@@ -109,7 +108,7 @@ function AssignProject() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
         "Content-Type": "application/json",
       },
     };
@@ -162,7 +161,7 @@ function AssignProject() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
       },
       body: JSON.stringify({
         projects_assignment: {

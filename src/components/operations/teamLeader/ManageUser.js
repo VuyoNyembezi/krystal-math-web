@@ -18,7 +18,6 @@ import {
 import { FcApproval  } from "react-icons/fc";
 import holder from "../../content/images/holder.png";
 import { URL } from "../../../server_connections/server";
-import { Token } from "../../../server_connections/server";
 function ManageMembers() {
     // search state
     const [search_key, set_search_key] = useState({
@@ -92,7 +91,7 @@ function ManageMembers() {
         fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
       method: "get",
       headers: {
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -110,7 +109,7 @@ function ManageMembers() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
         "Content-Type": "application/json",
       },
     };
@@ -125,7 +124,7 @@ function ManageMembers() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
         "Content-Type": "application/json",
       },
     };
@@ -182,7 +181,7 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
       },
       body: JSON.stringify({
         id: _user.id,
@@ -228,7 +227,7 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${localStorage.getItem('key')}`,
       },
       body: JSON.stringify({
         id: _user.id,

@@ -531,7 +531,7 @@ function LiveIssues() {
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.assigned_date = date.toISOString();
     liveIssueFormValue.last_status_change = date.toISOString();
-    debugger;
+  
 if (liveIssueFormValue.project_status_id === completion_key) {
      
       handleCompleteLiveIssueShow();
@@ -690,7 +690,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.last_status_change = date.toISOString();
     let completion_key = "8";
-    debugger;
+   
   if (liveIssueFormValue.project_status_id === completion_key) {
       fetch(`${URL}/api/auth/live_issue/update`, {
         method: "put",

@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react';
 import 'chart.js/auto';
 
 import { URL } from '../../../../../server_connections/server';
-import { Token } from '../../../../../server_connections/server';
 import {Form } from 'react-bootstrap';
 import { Pie } from 'react-chartjs-2';
 
@@ -36,18 +35,17 @@ useEffect(() =>{
       method:'Get',
       headers:{
           'Accept':'application/json',
-          'Authorization': `Bearer ${Token}`
+          'Authorization': `Bearer ${localStorage.getItem('key')}`
         ,'Content-Type': 'application/json'},
     }
-    if(projectCategory.project_category_type_id !== 0){
-          // team category projects by category
+ 
+            // team category projects by category
       fetch(`${URL}/api/auth/team_projects/category/count?team_id=${localStorage.getItem('team')}&category_type=${projectCategory.project_category_type_id}`,requestOptions)
       .then((response) => response.json())
       .then(Result => set_team_project_statuses(Result))
-    }
-  
 
-  },[projectCategory])
+    
+  },[projectCategory.project_category_type_id,team_project_statuses])
 
   const data ={
     
@@ -93,7 +91,6 @@ useEffect(() =>{
       }
   return (
     <>
-   
        <div style={{width: "50%",height:"30%" }}>
         <Form.Group className="mb-3">
                     <Form.Select     name="project_category_type_id" id="project_category_type_id" onChange={handleChange}  required>

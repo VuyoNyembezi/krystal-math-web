@@ -3,7 +3,6 @@ import 'chart.js/auto';
 import {Doughnut} from 'react-chartjs-2';
 
 import { URL } from '../../../../../server_connections/server';
-import { Token } from '../../../../../server_connections/server';
 
 function TeamLiveIssuesOverviewChart() {
 
@@ -15,7 +14,7 @@ function TeamLiveIssuesOverviewChart() {
       method:'Get',
       headers:{
           'Accept':'application/json',
-          'Authorization': `Bearer ${Token}`
+          'Authorization': `Bearer ${localStorage.getItem('key')}`
         ,'Content-Type': 'application/json'},
     }
      // nteam project status overview

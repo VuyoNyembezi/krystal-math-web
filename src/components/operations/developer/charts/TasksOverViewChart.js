@@ -3,7 +3,6 @@ import React,{useEffect,useState} from 'react';
 import 'chart.js/auto';
 import {Pie} from 'react-chartjs-2';
 import { URL } from '../../../../server_connections/server';
-import { Token } from '../../../../server_connections/server';
 import { Badge, Card, Col, Row } from 'react-bootstrap';
 import CountUp from 'react-countup';
 
@@ -20,7 +19,7 @@ function DevTaskOverviewChart() {
       method:'Get',
       headers:{
           'Accept':'application/json',
-          'Authorization': `Bearer ${Token}`
+          'Authorization': `Bearer ${localStorage.getItem('key')}`
         ,'Content-Type': 'application/json'},
     }
 
