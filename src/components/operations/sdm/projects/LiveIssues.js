@@ -47,11 +47,7 @@ function LiveIssues() {
   const handleShowErrorLiveUpdate = () => set_error_live_updated(true);
   const handleCloseErrorLiveUpdate = () => set_error_live_updated(false);
 
-  // update  error toast controller
-  const [duplicate_live_updated, set_duplicate_live_updated] = useState(false);
-  const handleShowDuplicateLiveUpdate = () => set_duplicate_live_updated(true);
-  const handleCloseDuplicateLiveUpdate = () =>
-    set_duplicate_live_updated(false);
+
 
   // completed  live issue toast controller
   const [live_completed, set_live_completed] = useState(false);
@@ -2185,25 +2181,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Toast.Body className="text-white">Live Issues resolved </Toast.Body>
         </Toast>
 
-        <Toast
-          onClose={handleCloseDuplicateLiveUpdate}
-          show={duplicate_live_updated}
-          bg={"warning"}
-          delay={5000}
-          autohide
-        >
-          <Toast.Header>
-            <img
-              src="holder.js/20x20?text=%20"
-              className="rounded me-2"
-              alt=""
-            />
-            <strong className="me-auto">Error</strong>
-          </Toast.Header>
-          <Toast.Body className="text-white">
-            status already assigned
-          </Toast.Body>
-        </Toast>
+     
 
         {/* Live Issues Server Error  */}
         <Toast
