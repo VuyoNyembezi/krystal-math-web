@@ -548,6 +548,7 @@ function UserTools() {
                                 </button>
                               </td>
                               <td className="text-center">
+                            
                                 <button
                                   size="sm"
                                   className="btn"
@@ -560,7 +561,7 @@ function UserTools() {
                                   >
                                     Update
                                   </Button>
-                                </button>{" "}
+                                </button>
                                 <button
                                   size="sm"
                                   className="btn"
@@ -574,6 +575,7 @@ function UserTools() {
                                     Delete
                                   </Button>
                                 </button>
+                           
                               </td>
                             </tr>
                           );
@@ -824,28 +826,26 @@ function UserTools() {
                 required
               />
             </InputGroup>
-            <Form.Group>
-              <Form.Label> Team Leader : </Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_lead_id"
-                  onChange={handleChange}
-                  id="team_lead_id"
-                  value={toolFormValue.team_lead_id}
-                  required
-                >
-                  <option value="">Select Team Leader:</option>
-                  {UsersData.map((user, key) => {
-                    return (
-                      <option key={key} value={user.id}>
-                        {user.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_lead_id">
+              {" "}
+              Team Leader:{" "}
+            </InputGroup.Text>
+              <Form.Select
+              name="team_lead_id"
+              onChange={handleChange}
+              id="team_lead_id"
+              value={toolFormValue.team_lead_id}
+              required> <option value="">Select Team Leader:</option>
+              {UsersData.map((user, key) => {
+                return (
+                  <option key={key} value={user.id}>
+                    {user.name}
+                  </option>
+                );
+              })}
+              </Form.Select>
+              </InputGroup>
             <Form.Text className="text-muted">
               please note you can't add records with same name.
             </Form.Text>
@@ -888,28 +888,26 @@ function UserTools() {
             <Form.Text className="text-muted">
               please note you can't add to records with same name.
             </Form.Text>
-            <Form.Group>
-              <Form.Label> Team Leader : </Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_lead_id"
-                  onChange={handleChange}
-                  id="team_lead_id"
-                  value={toolFormValue.team_lead_id}
-                  required
-                >
-                  <option value="">Select Team Leader:</option>
-                  {UsersData.map((user, key) => {
-                    return (
-                      <option key={key} value={user.id}>
-                        {user.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_lead_id">
+              {" "}
+              Team Leader:{" "}
+            </InputGroup.Text>
+              <Form.Select
+              name="team_lead_id"
+              onChange={handleChange}
+              id="team_lead_id"
+              value={toolFormValue.team_lead_id}
+              required> <option value="">Select Team Leader:</option>
+              {UsersData.map((user, key) => {
+                return (
+                  <option key={key} value={user.id}>
+                    {user.name}
+                  </option>
+                );
+              })}
+              </Form.Select>
+              </InputGroup>
             <Button variant="secondary" onClick={handle_update_Close_Team}>
               Close
             </Button>{" "}

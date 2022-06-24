@@ -7,7 +7,6 @@ import {
   Container,
   Form,
   FormControl,
-  FormGroup,
   InputGroup,
   Modal,
   Nav,
@@ -23,7 +22,6 @@ import CountUp from "react-countup";
 import "chart.js/auto";
 import { useNavigate } from "react-router-dom";
 import { FcSearch,FcApproval } from "react-icons/fc";
-import { Input, Label } from "reactstrap";
 
 
 import { URL } from "../../../../server_connections/server";
@@ -348,6 +346,8 @@ function LiveIssues() {
     status_value.project_status_id_search,
   ]);
 
+  console.log(AllLiveIssuesData)
+
   // filter effect  team
   useEffect(() => {
     const requestOptions = {
@@ -452,6 +452,8 @@ function LiveIssues() {
     var date = new Date();
 
     liveIssueFormValue.assigned_date = date.toISOString();
+    liveIssueFormValue.last_status_change = date.toISOString();
+
     if (liveIssueFormValue.team_id === default_team) {
       fetch(`${URL}/api/auth/create/live_issues`, {
         method: "post",
@@ -471,7 +473,7 @@ function LiveIssues() {
             pm_id: liveIssueFormValue.pm_id,
             project_status_id: liveIssueFormValue.project_status_id,
             priority_type_id: liveIssueFormValue.priority_type_id,
-            last_status_change: now_date.toISOString(),
+            last_status_change: liveIssueFormValue.last_status_change
           },
         }),
       }).then((Response) => {
@@ -526,23 +528,20 @@ function LiveIssues() {
   // Update Live Issues Project
   function handle_Update_Live_Issue(event) {
     event.preventDefault();
-    let default_team = 1;
+  
     let completion_key = "8";
     var date = new Date();
     // var now_utc = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.assigned_date = date.toISOString();
-    if (
-      liveIssueFormValue.project_status_id ===
-      live_issue_Value.project_status_id
-    ) {
-      handleUpdateLiveIssueClose();
-      handleShowDuplicateLiveUpdate();
-    } else if (liveIssueFormValue.project_status_id === completion_key) {
-      handleUpdateLiveIssueClose();
+    liveIssueFormValue.last_status_change = date.toISOString();
+    debugger;
+if (liveIssueFormValue.project_status_id === completion_key) {
+     
       handleCompleteLiveIssueShow();
-    } else if (
-      liveIssueFormValue.team_id === default_team &&
+    } 
+    else if (
+      liveIssueFormValue.project_status_id !== live_issue_Value.project_status_id &&
       liveIssueFormValue.project_status_id !== completion_key
     ) {
       fetch(`${URL}/api/auth/live_issue/main/update`, {
@@ -564,6 +563,7 @@ function LiveIssues() {
             pm_id: liveIssueFormValue.pm_id,
             project_status_id: liveIssueFormValue.project_status_id,
             priority_type_id: liveIssueFormValue.priority_type_id,
+            last_status_change: liveIssueFormValue.last_status_change,
             assigned_date: null,
             is_active: true,
           },
@@ -694,12 +694,8 @@ function LiveIssues() {
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.last_status_change = date.toISOString();
     let completion_key = "8";
-    if (
-      liveIssueFormValue.project_status_id ===
-      live_issue_Value.project_status_id
-    ) {
-      handleShowDuplicateLiveUpdate();
-    } else if (liveIssueFormValue.project_status_id === completion_key) {
+    debugger;
+  if (liveIssueFormValue.project_status_id === completion_key) {
       fetch(`${URL}/api/auth/live_issue/update`, {
         method: "put",
         headers: {
@@ -1214,7 +1210,7 @@ function LiveIssues() {
                 <Row>
                   <Col>Last Status Update :</Col>
                   <Col>
-                    <p>{live_issue_Value.last_status_update}</p>
+                    <p>{live_issue_Value.last_status_change}</p>
                   </Col>
                 </Row>
                 <Row>
@@ -1280,13 +1276,15 @@ function LiveIssues() {
           <Modal.Title>Live Issues</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Container fluid>
-            <Row>
-              <Col sm={7}>
+        
+            <Card>
+              <Card.Body className="sdm-live-issue-modal-card">
+                 <Row>
+              <Col sm={8}>
                 <Card>
                   <Card.Header>Live Issues </Card.Header>
-                  <Card.Body >
-                    <Row>
+               
+                    <Row className="mt-3">
                       <Col>
                         <InputGroup>
                        
@@ -1333,7 +1331,7 @@ function LiveIssues() {
                       <Col sm={7}>
                         <>
                           <Nav className="justify-content-end">
-                            <div className="col-md-7 col-sm-9 me-2">
+                            <div className="col-md-7 col-sm-9 me-3">
                               <Form
                                 onSubmit={handle_Search_Project_Submit}
                                 className="d-flex"
@@ -1361,7 +1359,7 @@ function LiveIssues() {
                           </Nav>
                         </>
                       </Col>
-                    </Row>
+                    </Row>   <Card.Body className="sdm-live-issue-modal-live-issues-card">
                     <Tabs defaultActiveKey="active" className="mb-3">
                       <Tab eventKey="active" title="Active">
                         <Table size="sm" striped bordered hover>
@@ -1613,7 +1611,7 @@ function LiveIssues() {
               <Col>
                 <Card>
                   <Card.Header>Live Issue Details </Card.Header>
-                  <Card.Body >
+                  <Card.Body className="sdm-live-issue-modal-live-issues-details-card">
                     <Row>
                       <Col>Name :</Col>
                       <Col>
@@ -1637,12 +1635,6 @@ function LiveIssues() {
                       <Col>Assigned Date :</Col>
                       <Col>
                         <p>{live_issue_Value.assigned_date}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Status :</Col>
-                      <Col>
-                        <p>{live_issue_Value.project_status}</p>
                       </Col>
                     </Row>
                     <Row>
@@ -1713,11 +1705,11 @@ function LiveIssues() {
                 </Card>
               </Col>
             </Row>
-          </Container>
+              </Card.Body>
+            </Card>
+    
         </Modal.Body>
-        <Modal.Footer>
      
-        </Modal.Footer>
       </Modal>
 
       {/* Add Live Issue */}

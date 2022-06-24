@@ -732,9 +732,7 @@ const handleChange =(event) => {
            <Button variant="secondary" size='sm' onClick={handleClose}>
              Close
            </Button>
-           <Button variant="success" size='sm' onClick={handleClose}>
-             Done
-           </Button>
+       
          </Modal.Footer>
        </Modal>
 

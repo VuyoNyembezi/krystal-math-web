@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useMemo  } from 'react';
-import {Tab, Button, Form, Tabs, Card, Table, Modal, Toast, ToastContainer, Container} from 'react-bootstrap'
+import {Tab, Button, Form, Tabs, Card, Table, Modal, Toast, ToastContainer, Container, InputGroup} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import {
 
@@ -725,8 +725,8 @@ function handleSubmitUpdateProject(event){
                         </Modal.Header>
                         <Modal.Body>  
                                 <Form onSubmit={handleSubmitUpdateProject}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Status :</Form.Label>
+                               <InputGroup className="mb-3">
+                                         <InputGroup.Text  className="col-4" id="user_status_id">Status:</InputGroup.Text>
                                     <Form.Select     name="user_status_id" id="user_status_id" onChange={handleChange} value={AssignProjectFormValue.user_status_id}  required>
                                                         <option value="">Select Member Status</option>
                                                         {
@@ -735,7 +735,7 @@ function handleSubmitUpdateProject(event){
                                                         })                
                                                         }
                                     </Form.Select>
-                                </Form.Group>
+                                </InputGroup>
                                     <Button variant="primary" size='sm' type="submit">
                                         Update 
                                     </Button>  

@@ -4,15 +4,12 @@ import { Doughnut } from "react-chartjs-2";
 
 import { URL } from "../../../../../server_connections/server";
 import { Token } from "../../../../../server_connections/server";
-import { Card } from "react-bootstrap";
 
 function ProjectOverviewChart() {
   // team project status overview
   const [team_project_statuses, set_team_project_statuses] = useState([]);
   // Team overview
-  const [Team_Projects_CounterData, set_Team_Projects_Counter_Data] = useState(
-    []
-  );
+
 
   useEffect(() => {
     const requestOptions = {
@@ -34,27 +31,7 @@ function ProjectOverviewChart() {
       .then((Result) => set_team_project_statuses(Result));
   }, [team_project_statuses]);
 
-  useEffect(() => {
-    const requestOptions = {
-      method: "Get",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-        "Content-Type": "application/json",
-      },
-    };
 
-    // Team Projects
-    // All  Projects Ovuerview
-    fetch(
-      `${URL}/api/auth/team/project/count?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_Team_Projects_Counter_Data(Result));
-  }, [Team_Projects_CounterData]);
   const data = {
     labels: [
       "No Started",

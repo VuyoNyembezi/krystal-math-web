@@ -611,8 +611,8 @@ else {
                 required
               />
             </InputGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>Task Status</Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="task_status_id">Task Status:</InputGroup.Text>
               <Form.Select
                 name="task_status_id"
                 id="task_status_id"
@@ -629,9 +629,9 @@ else {
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Enviroment</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="environment_id">Enviroment:</InputGroup.Text>
               <Form.Select
                 name="environment_id"
                 id="environment_id"
@@ -649,9 +649,9 @@ else {
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="team_id">Team:</InputGroup.Text>
               <Form.Select
                 name="team_id"
                 id="team_id"
@@ -669,9 +669,9 @@ else {
                   );
                 })}
               </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Assign To:</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="user_id">Assign To:</InputGroup.Text>
               <Form.Select
                 name="user_id"
                 id="user_id"
@@ -690,7 +690,7 @@ else {
                   );
                 })}
               </Form.Select>
-            </Form.Group>
+            </InputGroup>
             <InputGroup>
               <InputGroup.Text  className="col-4">Comment :</InputGroup.Text>
               <FormControl

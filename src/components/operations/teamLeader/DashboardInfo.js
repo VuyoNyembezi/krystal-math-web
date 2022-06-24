@@ -37,6 +37,26 @@ function DashBoardInfo() {
   const history = useNavigate();
   // Calender state Controller
   const [date, setDate] = useState(new Date());
+
+// create date condition toasts
+  // Kick off date less than today/now
+  const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
+  const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
+  const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
+ // Kick off date less than due date
+ const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
+ const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+ const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+ // Due  date less than now
+ const [due_date_less_now, set_due_date_less_now] = useState(false);
+ const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+ const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Due off date less than kickoff
+  const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
+  const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
+  const handleCloseDueDateLessKO = () => set_due_date_less_kickoff(false);
+
+
   // Update Toaster
   const [success_live_updated, set_success_live_updated] = useState(false);
   const handleShowsuccessLiveUpdate = () => set_success_live_updated(true);
@@ -397,11 +417,14 @@ function DashBoardInfo() {
   // Keeps track of changes in the database
   const [old_team_projects_data, set_old_team_projects_data] = useState([]);
   const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([]);
-  // const [old_team_tasks_data, set_old_team_tasks_data] = useState([])
+  const [old_team_tasks_data, set_old_team_tasks_data] = useState([])
   function OldData() {
     set_old_team_projects_data(projectData);
     set_old_team_live_issue_data(LiveIssueData);
+
   }
+
+
 
   const latest_project_data = useMemo(
     () => old_team_projects_data,
@@ -412,7 +435,15 @@ function DashBoardInfo() {
     () => old_team_live_issue_data,
     [old_team_live_issue_data]
   );
+  const latest_team_task_data = useMemo(
+    () => old_team_tasks_data,
+    [old_team_tasks_data]
+  );
 
+
+  function TaskData(){
+    set_old_team_tasks_data(memberTask);
+  }
   // Team Members List
   useEffect(() => {
     const requestOptions = {
@@ -452,7 +483,7 @@ function DashBoardInfo() {
       .then((Result) => {
         setMemberTask(Result.open_tasks);
       });
-  }, [memberValue.id]);
+  }, [latest_team_task_data,memberValue.id]);
 
   useEffect(() => {
     const requestOptions = {
@@ -701,9 +732,29 @@ function DashBoardInfo() {
       .then((response) => response.json())
       .then((results) => setTaskStatus(results.data));
   }, []);
-
+  const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
+  const kickoffDate = `${
+    taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
+  }`;
   function handleSubmitTaskCreate(event) {
     event.preventDefault();
+    const today = new Date().toISOString();
+    var kickoffValue = new Date(kickoffDate).toISOString();
+    var due_dateValue = new Date(dueDate).toISOString();
+   
+    if( kickoffValue < today){
+      handleShowKODateLessNow();
+    }
+    else if(kickoffDate > due_dateValue){
+      handleShowKODateLessDue();
+    }
+    else if(due_dateValue < today){
+      handleShowDueDateLessNOW();
+    }
+    else if(due_dateValue < kickoffDate){
+      handleShowDueDateLessKO();
+    }
+    else {
     fetch(`${URL}/api/auth/task/create`, {
       method: "post",
       headers: {
@@ -729,6 +780,7 @@ function DashBoardInfo() {
         if (response.status === 201) {
           handleShowsuccessCreate();
           handleClose_Add_task();
+          TaskData();
         } else if (response.status === 422) {
           handleShowErrorCreate();
         } else if (response.status === 500) {
@@ -739,6 +791,7 @@ function DashBoardInfo() {
         }
       })
       .then((results) => results.json());
+    }
   }
 
   // Search
@@ -907,10 +960,7 @@ function DashBoardInfo() {
       });
   }
 
-  const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
-  const kickoffDate = `${
-    taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
-  }`;
+
 
   if (!TeamMembers) {
     return <p>no member loaded </p>;
@@ -2777,7 +2827,7 @@ function DashBoardInfo() {
                           <b>{memberValue.name}</b> Task list{" "}
                         </Card.Header>{" "}
                         <Nav className="justify-content-end">
-                          <div className="col-md-3 col-sm-9">
+                          <div className="col-md-3 col-sm-9 me-3">
                             <Form
                               onSubmit={handle_Search_Task_Submit}
                               className="d-flex"
@@ -2813,7 +2863,7 @@ function DashBoardInfo() {
                               </tr>
                             </thead>
                             <tbody>
-                              {memberTask.slice(0, 5).map((task, Index) => {
+                              {memberTask.map((task, Index) => {
                                 return (
                                   <tr key={Index}>
                                     <td>{task.name}</td>
@@ -3845,6 +3895,69 @@ function DashBoardInfo() {
                 Create Task
               </Button>{" "}
             </Form>
+            <ToastContainer className="p-3" position={'top-end'}>
+{/* Date Alerts Toast */}
+{/* KIck off Date less than Today */}
+<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set to previous dates
+</Toast.Body>
+</Toast>
+{/* Kick off greater than Due Date */}
+<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set ahead of due date
+</Toast.Body>
+</Toast>
+{/* Due Date  less Than Today*/}
+<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due  date can't be set to previous date
+</Toast.Body>
+</Toast>
+{/* Due Date less Than Kick Off */}
+<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due date can't be set before kick off date
+</Toast.Body>
+</Toast>
+          </ToastContainer>
           </Modal.Body>
           <Modal.Footer>
          

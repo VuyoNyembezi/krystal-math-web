@@ -34,6 +34,25 @@ function ManageTeam() {
     const [search_key,set_search_key] = useState({
       task_search:null
     });
+// create date condition toasts
+  // Kick off date less than today/now
+  const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
+  const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
+  const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
+ // Kick off date less than due date
+ const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
+ const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+ const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+ // Due  date less than now
+ const [due_date_less_now, set_due_date_less_now] = useState(false);
+ const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+ const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Due off date less than kickoff
+  const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
+  const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
+  const handleCloseDueDateLessKO = () => set_due_date_less_kickoff(false);
+
+
   // Toast Alerts State Controller
   const [success_create, set_success_create] = useState(false);
   const handleShowsuccessCreate = () => set_success_create(true);
@@ -474,10 +493,31 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
       .then((response) => response.json())
       .then((Result) => set_user_task_statuses(Result));
   }, [user.id]);
-
+    // Time Stamp concatenation
+    const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
+    const kickoffDate = `${
+      taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
+    }`;
   // Create Task
   function handleSubmitTaskCreate(event) {
     event.preventDefault();
+    const today = new Date().toISOString();
+    var kickoffValue = new Date(kickoffDate).toISOString();
+    var due_dateValue = new Date(dueDate).toISOString();
+   
+    if( kickoffValue < today){
+      handleShowKODateLessNow();
+    }
+    else if(kickoffDate > due_dateValue){
+      handleShowKODateLessDue();
+    }
+    else if(due_dateValue < today){
+      handleShowDueDateLessNOW();
+    }
+    else if(due_dateValue < kickoffDate){
+      handleShowDueDateLessKO();
+    }
+    else {
     fetch(`${URL}/api/auth/task/create`, {
       method: "post",
       headers: {
@@ -514,10 +554,28 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         }
       })
       .then((results) => results.json());
+    }
   }
   // Update , Activate and Deactivate Task
   function handleSubmitTaskUpdate(event) {
     event.preventDefault();
+    const today = new Date().toISOString();
+    var kickoffValue = new Date(kickoffDate).toISOString();
+    var due_dateValue = new Date(dueDate).toISOString();
+   
+    if( kickoffValue < today){
+      handleShowKODateLessNow();
+    }
+    else if(kickoffDate > due_dateValue){
+      handleShowKODateLessDue();
+    }
+    else if(due_dateValue < today){
+      handleShowDueDateLessNOW();
+    }
+    else if(due_dateValue < kickoffDate){
+      handleShowDueDateLessKO();
+    }
+    else {
     fetch(`${URL}/api/auth/task/update`, {
       method: "put",
       headers: {
@@ -555,6 +613,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         }
       })
       .then((results) => results.json());
+    }
   }
 
   function handleSubmitActivateTask(event) {
@@ -698,16 +757,11 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
        })
     }
 
-    // Time Stamp concatenation
-  const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
-  const kickoffDate = `${
-    taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
-  }`;
+
 
   const AssigndueDate = `${
     AssignProjectFormValue.due_date + " " + AssignProjectFormValue.due_time
   }`;
-  // const AssignkickoffDate = `${AssignProjectFormValue.kickoff_date +' '+ AssignProjectFormValue.kickoff_time}`
 
   if (!TeamMembers) {
     return <p>no user</p>;
@@ -715,7 +769,16 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
   // Update Assignment Details
   function handleSubmitUpdateProject(event) {
     event.preventDefault();
-  
+    const today = new Date().toISOString();
+   
+    var due_dateValue = new Date(AssigndueDate).toISOString();
+  if(due_dateValue < today){
+      handleShowDueDateLessNOW();
+    }
+    else if(due_dateValue < kickoffDate){
+      handleShowDueDateLessKO();
+    }
+    else {
     fetch(`${URL}/api/auth/project_assignment/update`, {
       method: "put",
       headers: {
@@ -746,6 +809,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         }
       })
       .then((results) => results.json());
+    }
   }
   // Remove Assign Record
   function handleSubmitRemoveMemberProject(event) {
@@ -923,7 +987,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
           </Col>
           <Col sm={8} >
             <Card className='shadow'>
-              <Card.Body className="scroll">
+              <Card.Body className="teamlead-member-management-display">
                    <Tabs
                 defaultActiveKey="tasks"
                 id="uncontrolled-tab-example"
@@ -2407,16 +2471,16 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
       >
         <Modal.Header closeButton>
           <Modal.Title>Update {user.name}'s Tasks</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Nav  className="justify-content-end">
-                 <div  className="col-md-3 col-sm-9">
+        </Modal.Header>     <Nav  className="justify-content-end">
+                 <div  className="col-md-3 col-sm-9 me-3">
                    <Form onSubmit={handle_Search_Member_Task_Submit} className="d-flex">
                       <FormControl type="search" name='task_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>
                     </Form>
                   </div>
                   </Nav>
+        <Modal.Body>
+   
           <Tabs
             defaultActiveKey="open"
             id="uncontrolled-tab-example"
@@ -3165,14 +3229,10 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
             <Button variant="warning" size="sm" onClick={handleUpdateTaskClose}>
               Close
             </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <label className="text-center">update user record</label>
-        </Modal.Footer>
-
-
-        <ToastContainer className="p-3" position={"top-end"}>
+          </Form>  
+          
+          
+          <ToastContainer className="p-3" position={"top-end"}>
                  {/*  Error Update  */}
                  <Toast
             onClose={handleCloseErrorUpdate}
@@ -3193,8 +3253,79 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
               please check input or value already assigned
             </Toast.Body>
           </Toast>
+
+
+          
+{/* Date Alerts Toast */}
+{/* KIck off Date less than Today */}
+<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set to previous dates
+</Toast.Body>
+</Toast>
+{/* Kick off greater than Due Date */}
+<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set ahead of due date
+</Toast.Body>
+</Toast>
+{/* Due Date  less Than Today*/}
+<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due  date can't be set to previous date
+</Toast.Body>
+</Toast>
+{/* Due Date less Than Kick Off */}
+<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due date can't be set before kick off date
+</Toast.Body>
+</Toast>
           </ToastContainer>
 
+        </Modal.Body>
+        <Modal.Footer>
+          <label className="text-center">update user record</label>
+        </Modal.Footer>
+
+
+      
 
 
 
@@ -3285,7 +3416,6 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
 
       {/* Update Assignment MODALS */}
 
-      {/*  Projects */}
       <Modal
         show={showUpdateProjectAssign}
         onHide={handleCloseUpdateProjectAssign}
@@ -3307,7 +3437,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         <Input  name="kickoff_time" onChange={handleChange} value={AssignProjectFormValue.kickoff_time} placeholder="time placeholder" type="time" />
                     </FormGroup> */}
          
-            <InputGroup className="mb-3">
+         <InputGroup className="mb-3">
           <InputGroup.Text  className="col-4" id="project-name"> Due Date: </InputGroup.Text>
           <FormControl
             aria-label="Name"
@@ -3336,8 +3466,73 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
             update project assignment record
           </label>
         </Modal.Footer>
-      </Modal>
+        <ToastContainer className="p-3" position={"top-end"}>
 
+  
+{/* Date Alerts Toast */}
+{/* KIck off Date less than Today */}
+<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set to previous dates
+</Toast.Body>
+</Toast>
+{/* Kick off greater than Due Date */}
+<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set ahead of due date
+</Toast.Body>
+</Toast>
+{/* Due Date  less Than Today*/}
+<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due  date can't be set to previous date
+</Toast.Body>
+</Toast>
+{/* Due Date less Than Kick Off */}
+<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due date can't be set before kick off date
+</Toast.Body>
+</Toast>
+</ToastContainer>
+      </Modal>
+{/* Add task */}
       <Modal
         show={show_Add_task}
         onHide={handleAddTaskClose}
@@ -3514,7 +3709,71 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+      <ToastContainer className="p-3" position={"top-end"}>
 
+  
+{/* Date Alerts Toast */}
+{/* KIck off Date less than Today */}
+<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set to previous dates
+</Toast.Body>
+</Toast>
+{/* Kick off greater than Due Date */}
+<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set ahead of due date
+</Toast.Body>
+</Toast>
+{/* Due Date  less Than Today*/}
+<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due  date can't be set to previous date
+</Toast.Body>
+</Toast>
+{/* Due Date less Than Kick Off */}
+<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due date can't be set before kick off date
+</Toast.Body>
+</Toast>
+</ToastContainer>
       <Modal
         show={show_Add_Assignment}
         onHide={handleAddAssignmentClose}

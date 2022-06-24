@@ -726,9 +726,6 @@ const handleChange =(event) => {
            <Button variant="secondary" size='sm' onClick={handleCloseAddProject}>
              Close
            </Button>
-           <Button variant="success" size='sm' onClick={handleCloseAddProject}>
-             Done
-           </Button>
          </Modal.Footer>
        </Modal>
 

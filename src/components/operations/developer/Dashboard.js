@@ -8,7 +8,7 @@ import {
   Container,
   Form,
   FormControl,
-  FormGroup,
+  InputGroup,
   Modal,
   Nav,
   ProgressBar,
@@ -1088,7 +1088,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1309,7 +1309,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1529,7 +1529,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1750,7 +1750,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1970,7 +1970,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -2191,7 +2191,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -2415,7 +2415,7 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_type.name}
+                                              {project.project_category_type.name}
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -3075,7 +3075,7 @@ function DashBoardDev() {
                           return (
                             <tr key={Index}>
                               <td>{project.project.name}</td>
-                              <td> {project.project_type.name}</td>
+                              <td> {project.project_category_type.name}</td>
                               <td>{project.user_status.name}</td>
                               <td>
                                 {new Date(project.due_date).toDateString()}
@@ -3274,7 +3274,7 @@ function DashBoardDev() {
                             return (
                               <tr key={Index}>
                                 <td>{project.project.name}</td>
-                                <td> {project.project_type.name}</td>
+                                <td> {project.project_category_type.name}</td>
                                 <td>{project.user_status.name}</td>
                                 <td>
                                   {new Date(project.due_date).toDateString()}
@@ -3476,7 +3476,7 @@ function DashBoardDev() {
                             return (
                               <tr key={Index}>
                                 <td>{project.project.name}</td>
-                                <td> {project.project_type.name}</td>
+                                <td> {project.project_category_type.name}</td>
                                 <td>{project.user_status.name}</td>
                                 <td>
                                   {new Date(project.due_date).toDateString()}
@@ -3678,7 +3678,7 @@ function DashBoardDev() {
                             return (
                               <tr key={Index}>
                                 <td>{project.project.name}</td>
-                                <td> {project.project_type.name}</td>
+                                <td> {project.project_category_type.name}</td>
                                 <td>{project.user_status.name}</td>
                                 <td>
                                   {new Date(project.due_date).toDateString()}
@@ -3880,7 +3880,7 @@ function DashBoardDev() {
                             return (
                               <tr key={Index}>
                                 <td>{project.project.name}</td>
-                                <td> {project.project_type.name}</td>
+                                <td> {project.project_category_type.name}</td>
                                 <td>{project.user_status.name}</td>
                                 <td>
                                   {new Date(project.due_date).toDateString()}
@@ -4082,7 +4082,7 @@ function DashBoardDev() {
                             return (
                               <tr key={Index}>
                                 <td>{project.project.name}</td>
-                                <td> {project.project_type.name}</td>
+                                <td> {project.project_category_type.name}</td>
                                 <td>{project.user_status.name}</td>
                                 <td>
                                   {new Date(project.due_date).toDateString()}
@@ -4472,6 +4472,7 @@ function DashBoardDev() {
         {/* Team Add Task  */}
 
         {/* Member Projects or Tasks*/}
+     
         <Modal
           show={show_member_task}
           onHide={handleClose_Member_task}
@@ -4702,8 +4703,111 @@ function DashBoardDev() {
             >
               Close
             </Button>
-          </Modal.Footer>
+          </Modal.Footer>    <ToastContainer className="p-3" position={"top-end"}>
+          {/* Successfully Updated */}
+          <Toast
+            onClose={handleCloseSuccessUpdate}
+            show={success_updated}
+            bg={"success"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">{<FcApproval />} Successfully</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              Updated Successfully
+            </Toast.Body>
+          </Toast>
+          {/*  Error Update  */}
+          <Toast
+            onClose={handleCloseErrorUpdate}
+            show={error_updated}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              please check input or task already assigned
+            </Toast.Body>
+          </Toast>
+          {/* Duplicate Toast */}
+          <Toast
+            onClose={handleCloseDuplicateUpdate}
+            show={duplicate_updated}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              status already assigned
+            </Toast.Body>
+          </Toast>
+          {/* Successfully Completed */}
+          <Toast
+            onClose={handleCloseSuccessComplete}
+            show={success_completed}
+            bg={"success"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">{<FcApproval />} Completed</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              Task Completed Successfully
+            </Toast.Body>
+          </Toast>
+          {/*  Server Error  */}
+          <Toast
+            onClose={handleCloseServerError}
+            show={server_error}
+            bg={"danger"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Server Error</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">server error occured</Toast.Body>
+          </Toast>
+        </ToastContainer>
         </Modal>
+    
+    
         {/* Member Projects or Tasks*/}
         <Modal
           show={show_member_progress_chart}
@@ -4739,8 +4843,9 @@ function DashBoardDev() {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmitTaskUpdate}>
-              <FormGroup>
-                <Label> Name : </Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="name">Name:</InputGroup.Text>
+             
                 <Input
                   name="name"
                   placeholder="with a Project Or Task Name"
@@ -4750,10 +4855,10 @@ function DashBoardDev() {
                   disabled
                   required
                 />
-              </FormGroup>
+              </InputGroup>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Task Status</Form.Label>
+              <InputGroup className="mb-3">
+              <InputGroup.Text  className="col-4" id="task_status_id">Task Status:</InputGroup.Text>
                 <Form.Select
                   name="task_status_id"
                   id="task_status_id"
@@ -4770,7 +4875,7 @@ function DashBoardDev() {
                     );
                   })}
                 </Form.Select>
-              </Form.Group>
+              </InputGroup>
 
               <br />
               <Button variant="success" size="sm" type="submit">

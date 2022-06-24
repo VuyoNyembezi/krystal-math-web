@@ -4,7 +4,6 @@ import {Doughnut} from 'react-chartjs-2';
 
 import { URL } from '../../../../../server_connections/server';
 import { Token } from '../../../../../server_connections/server';
-import { Card } from 'react-bootstrap';
 
 function TeamLiveIssuesOverviewChart() {
 

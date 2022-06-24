@@ -97,9 +97,16 @@ body {
 
 .teamlead-member-display {
   margin-top:5px;
-  height:calc(100vh - 218px);
+  height:calc(100vh - 193px);
   overflow:auto;
 }
+
+.teamlead-member-management-display {
+  margin-top:5px;
+  height:calc(100vh - 152px);
+  overflow:auto;
+}
+
 .teamlead-task-manager {
   margin-top:5px;
   height:calc(100vh - 113px);
@@ -144,7 +151,7 @@ body {
 }
 .teamlead-member-control-card-members-card {
   margin-top:5px;
-  height:calc(100vh - 217px);
+  height:calc(100vh - 271px);
   width:100%;
   overflow:auto;
 }
@@ -157,6 +164,14 @@ body {
   width:100%;
   overflow:auto;
 }
+
+.sdm-live-issues-all-modal {
+  margin-top:5px;
+  height:calc(100vh - 127px);
+  width:100%;
+  overflow:auto;
+}
+
 .sdm-dashboard-projects-tab-project-teams-card {
   margin-top:5px;
   height:calc(100vh - 224px);
@@ -234,6 +249,26 @@ body {
    /* width:calc(100vw - 210px);  */
   overflow:auto;
 }
+.sdm-live-issue-modal-card {
+  margin-top:5px;
+  height:calc(100vh - 109px);
+   /* width:calc(100vw - 210px);  */
+  overflow:auto;
+}
+
+.sdm-live-issue-modal-live-issues-card {
+  margin-top:5px;
+  height:calc(100vh - 291px);
+   /* width:calc(100vw - 210px);  */
+  overflow:auto;
+}
+.sdm-live-issue-modal-live-issues-details-card {
+  margin-top:5px;
+  height:calc(100vh - 230px);
+   /* width:calc(100vw - 210px);  */
+  overflow:auto;
+}
+
 
 /* SYSTEM User Or Developer Interfaces */
 
@@ -345,7 +380,7 @@ body {
 
 .admin-user-account-card {
   margin-top:5px;
-  height:calc(100vh - 143px);
+  height:calc(100vh - 204px);
   overflow:auto;
 
 }

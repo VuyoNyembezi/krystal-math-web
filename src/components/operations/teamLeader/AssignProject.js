@@ -13,6 +13,26 @@ import { FcApproval } from "react-icons/fc";
 import { URL } from "../../../server_connections/server";
 import { Token } from "../../../server_connections/server";
 function AssignProject() {
+// create date condition toasts
+  // Kick off date less than today/now
+  const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
+  const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
+  const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
+ // Kick off date less than due date
+ const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
+ const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+ const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+ // Due  date less than now
+ const [due_date_less_now, set_due_date_less_now] = useState(false);
+ const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+ const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Due off date less than kickoff
+  const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
+  const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
+  const handleCloseDueDateLessKO = () => set_due_date_less_kickoff(false);
+
+
+
   // Toast Alerts State Controller
   const [success_create, set_success_create] = useState(false);
   const handleShowsuccessCreate = () => set_success_create(true);
@@ -110,9 +130,33 @@ function AssignProject() {
     AssignProjectFormValue.project_type_id,
     AssignProjectFormValue.project_category_type_id,
   ]);
-
+  const dueDate = `${
+    AssignProjectFormValue.due_date + " " + AssignProjectFormValue.due_time
+  }`;
+  const kickoffDate = `${
+    AssignProjectFormValue.kickoff_date +
+    " " +
+    AssignProjectFormValue.kickoff_time
+  }`;
   function handleSubmitAssignMember(event) {
     event.preventDefault();
+    const today = new Date().toISOString();
+    var kickoffValue = new Date(kickoffDate).toISOString();
+    var due_dateValue = new Date(dueDate).toISOString();
+   
+    if( kickoffValue < today){
+      handleShowKODateLessNow();
+    }
+    else if(kickoffDate > due_dateValue){
+      handleShowKODateLessDue();
+    }
+    else if(due_dateValue < today){
+      handleShowDueDateLessNOW();
+    }
+    else if(due_dateValue < kickoffDate){
+      handleShowDueDateLessKO();
+    }
+    else {
     fetch(`${URL}/api/auth/project_assignment/assign`, {
       method: "post",
       headers: {
@@ -148,16 +192,10 @@ function AssignProject() {
         }
       })
       .then((results) => results.json());
+    }
   }
 
-  const dueDate = `${
-    AssignProjectFormValue.due_date + " " + AssignProjectFormValue.due_time
-  }`;
-  const kickoffDate = `${
-    AssignProjectFormValue.kickoff_date +
-    " " +
-    AssignProjectFormValue.kickoff_time
-  }`;
+
 
   const handleChange = (event) => {
     setUser({
@@ -394,6 +432,73 @@ function AssignProject() {
             </Toast.Header>
             <Toast.Body className="text-white">server error occured</Toast.Body>
           </Toast>
+
+      
+
+
+          
+{/* Date Alerts Toast */}
+{/* KIck off Date less than Today */}
+<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set to previous dates
+</Toast.Body>
+</Toast>
+{/* Kick off greater than Due Date */}
+<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  kick off date can't be set ahead of due date
+</Toast.Body>
+</Toast>
+{/* Due Date  less Than Today*/}
+<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due  date can't be set to previous date
+</Toast.Body>
+</Toast>
+{/* Due Date less Than Kick Off */}
+<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
+<Toast.Header>
+  <img
+    src="holder.js/20x20?text=%20"
+    className="rounded me-2"
+    alt=""
+  />
+  <strong className="me-auto">DUE DATE ERROR</strong>
+</Toast.Header>
+<Toast.Body className="text-white">
+  {" "}
+  due date can't be set before kick off date
+</Toast.Body>
+</Toast>
+          
         </ToastContainer>
       </>
     </>

@@ -28,6 +28,10 @@ function SystemUsers() {
 
   const [_user, setUser] = useState([]);
   const history = useNavigate();
+    // search state
+    const [search_key, set_search_key] = useState({
+      account_search: null,
+    });
   // Users
   const [show_update_user, set_update_Show] = useState(false);
   const handle_update_Show = () => set_update_Show(true);
@@ -160,7 +164,8 @@ function SystemUsers() {
         "Content-Type": "application/json",
       },
     };
-    if (formValue.user_role_id !== null) {
+    if (search_key.account_search === null){
+       if (formValue.user_role_id !== null) {
       // By Role
       fetch(
         `${URL}/api/auth/user/role?id=${formValue.user_role_id}`,
@@ -174,7 +179,8 @@ function SystemUsers() {
         .then((Response) => Response.json())
         .then((Result) => setFilterActiveUsersData(Result.data));
     }
-  }, [formValue.user_role_id]);
+    }
+  }, [formValue.user_role_id,search_key]);
   // Fetch Teams and Roles Values
   useEffect(() => {
     const requestOptions = {
@@ -206,12 +212,13 @@ function SystemUsers() {
         "Content-Type": "application/json",
       },
     };
-
+    if(search_key.account_search === null){
     // Active
     fetch(`${URL}/api/auth/users/active`, requestOptions)
       .then((Response) => Response.json())
       .then((Result) => setActiveUsersData(Result.data));
-  }, [latest_active_accounts_data]);
+    }
+  }, [latest_active_accounts_data,search_key]);
   // Terminated Accounts
   useEffect(() => {
     const requestOptions = {
@@ -223,11 +230,14 @@ function SystemUsers() {
       },
     };
 
-    // Terminated
+    if(search_key.account_search === null){
+       // Terminated
     fetch(`${URL}/api/auth/users/terminated`, requestOptions)
       .then((Response) => Response.json())
       .then((Result) => setTerminatedUsersData(Result.data));
-  }, [latest_terminated_accounts_data]);
+    }
+   
+  }, [latest_terminated_accounts_data,search_key]);
   if (!ActiveUsersData) {
     return <p>no user</p>;
   }
@@ -245,6 +255,11 @@ function SystemUsers() {
 
     setForm({
       ...formValue,
+      [event.target.name]: event.target.value,
+    });
+
+    set_search_key({
+      ...search_key,
       [event.target.name]: event.target.value,
     });
   };
@@ -395,6 +410,45 @@ function SystemUsers() {
       .then((results) => results.json());
   }
 
+  function handle_Search_Account_Submit(event) {
+    event.preventDefault();
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+    //search for Acctive Accounts
+    fetch(`${URL}/api/auth/user/account/active/search?search=${search_key.account_search}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((Result) => {
+        setActiveUsersData(Result.data);
+      });
+
+          //search for Active  Accounts by Role
+    fetch(`${URL}/api/auth/user/account/role/search?role_id=${formValue.user_role_id }&search=${search_key.account_search}`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((Result) => {
+      setFilterActiveUsersData(Result.data);
+   
+    });
+             //search for Terminated Accounts
+             fetch(`${URL}/api/auth/user/account/terminated/search?search=${search_key.account_search}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((Result) => {
+              setTerminatedUsersData(Result.data);
+            });
+  }
+
+
   return (
     <>
       <div className="mt-3">
@@ -404,6 +458,27 @@ function SystemUsers() {
               {" "}
               <h4>Users :</h4>{" "}
             </Card.Header>
+            <Nav className="justify-content-end">
+              <div className="col-md-2 col-sm-7 mt-3 me-2">
+                <Form
+                  onSubmit={handle_Search_Account_Submit}
+                  className="d-flex"
+                >
+                  <FormControl
+                    type="search"
+                    name="account_search"
+                    placeholder="Search"
+                    required
+                    onChange={handleChange}
+                    className="mr-3"
+                    aria-label="Search"
+                  />
+                  <Button variant="outline-success" type="submit" size="sm">
+                    Search
+                  </Button>
+                </Form>
+              </div>
+            </Nav>
             <Card.Body className="admin-user-account-card">
               <Tabs
                 defaultActiveKey="all"
@@ -688,68 +763,60 @@ function SystemUsers() {
                 readOnly
               />
             </InputGroup>
-            <Form.Group className="mb-3">
-              <Form.Label>Admin Rights</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="is_admin"
-                  id="is_admin"
-                  onChange={handleChange}
-                  value={formValue.is_admin}
-                  required
-                >
-                  <option value="">Assign Rights</option>
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
-                </select>
-              </div>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Team</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="team_id"
-                  id="team_id"
-                  onChange={handleChange}
-                  value={formValue.team_id}
-                  required
-                >
-                  <option value="">Select Team</option>
-                  {teamValue.map((team, key) => {
-                    return (
-                      <option key={key} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Role</Form.Label>
-              <div className="form-group dropdown">
-                <select
-                  className="form-control"
-                  name="user_role_id"
-                  id="user_role_id"
-                  onChange={handleChange}
-                  value={formValue.user_role_id}
-                  required
-                >
-                  <option value="">Select Role</option>
-                  {RolesData.map((role, key) => {
-                    return (
-                      <option key={key} value={role.id}>
-                        {role.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </Form.Group>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="is_admin">
+              {" "}
+              Admin Rights:{" "}
+            </InputGroup.Text>
+              <Form.Select
+              name="is_admin"
+              id="is_admin"
+              onChange={handleChange}
+              value={formValue.is_admin}
+              required>  <option value="">Assign Rights</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+                </Form.Select>
+                </InputGroup>
+         
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="team_id">
+              {" "}
+              Team:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                 name="team_id"
+                 id="team_id"
+                 onChange={handleChange}
+                 value={formValue.team_id}
+                 required> <option value="">Select Team</option>
+                 {teamValue.map((team, key) => {
+                   return (
+                     <option key={key} value={team.id}>
+                       {team.name}
+                     </option>
+                   );
+                 })}</Form.Select>
+              </InputGroup>
+            <InputGroup className="mb-3">
+            <InputGroup.Text className="col-4" id="user_role_id">
+              {" "}
+             Role:{" "}
+            </InputGroup.Text>
+              <Form.Select
+                name="user_role_id"
+                id="user_role_id"
+                onChange={handleChange}
+                value={formValue.user_role_id}
+                required>  <option value="">Select Role</option>
+                {RolesData.map((role, key) => {
+                  return (
+                    <option key={key} value={role.id}>
+                      {role.name}
+                    </option>
+                  );
+                })}</Form.Select>
+              </InputGroup>
             <Button size="sm" variant="secondary" onClick={handle_update_Close}>
               Close
             </Button>
