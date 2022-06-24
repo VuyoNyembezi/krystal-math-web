@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 import { URL } from "../../../../../server_connections/server";
-import { Card } from "react-bootstrap";
 
 function TaskOverviewChart() {
   const [team_tasks_statuses, set_team_tasks_statuses] = useState([]);

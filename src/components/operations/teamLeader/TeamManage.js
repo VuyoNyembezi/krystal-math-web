@@ -855,8 +855,14 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
           user_task_statuses.testing,
           user_task_statuses.completed,
         ],
-        backgroundColor: ["red", "orange", "brown", "blue", "green"],
-        borderColor: ["red", "orange", "brown", "blue", "green"],
+        backgroundColor: [
+          "#BCB3AF",
+          "#E6581B",
+          "#1672EB",
+          "#E4DD86",
+          "#229577",
+        ],
+        borderColor: ["#BCB3AF", "#E6581B", "#1672EB", "#E4DD86", "#229577"],
       },
     ],
   };
@@ -1322,7 +1328,6 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                         </Tab>
                       </Tabs>
                     </Card.Body>
-                
                 </Tab>
                 <Tab eventKey="project_assignments" title="Project Assignment">
                 
@@ -2452,7 +2457,6 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
                 </Tab>
               </Tabs>
               </Card.Body>
-           
             </Card>
           </Col>
           </Row>
