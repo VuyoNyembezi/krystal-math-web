@@ -353,13 +353,12 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
                 <Card className="shadow" style={{ width: "40%" }}>
                             <Card.Img variant="top" src={holder} />
                             <Card.Body>
-                              <Card.Title>{}</Card.Title>
+                            
 
                               <Badge className="badge rounded-pill bg-success ">
                                 Request loan
                               </Badge>
-                              <br />
-                        
+                            <br />
                                 <Button  variant="outline-success"  size="sm"   onClick={handleLoanRequestShow} >
                                   Request
                                 </Button>
