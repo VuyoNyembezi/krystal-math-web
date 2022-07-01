@@ -901,7 +901,7 @@ function DashBoardDev() {
                           </Button>{" "}
                         </Card.Header>{" "}
                         <Nav className="justify-content-end">
-                          <div className="col-md-3 col-sm-9">
+                          <div className="col-md-3 col-sm-9 me-3">
                             <Form
                               onSubmit={handle_Search_Task_Submit}
                               className="d-flex"

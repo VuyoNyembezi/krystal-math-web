@@ -389,8 +389,9 @@ else {
       <Container fluid>
             <Card>
         <Card.Header>{localStorage.getItem('name')} Tasks</Card.Header>   
+      
          <Nav  className="justify-content-end">
-                          <div  className="col-md-3 col-sm-9">
+                          <div  className="col-md-3 col-sm-9 me-3">
                             <Form onSubmit={handle_Search_Task_Submit} className="d-flex">
                                 <FormControl type="search" name='task_search' placeholder="Search" required onChange={handleChange} className="mr-3" aria-label="Search" />
                                 <Button variant="outline-success" type='submit' size='sm'>Search</Button>

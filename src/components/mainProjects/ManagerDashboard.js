@@ -326,7 +326,7 @@ function ManagerDashboard() {
                           Operational Projects{" "}
                         </Card.Header>
                           <Nav className="justify-content-end">
-                                                    <div className="col-md-3 col-sm-9">
+                                                    <div className="col-md-3 col-sm-9 me-3">
                                                       <Form
                                                         onSubmit={
                                                           handle_Operation_Search_Project_Submit
@@ -365,7 +365,7 @@ function ManagerDashboard() {
                             </thead>
                             <tbody>
                               {operational_data
-                                .slice(0, 12)
+                                .slice(0, 11)
                                 .map((project, key) => {
                                   return (
                                     <tr key={key}>
@@ -679,7 +679,7 @@ function ManagerDashboard() {
                           Strategic Projects{" "}
                         </Card.Header>
                             <Nav className="justify-content-end">
-                                                        <div className="col-md-3 col-sm-9">
+                                                        <div className="col-md-3 col-sm-9  me-3">
                                                           <Form
                                                             onSubmit={
                                                               handle_Strategic_Search_Project_Submit
@@ -717,7 +717,7 @@ function ManagerDashboard() {
                             </thead>
                             <tbody>
                               {strategic_data
-                                .slice(0, 12)
+                                .slice(0, 11)
                                 .map((project, key) => {
                                   return (
                                     <tr key={key}>
@@ -1037,7 +1037,7 @@ function ManagerDashboard() {
                           Live Issues Projects{" "}
                         </Card.Header>
                         <Nav className="justify-content-end">
-                            <div className="col-md-3 col-sm-9">
+                            <div className="col-md-3 col-sm-9  me-3">
                               <Form
                                 onSubmit={handle_Live_Search_Project_Submit}
                                 className="d-flex"
@@ -1074,7 +1074,7 @@ function ManagerDashboard() {
                             </thead>
                             <tbody>
                               {live_issues_data
-                                .slice(0, 12)
+                                .slice(0, 11)
                                 .map((project, key) => {
                                   return (
                                     <tr key={key}>

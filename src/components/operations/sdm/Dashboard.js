@@ -632,7 +632,7 @@ return(
           <Card.Header> projects </Card.Header> 
     <br/>
     <Nav  className="justify-content-end">
-                 <div  className="col-md-5 col-sm-9 me-2">
+                 <div  className="col-md-5 col-sm-9 me-3">
                    <Form onSubmit={handle_Search_Project_Submit} className="d-flex">
                       <FormControl type="search" name='project_search' placeholder="Search" onChange={handleChange} required className="mr-3" aria-label="Search" />
                       <Button variant="outline-success" type='submit' size='sm'>Search</Button>

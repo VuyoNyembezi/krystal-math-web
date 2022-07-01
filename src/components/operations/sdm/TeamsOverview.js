@@ -516,7 +516,7 @@ function TeamsOverview() {
                   </Form.Group>
                 </div>
                 <Nav className="justify-content-end">
-                  <div className="col-sm-3 col-sm-5 mt-3 me-2">
+                  <div className="col-sm-3 col-sm-5 mt-3 me-3">
                     <Form
                       onSubmit={handle_Search_Project_Submit}
                       className="d-flex"
