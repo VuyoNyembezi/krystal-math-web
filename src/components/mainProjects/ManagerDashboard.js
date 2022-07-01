@@ -97,7 +97,7 @@ function ManagerDashboard() {
       },
     };
     // fetch operational projects
-    if (operational_search_key.operational_project_search === null) {
+    if (operational_search_key.operational_project_search === null || operational_search_key.operational_project_search === '') {
       fetch(`${URL}/api/auth/projects/operational/all`, requestOptions)
         .then((response) => response.json())
         .then((Result) => setOperational_data(Result.data));
@@ -114,7 +114,7 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-    if (strategic_search_key.strategic_project_search === null) {
+    if (strategic_search_key.strategic_project_search === null || strategic_search_key.strategic_project_search === '') {
       // fetch strategic projects
       fetch(`${URL}/api/auth/projects/strategic/all`, requestOptions)
         .then((response) => response.json())
@@ -132,7 +132,7 @@ function ManagerDashboard() {
       },
     };
 
-    if (live_search_key.live_issue_search === null) {
+    if (live_search_key.live_issue_search === null || live_search_key.live_issue_search === '') {
       // fetch live issues projects
       fetch(`${URL}/api/auth/live_issues`, requestOptions)
         .then((response) => response.json())
@@ -249,7 +249,7 @@ function ManagerDashboard() {
       requestOptions
     )
       .then((response) => response.json())
-      .then((Result) => set_strategic_data(Result.data));
+      .then((Result) => setOperational_data(Result.data));
   }
 
   function handle_Live_Search_Project_Submit(event) {
@@ -1501,12 +1501,12 @@ function ManagerDashboard() {
             <Nav className="justify-content-end">
               <div className="col-md-3 col-sm-9">
                 <Form
-                  onSubmit={handle_Operation_Search_Project_Submit}
+                  onSubmit={handle_Live_Search_Project_Submit}
                   className="d-flex"
                 >
                   <FormControl
                     type="search"
-                    name="operational_project_search"
+                    name="live_issue_search"
                     placeholder="Search"
                     onChange={handleChange}
                     className="mr-3"

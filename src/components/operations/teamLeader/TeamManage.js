@@ -433,7 +433,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         "Content-Type": "application/json",
       },
     };
-    if (search_key.task_search === null){
+    if (search_key.task_search === null || search_key.task_search === ''){
     // fetch team tasks
     fetch(`${URL}/api/auth/team/tasks?id=${localStorage.getItem("team")}`,requestOptions)
       .then((response) => response.json())
@@ -458,7 +458,7 @@ const [old_user_tasks_data, set_old_user_tasks_data] = useState([])
         "Content-Type": "application/json",
       },
     };
-    if (search_key.task_search === null){
+    if (search_key.task_search === null || search_key.task_search === ''){
       // fetch team tasks
       fetch(`${URL}/api/auth/user/tasks?id=${localStorage.getItem("team")}&user_id=${user.id}`,requestOptions)
         .then((response) => response.json())

@@ -473,7 +473,9 @@ function DashBoardInfo() {
         "Content-Type": "application/json",
       },
     };
-    fetch(
+    if(search_key.task_search === null || search_key.task_search === '')
+    {
+       fetch(
       `${URL}/api/auth/user/tasks?id=${localStorage.getItem("team")}&user_id=${
         memberValue.id
       }`,
@@ -483,7 +485,9 @@ function DashBoardInfo() {
       .then((Result) => {
         setMemberTask(Result.open_tasks);
       });
-  }, [latest_team_task_data,memberValue.id]);
+    }
+   
+  }, [latest_team_task_data,memberValue.id,search_key]);
 
   useEffect(() => {
     const requestOptions = {
@@ -677,7 +681,7 @@ function DashBoardInfo() {
       },
     };
 
-    if (search_key.live_issue_search === null) {
+    if (search_key.live_issue_search === null || search_key.live_issue_search === '') {
       // fetch all live issues active projects assigned to the team
       fetch(
         `${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem(
@@ -814,7 +818,7 @@ function DashBoardInfo() {
     )
       .then((response) => response.json())
       .then((Result) => {
-        setMemberTask(Result.all_tasks);
+        setMemberTask(Result.open_tasks);
       });
   }
 

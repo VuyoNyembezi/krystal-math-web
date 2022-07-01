@@ -320,7 +320,7 @@ function DashBoardDev() {
         "Content-Type": "application/json",
       },
     };
-    if (search_key.task_search === null) {
+    if (search_key.task_search === null || search_key.task_search === '') {
       // fetch user tasks
       fetch(
         `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
@@ -697,15 +697,9 @@ function DashBoardDev() {
     };
     //search for Team Tasks
     fetch(
-      `${URL}/api/auth/team/tasks/search?team_id=${localStorage.getItem(
-        "team"
-      )}&user_id=${localStorage.getItem("SUID")}&search=${
-        search_key.task_search
-      }`,
-      requestOptions
-    )
+      `${URL}/api/auth/user/search?team_id=${localStorage.getItem("team")}&user_id=${localStorage.getItem("SUID")}&search=${search_key.task_search}`,requestOptions)
       .then((response) => response.json())
-      .then((Result) => setUserOpenTasksData(Result.data));
+      .then((Result) => setUserOpenTasksData(Result.open_tasks));
 
     //search for Team Tasks
     fetch(

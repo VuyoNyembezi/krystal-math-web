@@ -40,7 +40,7 @@ function StrategicProjects() {
       },
     };
     //fecth team  projects
-    if (search_key.project_search === null) {
+    if (search_key.project_search === null || search_key.project_search === '') {
       fetch(`${URL}/api/auth/projects/strategic`, requestOptions)
         .then((response) => response.json())
         .then((results) => {

@@ -30,9 +30,6 @@ const [server_error,set_server_error] = useState(false);
 const handleShowServerError = () => set_server_error(true);
 const handleCloseServerError = () => set_server_error(false);
 
-
-
-
     const history = useNavigate()
 // Modal controls
 
@@ -167,7 +164,7 @@ useEffect(() => {
     },
   };
    //fecth team  projects 
-   if(search_key.project_search === null){
+   if(search_key.project_search === null || search_key.project_search === ''){
    fetch(
     `${URL}/api/auth/projects/strategic`,
     requestOptions

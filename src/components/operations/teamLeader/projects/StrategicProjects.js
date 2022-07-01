@@ -127,7 +127,7 @@ useEffect(() => {
     },
   };
    //fecth team  projects 
-   if (search_key.project_search === null) {
+   if (search_key.project_search === null || search_key.project_search === '') {
    fetch(
     `${URL}/api/auth/team/projects/strategic?team_id=${localStorage.getItem('team')}`,
     requestOptions

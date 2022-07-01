@@ -87,7 +87,7 @@ function ManageMembers() {
 
   useEffect(() => {
 
-    if(search_key.account_search === null){
+    if(search_key.account_search === null || search_key.account_search === ''){
         fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
       method: "get",
       headers: {
@@ -353,8 +353,6 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
                 <Card className="shadow" style={{ width: "40%" }}>
                             <Card.Img variant="top" src={holder} />
                             <Card.Body>
-                            
-
                               <Badge className="badge rounded-pill bg-success ">
                                 Request loan
                               </Badge>

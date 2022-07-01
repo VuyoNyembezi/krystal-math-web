@@ -31,7 +31,7 @@ useEffect(() => {
     },
   };
    //fecth team  projects 
-   if(search_key.project_search === null){
+   if(search_key.project_search === null || search_key.project_search === ''){
    fetch(
     `${URL}/api/auth/projects/operational`,
     requestOptions
@@ -71,7 +71,7 @@ const handleChange =(event) => {
         ,'Content-Type': 'application/json'},
     }
     
-    fetch(`${URL}/api/auth/projects/operational/search/?search=${search_key.project_search}`,requestOptions)
+    fetch(`${URL}/api/auth/projects/operational/search?search=${search_key.project_search}`,requestOptions)
     .then(response => response.json())
     .then(Result => {
       setBETSoftwareProjectData(Result.bet_projects);

@@ -320,7 +320,7 @@ function LiveIssues() {
       },
     };
     if (
-      search_key.project_search === null &&
+     ( search_key.project_search === null || search_key.project_search === '') &&
       teamValue.team_id_search === 0 &&
       status_value.project_status_id_search === 0
     ) {
@@ -342,7 +342,6 @@ function LiveIssues() {
     status_value.project_status_id_search,
   ]);
 
-  console.log(AllLiveIssuesData)
 
   // filter effect  team
   useEffect(() => {

@@ -328,7 +328,7 @@ useEffect(() =>{
         'Authorization': `Bearer ${localStorage.getItem('key')}`
       ,'Content-Type': 'application/json'},
   }
-  if(search_key.project_search === null){
+  if(search_key.project_search === null || search_key.project_search === ''){
   
   // fetch all projects for the team
   fetch(`${URL}/api/auth/team/projects/all?team_id=${team.id}`,requestOptions)

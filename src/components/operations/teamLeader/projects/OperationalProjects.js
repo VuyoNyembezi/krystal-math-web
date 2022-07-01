@@ -86,7 +86,6 @@ function OperationalProjects() {
   
   const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
   
-
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -139,7 +138,7 @@ function OperationalProjects() {
       },
     };
      //fecth team  projects 
-     if (search_key.project_search === null) {
+     if (search_key.project_search === null || search_key.project_search === '') {
      fetch(
       `${URL}/api/auth/team/projects/operational?team_id=${localStorage.getItem('team')}`,
       requestOptions

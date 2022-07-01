@@ -204,7 +204,7 @@ const handleCloseSuccessComplete = () => set_success_completed(false);
     };
 
   // fetch user tasks
-  if(search_key.task_search === null){
+  if(search_key.task_search === null || search_key.task_search === ''){
       fetch(`${URL}/api/auth/user/tasks?id=${localStorage.getItem("team")}&user_id=${localStorage.getItem('SUID')}`,requestOptions)
   .then((response) => response.json())
   .then((Result) => {
