@@ -37,7 +37,10 @@ function Register(props) {
   // Toast Alerts State Controller
   const [success_create, set_success_create] = useState(false);
   const handleShowsuccessCreate = () => set_success_create(true);
-  const handleCloseSuccessCreate = () => set_success_create(false);
+  const handleCloseSuccessCreate = () => {
+    set_success_create(false);
+    history("/");
+  };
   // Create Toaster Error
   const [error_create, set_error_create] = useState(false);
   const handleShowErrorCreate = () => set_error_create(true);
@@ -75,7 +78,6 @@ function Register(props) {
       Response.json(Response);
       if (Response.status === 201) {
         handleShowsuccessCreate();
-        history("/");
       } else if (Response.status === 422) {
         handleShowErrorCreate();
       } else if (Response.status === 500) {
@@ -108,7 +110,9 @@ function Register(props) {
           <Card.Body>
             <Form onSubmit={handleSignUpUserSubmit}>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="empCode"  className="col-4">Employee Code :</InputGroup.Text>
+                <InputGroup.Text id="empCode" className="col-4">
+                  Employee Code :
+                </InputGroup.Text>
                 <FormControl
                   type="text"
                   placeholder="Enter your employee code"
@@ -122,7 +126,9 @@ function Register(props) {
                 />
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="name"  className="col-4">Name :</InputGroup.Text>
+                <InputGroup.Text id="name" className="col-4">
+                  Name :
+                </InputGroup.Text>
                 <FormControl
                   type="text"
                   aria-describedby="name"
@@ -134,7 +140,9 @@ function Register(props) {
                 />
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="last_name"  className="col-4">Last Name :</InputGroup.Text>
+                <InputGroup.Text id="last_name" className="col-4">
+                  Last Name :
+                </InputGroup.Text>
                 <FormControl
                   type="text"
                   aria-describedby="last_name"
@@ -146,7 +154,9 @@ function Register(props) {
                 />
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="email"  className="col-4">Email :</InputGroup.Text>
+                <InputGroup.Text id="email" className="col-4">
+                  Email :
+                </InputGroup.Text>
                 <FormControl
                   type="email"
                   aria-describedby="email"
@@ -158,7 +168,9 @@ function Register(props) {
                 />
               </InputGroup>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="password"  className="col-4">Password :</InputGroup.Text>
+                <InputGroup.Text id="password" className="col-4">
+                  Password :
+                </InputGroup.Text>
                 <FormControl
                   type="password"
                   aria-describedby="password"
@@ -193,7 +205,7 @@ function Register(props) {
           onClose={handleCloseSuccessCreate}
           show={success_create}
           bg={"success"}
-          delay={5000}
+          delay={3000}
           autohide
         >
           <Toast.Header>
@@ -202,7 +214,7 @@ function Register(props) {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white">
             {" "}

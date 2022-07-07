@@ -84,9 +84,35 @@ function ManagerDashboard() {
   const [live_search_key, set_live_search_key] = useState({
     live_issue_search: null,
   });
+
+// Time Render function
+  // Renders Every 5 Seconds To all load latest Projects Data Changes
+  // const [projects_data, set_projects_data] = useState({
+  //   operational: [],
+  //   strategic: [],
+  //   live_issues: []
+  // });
+  // setInterval(ProjectsData,
+  //   6000);
+  // function ProjectsData() {
+  //   // set_projects_data({
+  //   //   operational: operational_data,
+  //   //   strategic: strategic_data,
+  //   //   live_issues: live_issues_data
+  //   // });
+ 
+
+  //   console.log("6 Second Function Rendered")
+  //   return console.log(projects_data);
+  // }
+ 
+
+
+
   // Projects Data
 
   // Operational
+  
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -97,13 +123,14 @@ function ManagerDashboard() {
       },
     };
     // fetch operational projects
+
     if (operational_search_key.operational_project_search === null || operational_search_key.operational_project_search === '') {
       fetch(`${URL}/api/auth/projects/operational/all`, requestOptions)
         .then((response) => response.json())
         .then((Result) => setOperational_data(Result.data));
     }
-  }, [operational_data, operational_search_key]);
-
+ 
+  }, [ operational_data,operational_search_key]);
   // Strategic Project
   useEffect(() => {
     const requestOptions = {
@@ -161,7 +188,7 @@ function ManagerDashboard() {
       });
   }, [operational_project_Count]);
 
-  // operational status Counters
+  // operational and strategic status Counters
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -282,6 +309,7 @@ function ManagerDashboard() {
           </Row>
           <Card className="shadow border-0 mb-7">
             <Carousel fade indicators={false}>
+              {/* Operational Carousel Item */}
               <Carousel.Item style={{ backgroundColor: "#F0FFFF" }} interval={40000}>
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
@@ -625,7 +653,7 @@ function ManagerDashboard() {
                   </Row>
                 </Container>
               </Carousel.Item>
-
+              {/* Strategic Carousel Item */}
               <Carousel.Item
                 style={{ backgroundColor: "#F0FFFF" }}
                 interval={40000}
@@ -974,7 +1002,7 @@ function ManagerDashboard() {
                   </Row>
                 </Container>
               </Carousel.Item>
-
+              {/* Live issues Carousel Item */}
               <Carousel.Item
                 style={{ backgroundColor: "#F0FFFF" }}
                 interval={40000}
