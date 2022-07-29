@@ -4351,7 +4351,7 @@ function ManageTeam() {
           </Toast.Header>
           <Toast.Body className="text-white">
             {" "}
-            Limit Reach Can't Assign more projects on This Dev
+            Limit Reached Can't Assign more projects on This User
           </Toast.Body>
         </Toast>
 

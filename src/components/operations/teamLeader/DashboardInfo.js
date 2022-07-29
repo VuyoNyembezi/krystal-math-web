@@ -70,7 +70,10 @@ function DashBoardInfo() {
   const [server_live_error, set_server_live_error] = useState(false);
   const handleShowServerLiveError = () => set_server_live_error(true);
   const handleCloseServerLiveError = () => set_server_live_error(false);
-
+  // Create Toaster Error
+  const [limit_reached, set_limit_reached] = useState(false);
+  const handleShowLimitReached = () => set_limit_reached(true);
+  const handleCloseLimitReached = () => set_limit_reached(false);
   // Toast Alerts State Controller
   const [success_create, set_success_create] = useState(false);
   const handleShowsuccessCreate = () => set_success_create(true);
@@ -837,6 +840,8 @@ function DashBoardInfo() {
             handleShowsuccessCreate();
             handleClose_Add_task();
             TaskData();
+          } else if (response.status === 412) {
+            handleShowLimitReached();
           } else if (response.status === 422) {
             handleShowErrorCreate();
           } else if (response.status === 500) {
@@ -3973,6 +3978,26 @@ function DashBoardInfo() {
               </Button>{" "}
             </Form>
             <ToastContainer className="p-3" position={"top-end"}>
+              <Toast
+                onClose={handleCloseLimitReached}
+                show={limit_reached}
+                bg={"warning"}
+                delay={5000}
+                autohide
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">Error Occured</strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">
+                  {" "}
+                  Limit Reached Can't Assign more Tasks on This User
+                </Toast.Body>
+              </Toast>
               {/* Date Alerts Toast */}
               {/* KIck off Date less than Today */}
               <Toast
