@@ -12,25 +12,24 @@ import { FcApproval } from "react-icons/fc";
 
 import { URL } from "../../../server_connections/server";
 function AssignProject() {
-// create date condition toasts
+  // create date condition toasts
   // Kick off date less than today/now
   const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
   const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
   const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
- // Kick off date less than due date
- const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
- const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
- const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
- // Due  date less than now
- const [due_date_less_now, set_due_date_less_now] = useState(false);
- const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
- const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Kick off date less than due date
+  const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] =
+    useState(false);
+  const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+  const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+  // Due  date less than now
+  const [due_date_less_now, set_due_date_less_now] = useState(false);
+  const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+  const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
   // Due off date less than kickoff
   const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
   const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
   const handleCloseDueDateLessKO = () => set_due_date_less_kickoff(false);
-
-
 
   // Toast Alerts State Controller
   const [success_create, set_success_create] = useState(false);
@@ -40,6 +39,10 @@ function AssignProject() {
   const [error_create, set_error_create] = useState(false);
   const handleShowErrorCreate = () => set_error_create(true);
   const handleCloseErrorCreate = () => set_error_create(false);
+  // Create Toaster Error
+  const [limit_reached, set_limit_reached] = useState(false);
+  const handleShowLimitReached = () => set_limit_reached(true);
+  const handleCloseLimitReached = () => set_limit_reached(false);
 
   // server error toast controller
   const [server_error, set_server_error] = useState(false);
@@ -74,7 +77,7 @@ function AssignProject() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
         "Content-Type": "application/json",
       },
     };
@@ -108,7 +111,7 @@ function AssignProject() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
         "Content-Type": "application/json",
       },
     };
@@ -142,59 +145,55 @@ function AssignProject() {
     const today = new Date().toISOString();
     var kickoffValue = new Date(kickoffDate).toISOString();
     var due_dateValue = new Date(dueDate).toISOString();
-   
-    if( kickoffValue < today){
+
+    if (kickoffValue < today) {
       handleShowKODateLessNow();
-    }
-    else if(kickoffDate > due_dateValue){
+    } else if (kickoffDate > due_dateValue) {
       handleShowKODateLessDue();
-    }
-    else if(due_dateValue < today){
+    } else if (due_dateValue < today) {
       handleShowDueDateLessNOW();
-    }
-    else if(due_dateValue < kickoffDate){
+    } else if (due_dateValue < kickoffDate) {
       handleShowDueDateLessKO();
-    }
-    else {
-    fetch(`${URL}/api/auth/project_assignment/assign`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
-      },
-      body: JSON.stringify({
-        projects_assignment: {
-          project_type_id: AssignProjectFormValue.project_type_id,
-          project_category_type_id:
-            AssignProjectFormValue.project_category_type_id,
-          team_id: AssignProjectFormValue.team_id,
-          user_id: AssignProjectFormValue.user_id,
-          user_status_id: AssignProjectFormValue.user_status_id,
-          project_id: AssignProjectFormValue.project_id,
-          due_date: dueDate,
-          kickoff_date: kickoffDate,
-          active: true,
+    } else {
+      fetch(`${URL}/api/auth/project_assignment/assign`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("key")}`,
         },
-      }),
-    })
-      .then((response) => {
-        response.json();
-        if (response.status === 201) {
-          handleShowsuccessCreate();
-        } else if (response.status === 422) {
-          handleShowErrorCreate();
-        } else if (response.status === 500) {
-          handleShowServerError();
-        } else if (response.status === 401) {
-          history("/");
-        }
+        body: JSON.stringify({
+          projects_assignment: {
+            project_type_id: AssignProjectFormValue.project_type_id,
+            project_category_type_id:
+              AssignProjectFormValue.project_category_type_id,
+            team_id: AssignProjectFormValue.team_id,
+            user_id: AssignProjectFormValue.user_id,
+            user_status_id: AssignProjectFormValue.user_status_id,
+            project_id: AssignProjectFormValue.project_id,
+            due_date: dueDate,
+            kickoff_date: kickoffDate,
+            active: true,
+          },
+        }),
       })
-      .then((results) => results.json());
+        .then((response) => {
+          response.json();
+          if (response.status === 201) {
+            handleShowsuccessCreate();
+          } else if (response.status === 422) {
+            handleShowErrorCreate();
+          } else if (response.status === 412) {
+            handleShowLimitReached();
+          } else if (response.status === 500) {
+            handleShowServerError();
+          } else if (response.status === 401) {
+            history("/");
+          }
+        })
+        .then((results) => results.json());
     }
   }
-
-
 
   const handleChange = (event) => {
     setUser({
@@ -210,13 +209,12 @@ function AssignProject() {
   return (
     <>
       <Form onSubmit={handleSubmitAssignMember}>
-        
         <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="user_status_id">
-                  {" "}
-                  Status:{" "}
-                </InputGroup.Text>
-                <Form.Select
+          <InputGroup.Text className="col-4" id="user_status_id">
+            {" "}
+            Status:{" "}
+          </InputGroup.Text>
+          <Form.Select
             name="user_status_id"
             id="user_status_id"
             onChange={handleChange}
@@ -231,18 +229,14 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-                </InputGroup>
+        </InputGroup>
 
-
-
-
-      
         <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_category_type_id">
-                  {" "}
-                  Category:{" "}
-                </InputGroup.Text>
-                <Form.Select
+          <InputGroup.Text className="col-4" id="project_category_type_id">
+            {" "}
+            Category:{" "}
+          </InputGroup.Text>
+          <Form.Select
             name="project_category_type_id"
             id="project_category_type_id"
             onChange={handleChange}
@@ -257,14 +251,14 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-                </InputGroup>
-     
+        </InputGroup>
+
         <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_type_id">
-                  {" "}
-                  Project Type:{" "}
-                </InputGroup.Text>
-                <Form.Select
+          <InputGroup.Text className="col-4" id="project_type_id">
+            {" "}
+            Project Type:{" "}
+          </InputGroup.Text>
+          <Form.Select
             name="project_type_id"
             id="project_type_id"
             onChange={handleChange}
@@ -279,14 +273,14 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-                </InputGroup>
-     
+        </InputGroup>
+
         <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_id">
-                  {" "}
-                  Project:{" "}
-                </InputGroup.Text>
-                <Form.Select
+          <InputGroup.Text className="col-4" id="project_id">
+            {" "}
+            Project:{" "}
+          </InputGroup.Text>
+          <Form.Select
             name="project_id"
             id="project_id"
             onChange={handleChange}
@@ -301,13 +295,13 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-          </InputGroup>
+        </InputGroup>
         <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="user_id">
-                  {" "}
-                  Assign To:{" "}
-                </InputGroup.Text>
-                <Form.Select
+          <InputGroup.Text className="col-4" id="user_id">
+            {" "}
+            Assign To:{" "}
+          </InputGroup.Text>
+          <Form.Select
             name="user_id"
             id="user_id"
             onChange={handleChange}
@@ -322,9 +316,12 @@ function AssignProject() {
               );
             })}
           </Form.Select>
-                </InputGroup>
+        </InputGroup>
         <InputGroup className="mb-3">
-          <InputGroup.Text  className="col-4" id="project-name"> Start Date: </InputGroup.Text>
+          <InputGroup.Text className="col-4" id="project-name">
+            {" "}
+            Start Date:{" "}
+          </InputGroup.Text>
           <FormControl
             aria-label="Name"
             aria-describedby="project-name"
@@ -340,11 +337,15 @@ function AssignProject() {
             value={AssignProjectFormValue.kickoff_time}
             placeholder="time placeholder"
             type="time"
+            defaultValue={"23:59"}
           />
         </InputGroup>
 
         <InputGroup className="mb-3">
-          <InputGroup.Text  className="col-4" id="project-name"> Due Date: </InputGroup.Text>
+          <InputGroup.Text className="col-4" id="project-name">
+            {" "}
+            Due Date:{" "}
+          </InputGroup.Text>
           <FormControl
             aria-label="Name"
             aria-describedby="project-name"
@@ -360,6 +361,7 @@ function AssignProject() {
             value={AssignProjectFormValue.due_time}
             placeholder="time placeholder"
             type="time"
+            defaultValue={"23:59"}
           />
         </InputGroup>
         <Button variant="primary" type="submit">
@@ -384,7 +386,7 @@ function AssignProject() {
                 className="rounded me-2"
                 alt=""
               />
-              <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+              <strong className="me-auto">{<FcApproval />} Successfully</strong>
             </Toast.Header>
             <Toast.Body className="text-white">
               {" "}
@@ -413,6 +415,27 @@ function AssignProject() {
             </Toast.Body>
           </Toast>
 
+          <Toast
+            onClose={handleCloseLimitReached}
+            show={limit_reached}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error Occured</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              Limit Reach Can't Assign more projects on This Dev
+            </Toast.Body>
+          </Toast>
+
           {/*  Server Error  */}
           <Toast
             onClose={handleCloseServerError}
@@ -432,72 +455,91 @@ function AssignProject() {
             <Toast.Body className="text-white">server error occured</Toast.Body>
           </Toast>
 
-      
-
-
-          
-{/* Date Alerts Toast */}
-{/* KIck off Date less than Today */}
-<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set to previous dates
-</Toast.Body>
-</Toast>
-{/* Kick off greater than Due Date */}
-<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set ahead of due date
-</Toast.Body>
-</Toast>
-{/* Due Date  less Than Today*/}
-<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due  date can't be set to previous date
-</Toast.Body>
-</Toast>
-{/* Due Date less Than Kick Off */}
-<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due date can't be set before kick off date
-</Toast.Body>
-</Toast>
-          
+          {/* Date Alerts Toast */}
+          {/* KIck off Date less than Today */}
+          <Toast
+            onClose={handleCloseKODateLessNow}
+            show={kickoff_date_less_now}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">KICK OFF DATE ERROR</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              kick off date can't be set to previous dates
+            </Toast.Body>
+          </Toast>
+          {/* Kick off greater than Due Date */}
+          <Toast
+            onClose={handleCloseKODateLessDue}
+            show={kickoff_date_less_due_date}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">KICK OFF DATE ERROR</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              kick off date can't be set ahead of due date
+            </Toast.Body>
+          </Toast>
+          {/* Due Date  less Than Today*/}
+          <Toast
+            onClose={handleCloseDueDateLessNOW}
+            show={due_date_less_now}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">DUE DATE ERROR</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              due date can't be set to previous date
+            </Toast.Body>
+          </Toast>
+          {/* Due Date less Than Kick Off */}
+          <Toast
+            onClose={handleCloseDueDateLessKO}
+            show={due_date_less_kickoff}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">DUE DATE ERROR</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              due date can't be set before kick off date
+            </Toast.Body>
+          </Toast>
         </ToastContainer>
       </>
     </>

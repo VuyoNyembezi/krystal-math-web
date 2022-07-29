@@ -272,6 +272,14 @@ body {
 
 /* SYSTEM User Or Developer Interfaces */
 
+.dev-dashboard-task-capacity-card {
+  margin-top:5px;
+  height:calc(100vh - 92px);
+  overflow:auto;
+}
+
+
+
 .dev-dashboard-card {
   margin-top:5px;
   height:calc(100vh - 92px);

@@ -25,7 +25,7 @@ import "chart.js/auto";
 
 import { Doughnut } from "react-chartjs-2";
 import { FcDownload, FcInfo, FcApproval, FcHighPriority } from "react-icons/fc";
-
+import { CircularProgressbar } from "react-circular-progressbar";
 import { URL } from "../../../server_connections/server";
 
 function DashBoardDev() {
@@ -320,7 +320,7 @@ function DashBoardDev() {
         "Content-Type": "application/json",
       },
     };
-    if (search_key.task_search === null || search_key.task_search === '') {
+    if (search_key.task_search === null || search_key.task_search === "") {
       // fetch user tasks
       fetch(
         `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
@@ -464,6 +464,7 @@ function DashBoardDev() {
       [event.target.name]: event.target.value,
     });
   };
+
   function selectTask(task) {
     const now_date = new Date();
     const due_date = new Date(task.due_date);
@@ -562,6 +563,58 @@ function DashBoardDev() {
       priority_type: projectData.priority_type.name,
     });
   }
+  // User Task Capacity Monitor
+  const [task_assignments, settask_assignments] = useState({
+    tasks_assigned: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(
+      `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}`,
+      requestOptions
+    )
+      .then((Response) => Response.json())
+      .then((Result) => {
+        settask_assignments(Result);
+      });
+  }, [task_assignments]);
+
+  const [project_assignments, setproject_assignments] = useState({
+    project_assignments: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(
+      `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}`,
+      requestOptions
+    )
+      .then((Response) => Response.json())
+      .then((Result) => {
+        setproject_assignments(Result);
+      });
+  }, [project_assignments]);
 
   // Update Task Status
   function handleSubmitTaskUpdate(event) {
@@ -697,7 +750,13 @@ function DashBoardDev() {
     };
     //search for Team Tasks
     fetch(
-      `${URL}/api/auth/user/search?team_id=${localStorage.getItem("team")}&user_id=${localStorage.getItem("SUID")}&search=${search_key.task_search}`,requestOptions)
+      `${URL}/api/auth/user/search?team_id=${localStorage.getItem(
+        "team"
+      )}&user_id=${localStorage.getItem("SUID")}&search=${
+        search_key.task_search
+      }`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((Result) => setUserOpenTasksData(Result.open_tasks));
 
@@ -784,7 +843,10 @@ function DashBoardDev() {
                             <div className="col-md-3 col-sm-9">
                               <Card
                                 className="card text-white mb-3 py-3 shadow"
-                                style={{ backgroundColor: "#010101",height:"115px"  }}
+                                style={{
+                                  backgroundColor: "#010101",
+                                  height: "115px",
+                                }}
                               >
                                 <Card.Body>
                                   <Row>
@@ -814,9 +876,12 @@ function DashBoardDev() {
                               </Card>
                             </div>
                             <div className="col-md-3 col-sm-9">
-                              <Card 
+                              <Card
                                 className="card text-white mb-3 py-3 shadow"
-                                style={{ backgroundColor: "#010101",height:"115px" }}
+                                style={{
+                                  backgroundColor: "#010101",
+                                  height: "115px",
+                                }}
                               >
                                 <Card.Body>
                                   <Row>
@@ -850,7 +915,10 @@ function DashBoardDev() {
                             <div className="col-md-3 col-sm-9">
                               <Card
                                 className="card text-white mb-3 py-3"
-                                style={{ backgroundColor: "#391A1A",height:"115px"  }}
+                                style={{
+                                  backgroundColor: "#391A1A",
+                                  height: "115px",
+                                }}
                               >
                                 <Card.Body>
                                   <Row>
@@ -881,6 +949,38 @@ function DashBoardDev() {
                                 </Card.Body>
                               </Card>
                             </div>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={5}>
+                      <Card>
+                        <Card.Header>Capacity</Card.Header>
+                        <Card.Body>
+                          <Row>
+                            <Col>
+                              {" "}
+                              <div style={{ width: "105px" }}>
+                                <Card.Text>Tasks</Card.Text>
+                                <CircularProgressbar
+                                  value={task_assignments.tasks_assigned}
+                                  text={`${task_assignments.tasks_assigned} of ${task_assignments.max_value}`}
+                                  maxValue={task_assignments.max_value}
+                                />
+                              </div>
+                            </Col>
+                            <Col>
+                              <div style={{ width: "105px" }}>
+                                <Card.Text>Projects</Card.Text>
+                                <CircularProgressbar
+                                  value={
+                                    project_assignments.project_assignments
+                                  }
+                                  text={`${project_assignments.project_assignments} of ${project_assignments.max_value}`}
+                                  maxValue={project_assignments.max_value}
+                                />
+                              </div>
+                            </Col>
                           </Row>
                         </Card.Body>
                       </Card>
@@ -1082,7 +1182,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1303,7 +1406,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1523,7 +1629,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1744,7 +1853,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -1964,7 +2076,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -2185,7 +2300,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -2409,7 +2527,10 @@ function DashBoardDev() {
                                             <td>{project.project.name}</td>
                                             <td>
                                               {" "}
-                                              {project.project_category_type.name}
+                                              {
+                                                project.project_category_type
+                                                  .name
+                                              }
                                             </td>
                                             <td>{project.user_status.name}</td>
                                             <td>
@@ -4466,7 +4587,7 @@ function DashBoardDev() {
         {/* Team Add Task  */}
 
         {/* Member Projects or Tasks*/}
-     
+
         <Modal
           show={show_member_task}
           onHide={handleClose_Member_task}
@@ -4697,111 +4818,115 @@ function DashBoardDev() {
             >
               Close
             </Button>
-          </Modal.Footer>    <ToastContainer className="p-3" position={"top-end"}>
-          {/* Successfully Updated */}
-          <Toast
-            onClose={handleCloseSuccessUpdate}
-            show={success_updated}
-            bg={"success"}
-            delay={5000}
-            autohide
-          >
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">{<FcApproval />} Successfully</strong>
-            </Toast.Header>
-            <Toast.Body className="text-white">
-              {" "}
-              Updated Successfully
-            </Toast.Body>
-          </Toast>
-          {/*  Error Update  */}
-          <Toast
-            onClose={handleCloseErrorUpdate}
-            show={error_updated}
-            bg={"warning"}
-            delay={5000}
-            autohide
-          >
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Error</strong>
-            </Toast.Header>
-            <Toast.Body className="text-white">
-              please check input or task already assigned
-            </Toast.Body>
-          </Toast>
-          {/* Duplicate Toast */}
-          <Toast
-            onClose={handleCloseDuplicateUpdate}
-            show={duplicate_updated}
-            bg={"warning"}
-            delay={5000}
-            autohide
-          >
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Error</strong>
-            </Toast.Header>
-            <Toast.Body className="text-white">
-              status already assigned
-            </Toast.Body>
-          </Toast>
-          {/* Successfully Completed */}
-          <Toast
-            onClose={handleCloseSuccessComplete}
-            show={success_completed}
-            bg={"success"}
-            delay={5000}
-            autohide
-          >
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">{<FcApproval />} Completed</strong>
-            </Toast.Header>
-            <Toast.Body className="text-white">
-              {" "}
-              Task Completed Successfully
-            </Toast.Body>
-          </Toast>
-          {/*  Server Error  */}
-          <Toast
-            onClose={handleCloseServerError}
-            show={server_error}
-            bg={"danger"}
-            delay={5000}
-            autohide
-          >
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Server Error</strong>
-            </Toast.Header>
-            <Toast.Body className="text-white">server error occured</Toast.Body>
-          </Toast>
-        </ToastContainer>
+          </Modal.Footer>{" "}
+          <ToastContainer className="p-3" position={"top-end"}>
+            {/* Successfully Updated */}
+            <Toast
+              onClose={handleCloseSuccessUpdate}
+              show={success_updated}
+              bg={"success"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">
+                  {<FcApproval />} Successfully
+                </strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                Updated Successfully
+              </Toast.Body>
+            </Toast>
+            {/*  Error Update  */}
+            <Toast
+              onClose={handleCloseErrorUpdate}
+              show={error_updated}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">Error</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                please check input or task already assigned
+              </Toast.Body>
+            </Toast>
+            {/* Duplicate Toast */}
+            <Toast
+              onClose={handleCloseDuplicateUpdate}
+              show={duplicate_updated}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">Error</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                status already assigned
+              </Toast.Body>
+            </Toast>
+            {/* Successfully Completed */}
+            <Toast
+              onClose={handleCloseSuccessComplete}
+              show={success_completed}
+              bg={"success"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{<FcApproval />} Completed</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                Task Completed Successfully
+              </Toast.Body>
+            </Toast>
+            {/*  Server Error  */}
+            <Toast
+              onClose={handleCloseServerError}
+              show={server_error}
+              bg={"danger"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">Server Error</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                server error occured
+              </Toast.Body>
+            </Toast>
+          </ToastContainer>
         </Modal>
-    
-    
+
         {/* Member Projects or Tasks*/}
         <Modal
           show={show_member_progress_chart}
@@ -4837,9 +4962,11 @@ function DashBoardDev() {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmitTaskUpdate}>
-            <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name:</InputGroup.Text>
-             
+              <InputGroup className="mb-3">
+                <InputGroup.Text className="col-4" id="name">
+                  Name:
+                </InputGroup.Text>
+
                 <Input
                   name="name"
                   placeholder="with a Project Or Task Name"
@@ -4852,7 +4979,9 @@ function DashBoardDev() {
               </InputGroup>
 
               <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="task_status_id">Task Status:</InputGroup.Text>
+                <InputGroup.Text className="col-4" id="task_status_id">
+                  Task Status:
+                </InputGroup.Text>
                 <Form.Select
                   name="task_status_id"
                   id="task_status_id"

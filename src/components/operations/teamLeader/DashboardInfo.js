@@ -4,6 +4,7 @@ import {
   Badge,
   Button,
   Card,
+  CardGroup,
   Col,
   Container,
   Form,
@@ -32,30 +33,30 @@ import ProjectOverviewChart from "./charts/projects/ProjectOverViewChart";
 import TeamLiveIssuesOverviewChart from "./charts/projects/TeamLiveIssueOverViewChart";
 import TaskOverviewChart from "./charts/tasks/TasksOverViewChart";
 import { Calendar } from "react-calendar";
-
+import { CircularProgressbar } from "react-circular-progressbar";
 function DashBoardInfo() {
   const history = useNavigate();
   // Calender state Controller
   const [date, setDate] = useState(new Date());
 
-// create date condition toasts
+  // create date condition toasts
   // Kick off date less than today/now
   const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
   const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
   const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
- // Kick off date less than due date
- const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
- const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
- const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
- // Due  date less than now
- const [due_date_less_now, set_due_date_less_now] = useState(false);
- const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
- const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Kick off date less than due date
+  const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] =
+    useState(false);
+  const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+  const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+  // Due  date less than now
+  const [due_date_less_now, set_due_date_less_now] = useState(false);
+  const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+  const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
   // Due off date less than kickoff
   const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
   const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
   const handleCloseDueDateLessKO = () => set_due_date_less_kickoff(false);
-
 
   // Update Toaster
   const [success_live_updated, set_success_live_updated] = useState(false);
@@ -417,14 +418,11 @@ function DashBoardInfo() {
   // Keeps track of changes in the database
   const [old_team_projects_data, set_old_team_projects_data] = useState([]);
   const [old_team_live_issue_data, set_old_team_live_issue_data] = useState([]);
-  const [old_team_tasks_data, set_old_team_tasks_data] = useState([])
+  const [old_team_tasks_data, set_old_team_tasks_data] = useState([]);
   function OldData() {
     set_old_team_projects_data(projectData);
     set_old_team_live_issue_data(LiveIssueData);
-
   }
-
-
 
   const latest_project_data = useMemo(
     () => old_team_projects_data,
@@ -440,8 +438,7 @@ function DashBoardInfo() {
     [old_team_tasks_data]
   );
 
-
-  function TaskData(){
+  function TaskData() {
     set_old_team_tasks_data(memberTask);
   }
   // Team Members List
@@ -473,21 +470,19 @@ function DashBoardInfo() {
         "Content-Type": "application/json",
       },
     };
-    if(search_key.task_search === null || search_key.task_search === '')
-    {
-       fetch(
-      `${URL}/api/auth/user/tasks?id=${localStorage.getItem("team")}&user_id=${
-        memberValue.id
-      }`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => {
-        setMemberTask(Result.open_tasks);
-      });
+    if (search_key.task_search === null || search_key.task_search === "") {
+      fetch(
+        `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
+          "team"
+        )}&user_id=${memberValue.id}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => {
+          setMemberTask(Result.open_tasks);
+        });
     }
-   
-  }, [latest_team_task_data,memberValue.id,search_key]);
+  }, [latest_team_task_data, memberValue.id, search_key]);
 
   useEffect(() => {
     const requestOptions = {
@@ -681,7 +676,10 @@ function DashBoardInfo() {
       },
     };
 
-    if (search_key.live_issue_search === null || search_key.live_issue_search === '') {
+    if (
+      search_key.live_issue_search === null ||
+      search_key.live_issue_search === ""
+    ) {
       // fetch all live issues active projects assigned to the team
       fetch(
         `${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem(
@@ -695,7 +693,7 @@ function DashBoardInfo() {
           setCompletedLiveIssueData(res.completed_live_issues);
         });
     }
-  }, [latest_ive_ssue_data, search_key]);
+  }, [latest_ive_ssue_data, showLiveIssues, search_key]);
 
   //  Fetch All Data States(Team Members, Teams, Environment, Task Statuses)
   useEffect(() => {
@@ -736,6 +734,64 @@ function DashBoardInfo() {
       .then((response) => response.json())
       .then((results) => setTaskStatus(results.data));
   }, []);
+
+  const [project_assignments, setproject_assignments] = useState({
+    project_assignments: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (memberValue.id !== 0) {
+      fetch(
+        `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${memberValue.id}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          setproject_assignments(Result);
+        });
+    }
+  }, [memberValue.id]);
+
+  // User Task Capacity Monitor
+  const [task_assignments, settask_assignments] = useState({
+    tasks_assigned: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (memberValue.id !== 0) {
+      fetch(
+        `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${memberValue.id}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          settask_assignments(Result);
+        });
+    }
+  }, [memberValue.id]);
+
   const dueDate = `${taskFormValue.due_date + " " + taskFormValue.due_time}`;
   const kickoffDate = `${
     taskFormValue.kickoff_date + " " + taskFormValue.kickoff_time
@@ -745,56 +801,52 @@ function DashBoardInfo() {
     const today = new Date().toISOString();
     var kickoffValue = new Date(kickoffDate).toISOString();
     var due_dateValue = new Date(dueDate).toISOString();
-   
-    if( kickoffValue < today){
+
+    if (kickoffValue < today) {
       handleShowKODateLessNow();
-    }
-    else if(kickoffDate > due_dateValue){
+    } else if (kickoffDate > due_dateValue) {
       handleShowKODateLessDue();
-    }
-    else if(due_dateValue < today){
+    } else if (due_dateValue < today) {
       handleShowDueDateLessNOW();
-    }
-    else if(due_dateValue < kickoffDate){
+    } else if (due_dateValue < kickoffDate) {
       handleShowDueDateLessKO();
-    }
-    else {
-    fetch(`${URL}/api/auth/task/create`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("key")}`,
-      },
-      body: JSON.stringify({
-        task: {
-          name: taskFormValue.name,
-          team_id: taskFormValue.team_id,
-          user_id: taskFormValue.user_id,
-          task_status_id: taskFormValue.task_status_id,
-          environment_id: taskFormValue.environment_id,
-          due_date: dueDate,
-          kickoff_date: kickoffDate,
-          task_comment: taskFormValue.task_comment,
+    } else {
+      fetch(`${URL}/api/auth/task/create`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("key")}`,
         },
-      }),
-    })
-      .then((response) => {
-        response.json();
-        if (response.status === 201) {
-          handleShowsuccessCreate();
-          handleClose_Add_task();
-          TaskData();
-        } else if (response.status === 422) {
-          handleShowErrorCreate();
-        } else if (response.status === 500) {
-          handleShowServerError();
-        } else if (response.status === 401) {
-          alert("session expired");
-          history("/");
-        }
+        body: JSON.stringify({
+          task: {
+            name: taskFormValue.name,
+            team_id: taskFormValue.team_id,
+            user_id: taskFormValue.user_id,
+            task_status_id: taskFormValue.task_status_id,
+            environment_id: taskFormValue.environment_id,
+            due_date: dueDate,
+            kickoff_date: kickoffDate,
+            task_comment: taskFormValue.task_comment,
+          },
+        }),
       })
-      .then((results) => results.json());
+        .then((response) => {
+          response.json();
+          if (response.status === 201) {
+            handleShowsuccessCreate();
+            handleClose_Add_task();
+            TaskData();
+          } else if (response.status === 422) {
+            handleShowErrorCreate();
+          } else if (response.status === 500) {
+            handleShowServerError();
+          } else if (response.status === 401) {
+            alert("session expired");
+            history("/");
+          }
+        })
+        .then((results) => results.json());
     }
   }
 
@@ -963,8 +1015,6 @@ function DashBoardInfo() {
         setLiveIssueData(Result.all_live_issues);
       });
   }
-
-
 
   if (!TeamMembers) {
     return <p>no member loaded </p>;
@@ -2698,58 +2748,86 @@ function DashBoardInfo() {
                         <Card className="shadow">
                           <Card.Header>Team Members </Card.Header>
                           <Card.Body className="teamlead-dashboard-team-member-card">
-                            <div className="col-md-5 col-sm-9">
-                              <Form.Group className="mb-3">
-                                <Form.Select
-                                  name="id"
-                                  onChange={handleChange}
-                                  id="id"
-                                  required
+                            <Row>
+                              <Col sm={12} md={6}>
+                                <Form.Group className="mb-3">
+                                  <Form.Select
+                                    name="id"
+                                    onChange={handleChange}
+                                    id="id"
+                                    required
+                                  >
+                                    <option value={0}>Select Member</option>
+                                    {userData.map((user, key) => {
+                                      return (
+                                        <option key={key} value={user.id}>
+                                          {user.name}
+                                        </option>
+                                      );
+                                    })}
+                                  </Form.Select>
+                                </Form.Group>
+                                <Button
+                                  variant="success"
+                                  size="sm"
+                                  onClick={handleShow_Members_assign_stats}
                                 >
-                                  <option value={0}>Select Member</option>
-                                  {userData.map((user, key) => {
-                                    return (
-                                      <option key={key} value={user.id}>
-                                        {user.name}
-                                      </option>
-                                    );
-                                  })}
-                                </Form.Select>
-                              </Form.Group>
-                              <Button
-                                variant="success"
-                                size="sm"
-                                onClick={handleShow_Members_assign_stats}
-                              >
-                                Assign Stats{" "}
-                              </Button>{" "}
-                              <Button
-                                variant="info"
-                                size="sm"
-                                onClick={handleShow_MemberTaskProgress}
-                              >
-                                Task Progress{" "}
-                              </Button>{" "}
-                              <Button
-                                variant="info"
-                                size="sm"
-                                onClick={handleShow_MemberCalender}
-                              >
-                                Calender{" "}
-                              </Button>{" "}
-                            </div>
-
+                                  Assign Stats{" "}
+                                </Button>{" "}
+                                <Button
+                                  variant="info"
+                                  size="sm"
+                                  onClick={handleShow_MemberTaskProgress}
+                                >
+                                  Task Progress{" "}
+                                </Button>{" "}
+                                <Button
+                                  variant="info"
+                                  size="sm"
+                                  onClick={handleShow_MemberCalender}
+                                >
+                                  Calender{" "}
+                                </Button>{" "}
+                              </Col>
+                              <Col sm={12} md={6}>
+                                <Tabs
+                                  defaultActiveKey="tasks_capacity"
+                                  id=""
+                                  className="mb-3"
+                                >
+                                  <Tab
+                                    eventKey="tasks_capacity"
+                                    title="Task Capacity"
+                                  >
+                                    <div style={{ width: "100px" }}>
+                                      <CircularProgressbar
+                                        value={task_assignments.tasks_assigned}
+                                        text={`${task_assignments.tasks_assigned} of ${task_assignments.max_value}`}
+                                        maxValue={task_assignments.max_value}
+                                      />
+                                    </div>
+                                  </Tab>
+                                  <Tab
+                                    eventKey="project_capacity"
+                                    title="Project Capacity"
+                                  >
+                                    <div style={{ width: "100px" }}>
+                                      <CircularProgressbar
+                                        value={
+                                          project_assignments.project_assignments
+                                        }
+                                        text={`${project_assignments.project_assignments} of ${project_assignments.max_value}`}
+                                        maxValue={project_assignments.max_value}
+                                      />
+                                    </div>
+                                  </Tab>
+                                </Tabs>
+                              </Col>
+                            </Row>
                             <br />
                             <Card.Header>
                               Details for <b>{taskValue.name}</b>{" "}
                             </Card.Header>
-
-                            <Row>
-                              <Col>Enviroment :</Col>
-                              <Col>
-                                <p>{taskValue.environment}</p>
-                              </Col>
-                            </Row>
                             <Row>
                               <Col>Kick Off Date</Col>
                               <Col>
@@ -2788,7 +2866,6 @@ function DashBoardInfo() {
                                 </Badge>
                               </Col>
                             </Row>
-                            <br />
                             <Row>
                               <Col>Task Duration :</Col>
                               <Col>
@@ -2807,7 +2884,6 @@ function DashBoardInfo() {
                                 </Badge>
                               </Col>
                             </Row>
-                            <br />
                             <Row>
                               <Col>Task Comment :</Col>
                               <Col>
@@ -3748,8 +3824,6 @@ function DashBoardInfo() {
                   required
                 />
               </InputGroup>
-         
-
               <InputGroup className="mb-3">
                 <InputGroup.Text className="col-4" id="task_status_id">
                   {" "}
@@ -3770,8 +3844,7 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-                </InputGroup>
-          
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text className="col-4" id="environment_id">
                   {" "}
@@ -3792,8 +3865,7 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-                </InputGroup>
-             
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text className="col-4" id="team_id">
                   {" "}
@@ -3816,8 +3888,7 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-                </InputGroup>
-         
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text className="col-4" id="user_id">
                   {" "}
@@ -3839,7 +3910,7 @@ function DashBoardInfo() {
                     );
                   })}
                 </Form.Select>
-                </InputGroup>
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text className="col-4" id="project-name">
                   {" "}
@@ -3860,6 +3931,7 @@ function DashBoardInfo() {
                   value={taskFormValue.time}
                   placeholder="time placeholder"
                   type="time"
+                  defaultValue={"23:59"}
                 />
               </InputGroup>
               <InputGroup className="mb-3">
@@ -3882,6 +3954,7 @@ function DashBoardInfo() {
                   value={taskFormValue.dueDate}
                   placeholder="time placeholder"
                   type="time"
+                  defaultValue={"23:59"}
                 />
               </InputGroup>
               <InputGroup>
@@ -3894,78 +3967,100 @@ function DashBoardInfo() {
                   onChange={handleChange}
                 />
               </InputGroup>
-              <br/>
-            <Button variant="success" size="sm" type="submit">
+              <br />
+              <Button variant="success" size="sm" type="submit">
                 Create Task
               </Button>{" "}
             </Form>
-            <ToastContainer className="p-3" position={'top-end'}>
-{/* Date Alerts Toast */}
-{/* KIck off Date less than Today */}
-<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set to previous dates
-</Toast.Body>
-</Toast>
-{/* Kick off greater than Due Date */}
-<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set ahead of due date
-</Toast.Body>
-</Toast>
-{/* Due Date  less Than Today*/}
-<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due  date can't be set to previous date
-</Toast.Body>
-</Toast>
-{/* Due Date less Than Kick Off */}
-<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due date can't be set before kick off date
-</Toast.Body>
-</Toast>
-          </ToastContainer>
+            <ToastContainer className="p-3" position={"top-end"}>
+              {/* Date Alerts Toast */}
+              {/* KIck off Date less than Today */}
+              <Toast
+                onClose={handleCloseKODateLessNow}
+                show={kickoff_date_less_now}
+                bg={"warning"}
+                delay={5000}
+                autohide
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">
+                  {" "}
+                  kick off date can't be set to previous dates
+                </Toast.Body>
+              </Toast>
+              {/* Kick off greater than Due Date */}
+              <Toast
+                onClose={handleCloseKODateLessDue}
+                show={kickoff_date_less_due_date}
+                bg={"warning"}
+                delay={5000}
+                autohide
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">KICK OFF DATE ERROR</strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">
+                  {" "}
+                  kick off date can't be set ahead of due date
+                </Toast.Body>
+              </Toast>
+              {/* Due Date  less Than Today*/}
+              <Toast
+                onClose={handleCloseDueDateLessNOW}
+                show={due_date_less_now}
+                bg={"warning"}
+                delay={5000}
+                autohide
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">DUE DATE ERROR</strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">
+                  {" "}
+                  due date can't be set to previous date
+                </Toast.Body>
+              </Toast>
+              {/* Due Date less Than Kick Off */}
+              <Toast
+                onClose={handleCloseDueDateLessKO}
+                show={due_date_less_kickoff}
+                bg={"warning"}
+                delay={5000}
+                autohide
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">DUE DATE ERROR</strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">
+                  {" "}
+                  due date can't be set before kick off date
+                </Toast.Body>
+              </Toast>
+            </ToastContainer>
           </Modal.Body>
           <Modal.Footer>
-         
-             
             <Button
               variant="secondary"
               size="sm"
@@ -4427,33 +4522,29 @@ function DashBoardInfo() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handle_Update_Live_Issue}>
-        
             <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_status_id">
-                  {" "}
-                  Status:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                     name="project_status_id"
-                                     onChange={handleChange}
-                                     id="project_status_id"
-                                     value={liveIssueFormValue.project_status_id}
-                                     required
-                                >
- <option value="">Assign</option>
-                  
-                  {statusData.map((status, key) => {
-                    return (
-                      <option key={key} value={status.id}>
-                        {status.name}
-                      </option>
-                    );
-                  })}
+              <InputGroup.Text className="col-4" id="project_status_id">
+                {" "}
+                Status:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_status_id"
+                onChange={handleChange}
+                id="project_status_id"
+                value={liveIssueFormValue.project_status_id}
+                required
+              >
+                <option value="">Assign</option>
 
-
-                                </Form.Select>
-               
-                </InputGroup>
+                {statusData.map((status, key) => {
+                  return (
+                    <option key={key} value={status.id}>
+                      {status.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
             <br />
             <Button variant="success" type="submit">
               Update

@@ -21,8 +21,7 @@ import {
 import CountUp from "react-countup";
 import "chart.js/auto";
 import { useNavigate } from "react-router-dom";
-import { FcSearch,FcApproval } from "react-icons/fc";
-
+import { FcSearch, FcApproval } from "react-icons/fc";
 
 import { URL } from "../../../../server_connections/server";
 
@@ -46,8 +45,6 @@ function LiveIssues() {
   const [error_live_updated, set_error_live_updated] = useState(false);
   const handleShowErrorLiveUpdate = () => set_error_live_updated(true);
   const handleCloseErrorLiveUpdate = () => set_error_live_updated(false);
-
-
 
   // completed  live issue toast controller
   const [live_completed, set_live_completed] = useState(false);
@@ -272,11 +269,11 @@ function LiveIssues() {
   });
 
   // Keeps track of changes in the database
-  const [old_project_data, set_old_project_data] = useState([])
-  function OldData(){
-   set_old_project_data(AllLiveIssuesData);
-  };
-  
+  const [old_project_data, set_old_project_data] = useState([]);
+  function OldData() {
+    set_old_project_data(AllLiveIssuesData);
+  }
+
   const latest_data = useMemo(() => old_project_data, [old_project_data]);
   useEffect(() => {
     const requestOptions = {
@@ -320,19 +317,19 @@ function LiveIssues() {
       },
     };
     if (
-     ( search_key.project_search === null || search_key.project_search === '') &&
+      (search_key.project_search === null ||
+        search_key.project_search === "") &&
       teamValue.team_id_search === 0 &&
       status_value.project_status_id_search === 0
     ) {
-         // fetch  live issues
-         fetch(`${URL}/api/auth/live_issues`, requestOptions)
-         .then((response) => response.json())
-         .then((result) => {
-           setLiveIssuesData(result.all_live_issues);
+      // fetch  live issues
+      fetch(`${URL}/api/auth/live_issues`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setLiveIssuesData(result.all_live_issues);
           setActiveLiveIssuesData(result.active_live_issues);
-          setNotActiveLiveIssuesData(result.not_active_live_issues)
-          setCompletedLiveIssuesData(result.completed_live_issues)
-        
+          setNotActiveLiveIssuesData(result.not_active_live_issues);
+          setCompletedLiveIssuesData(result.completed_live_issues);
         });
     }
   }, [
@@ -341,7 +338,6 @@ function LiveIssues() {
     teamValue.team_id_search,
     status_value.project_status_id_search,
   ]);
-
 
   // filter effect  team
   useEffect(() => {
@@ -354,18 +350,18 @@ function LiveIssues() {
       },
     };
     if (teamValue.team_id_search !== 0) {
-      fetch(`${URL}/api/auth/team/live_issues?team_id=${teamValue.team_id_search}`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setLiveIssuesData(result.all_live_issues);
-       setActiveLiveIssuesData(result.active_live_issues);
-       setNotActiveLiveIssuesData(result.not_active_live_issues)
-       setCompletedLiveIssuesData(result.completed_live_issues)
-
-      });
-
+      fetch(
+        `${URL}/api/auth/team/live_issues?team_id=${teamValue.team_id_search}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setLiveIssuesData(result.all_live_issues);
+          setActiveLiveIssuesData(result.active_live_issues);
+          setNotActiveLiveIssuesData(result.not_active_live_issues);
+          setCompletedLiveIssuesData(result.completed_live_issues);
+        });
     }
-
   }, [latest_data, teamValue.team_id_search]);
 
   // filter status
@@ -412,7 +408,7 @@ function LiveIssues() {
         .then((response) => response.json())
         .then((res) => setLiveIssuesData(res.data));
     }
-  }, [latest_data,status_value, teamValue]);
+  }, [latest_data, status_value, teamValue]);
 
   // Search
   function handle_Search_Project_Submit(event) {
@@ -427,14 +423,16 @@ function LiveIssues() {
       },
     };
     if (search_key.project_search !== null) {
-
-      fetch(`${URL}/api/auth/live_issues/search?search=${search_key.project_search}`,requestOptions)
+      fetch(
+        `${URL}/api/auth/live_issues/search?search=${search_key.project_search}`,
+        requestOptions
+      )
         .then((response) => response.json())
         .then((res) => {
           setLiveIssuesData(res.all_live_issues);
           setActiveLiveIssuesData(res.active_live_issues);
           setNotActiveLiveIssuesData(res.not_active_live_issues);
-          setCompletedLiveIssuesData(res.completed_live_issues)
+          setCompletedLiveIssuesData(res.completed_live_issues);
         });
     }
   }
@@ -468,7 +466,7 @@ function LiveIssues() {
             pm_id: liveIssueFormValue.pm_id,
             project_status_id: liveIssueFormValue.project_status_id,
             priority_type_id: liveIssueFormValue.priority_type_id,
-            last_status_change: liveIssueFormValue.last_status_change
+            last_status_change: liveIssueFormValue.last_status_change,
           },
         }),
       }).then((Response) => {
@@ -523,20 +521,19 @@ function LiveIssues() {
   // Update Live Issues Project
   function handle_Update_Live_Issue(event) {
     event.preventDefault();
-  
+
     let completion_key = "8";
     var date = new Date();
     // var now_utc = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.assigned_date = date.toISOString();
     liveIssueFormValue.last_status_change = date.toISOString();
-  
-if (liveIssueFormValue.project_status_id === completion_key) {
-     
+
+    if (liveIssueFormValue.project_status_id === completion_key) {
       handleCompleteLiveIssueShow();
-    } 
-    else if (
-      liveIssueFormValue.project_status_id !== live_issue_Value.project_status_id &&
+    } else if (
+      liveIssueFormValue.project_status_id !==
+        live_issue_Value.project_status_id &&
       liveIssueFormValue.project_status_id !== completion_key
     ) {
       fetch(`${URL}/api/auth/live_issue/main/update`, {
@@ -689,8 +686,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
     //  date.getHours(), date.getMinutes(), date.getSeconds());
     liveIssueFormValue.last_status_change = date.toISOString();
     let completion_key = "8";
-   
-  if (liveIssueFormValue.project_status_id === completion_key) {
+
+    if (liveIssueFormValue.project_status_id === completion_key) {
       fetch(`${URL}/api/auth/live_issue/update`, {
         method: "put",
         headers: {
@@ -818,92 +815,86 @@ if (liveIssueFormValue.project_status_id === completion_key) {
 
   return (
     <div>
-      <br/>
-      <Container  fluid>
+      <br />
+      <Container fluid>
         <Row>
           <Col sm={8}>
             <Card className="shadow">
               <Card.Header>Live Issues </Card.Header>
-           
-                <Row>
-                  <Col>
-                    <InputGroup>
-                     
-                        <Form.Select
-                       
-                          name="project_status_id_search"
-                          onChange={handleChange}
-                          id="project_status_id_search"
-                          required
+
+              <Row>
+                <Col>
+                  <InputGroup>
+                    <Form.Select
+                      name="project_status_id_search"
+                      onChange={handleChange}
+                      id="project_status_id_search"
+                      required
+                    >
+                      <option value={0}>Select Status</option>
+                      <></>
+                      {statusData.map((status, key) => {
+                        return (
+                          <option key={key} value={status.id}>
+                            {status.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                  </InputGroup>
+                </Col>
+                <Col>
+                  <InputGroup>
+                    <Form.Select
+                      name="team_id_search"
+                      onChange={handleChange}
+                      id="team_id_search"
+                      required
+                    >
+                      <option value={0}>Select Team</option>
+                      {teamsData.map((team, key) => {
+                        return (
+                          <option key={key} value={team.id}>
+                            {team.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                  </InputGroup>
+                </Col>
+                <Col sm={7}>
+                  <>
+                    <Nav className="justify-content-end">
+                      <div className="col-md-7 col-sm-9 me-2">
+                        <Form
+                          onSubmit={handle_Search_Project_Submit}
+                          className="d-flex"
                         >
-                          <option value={0}>Select Status</option>
-                          <></>
-                          {statusData.map((status, key) => {
-                            return (
-                              <option key={key} value={status.id}>
-                                {status.name}
-                              </option>
-                            );
-                          })}
-                        </Form.Select>
-                    
-                    </InputGroup>
-                  </Col>
-                  <Col>
-                    <InputGroup>
-                      
-                        <Form.Select
-                         
-                          name="team_id_search"
-                          onChange={handleChange}
-                          id="team_id_search"
-                          required
-                        >
-                          <option value={0}>Select Team</option>
-                          {teamsData.map((team, key) => {
-                            return (
-                              <option key={key} value={team.id}>
-                                {team.name}
-                              </option>
-                            );
-                          })}
-                        </Form.Select>
-                      
-                    </InputGroup>
-                  </Col>
-                  <Col sm={7}>
-                    <>
-                      <Nav className="justify-content-end">
-                        <div className="col-md-7 col-sm-9 me-2">
-                          <Form
-                            onSubmit={handle_Search_Project_Submit}
-                            className="d-flex"
+                          <FormControl
+                            type="search"
+                            name="project_search"
+                            placeholder="Search"
+                            onChange={handleChange}
+                            className="mr-3"
+                            required
+                            aria-label="Search"
+                          />
+                          <Button
+                            variant="outline-success"
+                            type="submit"
+                            size="sm"
                           >
-                            <FormControl
-                              type="search"
-                              name="project_search"
-                              placeholder="Search"
-                              onChange={handleChange}
-                              className="mr-3"
-                              required
-                              aria-label="Search"
-                            />
-                            <Button
-                              variant="outline-success"
-                              type="submit"
-                              size="sm"
-                            >
-                              <h6>
-                                <FcSearch />
-                              </h6>
-                            </Button>
-                          </Form>
-                        </div>
-                      </Nav>
-                    </>
-                  </Col>
-                </Row>
-                <Card.Body className="sdm-live-issues-card">
+                            <h6>
+                              <FcSearch />
+                            </h6>
+                          </Button>
+                        </Form>
+                      </div>
+                    </Nav>
+                  </>
+                </Col>
+              </Row>
+              <Card.Body className="sdm-live-issues-card">
                 <Tabs defaultActiveKey="active" className="mb-3">
                   <Tab eventKey="active" title="Active">
                     <Table size="sm" striped bordered hover>
@@ -925,7 +916,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                 <td> {project.project_status.name}</td>
                                 <td> {project.priority_type.name}</td>
                                 <td>{project.user.name}</td>
-                                <td >
+                                <td>
                                   <Button
                                     variant="outline-success"
                                     size="sm"
@@ -934,7 +925,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     Select
                                   </Button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -946,7 +938,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     </Button>
                                   </button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -994,7 +987,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     Select
                                   </Button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1006,7 +1000,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     </Button>
                                   </button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1054,7 +1049,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     Select
                                   </Button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1066,7 +1062,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     </Button>
                                   </button>
                                   <button
-                                    size="sm" className="btn"
+                                    size="sm"
+                                    className="btn"
                                     onClick={() => selectProject(project)}
                                   >
                                     <Button
@@ -1113,7 +1110,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                   Select
                                 </Button>
                                 <button
-                                  size="sm" className="btn"
+                                  size="sm"
+                                  className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -1125,7 +1123,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                   </Button>
                                 </button>
                                 <button
-                                  size="sm" className="btn"
+                                  size="sm"
+                                  className="btn"
                                   onClick={() => selectProject(project)}
                                 >
                                   <Button
@@ -1158,7 +1157,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Col>
             <Card className="shadow">
               <Card.Header>projects Details</Card.Header>
-              <Card.Body className="sdm-live-issues-details-card" >
+              <Card.Body className="sdm-live-issues-details-card">
                 <Row>
                   <Col>Name :</Col>
                   <Col>
@@ -1271,56 +1270,50 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Modal.Title>Live Issues</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        
-            <Card>
-              <Card.Body className="sdm-live-issue-modal-card">
-                 <Row>
-              <Col sm={8}>
-                <Card>
-                  <Card.Header>Live Issues </Card.Header>
-               
+          <Card>
+            <Card.Body className="sdm-live-issue-modal-card">
+              <Row>
+                <Col sm={8}>
+                  <Card>
+                    <Card.Header>Live Issues </Card.Header>
                     <Row className="mt-3">
                       <Col>
                         <InputGroup>
-                       
-                            <Form.Select
-                              name="project_status_id_search"
-                              onChange={handleChange}
-                              id="project_status_id_search"
-                              required
-                            >
-                              <option value={0}>Select Status</option>
-                              <></>
-                              {statusData.map((status, key) => {
-                                return (
-                                  <option key={key} value={status.id}>
-                                    {status.name}
-                                  </option>
-                                );
-                              })}
-                            </Form.Select>
-                     
+                          <Form.Select
+                            name="project_status_id_search"
+                            onChange={handleChange}
+                            id="project_status_id_search"
+                            required
+                          >
+                            <option value={0}>Select Status</option>
+                            <></>
+                            {statusData.map((status, key) => {
+                              return (
+                                <option key={key} value={status.id}>
+                                  {status.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Select>
                         </InputGroup>
                       </Col>
                       <Col>
                         <InputGroup>
-                          
-                            <Form.Select
-                              name="team_id_search"
-                              onChange={handleChange}
-                              id="team_id_search"
-                              required
-                            >
-                              <option value={0}>Select Team</option>
-                              {teamsData.map((team, key) => {
-                                return (
-                                  <option key={key} value={team.id}>
-                                    {team.name}
-                                  </option>
-                                );
-                              })}
-                            </Form.Select>
-                          
+                          <Form.Select
+                            name="team_id_search"
+                            onChange={handleChange}
+                            id="team_id_search"
+                            required
+                          >
+                            <option value={0}>Select Team</option>
+                            {teamsData.map((team, key) => {
+                              return (
+                                <option key={key} value={team.id}>
+                                  {team.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Select>
                         </InputGroup>
                       </Col>
                       <Col sm={7}>
@@ -1354,138 +1347,22 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                           </Nav>
                         </>
                       </Col>
-                    </Row>   <Card.Body className="sdm-live-issue-modal-live-issues-card">
-                    <Tabs defaultActiveKey="active" className="mb-3">
-                      <Tab eventKey="active" title="Active">
-                        <Table size="sm" striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Status </th>
-                              <th>Priority</th>
-                              <th> PM</th>
-                              <th> Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {AllActiveLiveIssuesData.map((project, Index) => {
-                              return (
-                                <tr key={Index}>
-                                  <td>{project.name}</td>
-                                  <td> {project.project_status.name}</td>
-                                  <td> {project.priority_type.name}</td>
-                                  <td>{project.user.name}</td>
-                                  <td className="text-center">
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      Select
-                                    </Button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      <Button
-                                        variant="outline-success"
-                                        size="sm"
-                                        onClick={handleUpdateLiveShow}
-                                      >
-                                        update
-                                      </Button>
-                                    </button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={handleDeleteLiveIssueShow}
-                                      >
-                                        Delete
-                                      </Button>
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </Table>
-                      </Tab>
-                      <Tab eventKey="completed" title="Completed">
-                        <Table size="sm" striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Status </th>
-                              <th>Priority</th>
-                              <th> PM</th>
-                              <th> Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {AllComletedLiveIssuesData.map((project, Index) => {
-                              return (
-                                <tr key={Index}>
-                                  <td>{project.name}</td>
-                                  <td> {project.project_status.name}</td>
-                                  <td> {project.priority_type.name}</td>
-                                  <td>{project.user.name}</td>
-                                  <td className="text-center">
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      Select
-                                    </Button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      <Button
-                                        variant="outline-success"
-                                        size="sm"
-                                        onClick={handleUpdateLiveShow}
-                                      >
-                                        update
-                                      </Button>
-                                    </button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={handleDeleteLiveIssueShow}
-                                      >
-                                        Delete
-                                      </Button>
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </Table>
-                      </Tab>
-                      <Tab eventKey="disablled" title="Not Active">
-                        <Table size="sm" striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Status </th>
-                              <th>Priority</th>
-                              <th> PM</th>
-                              <th> Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {AllNotActiveLiveIssuesData.map(
-                              (project, Index) => {
+                    </Row>{" "}
+                    <Card.Body className="sdm-live-issue-modal-live-issues-card">
+                      <Tabs defaultActiveKey="active" className="mb-3">
+                        <Tab eventKey="active" title="Active">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Status </th>
+                                <th>Priority</th>
+                                <th> PM</th>
+                                <th> Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {AllActiveLiveIssuesData.map((project, Index) => {
                                 return (
                                   <tr key={Index}>
                                     <td>{project.name}</td>
@@ -1501,7 +1378,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                         Select
                                       </Button>{" "}
                                       <button
-                                        size="sm" className="btn"
+                                        size="sm"
+                                        className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1513,7 +1391,8 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                         </Button>
                                       </button>{" "}
                                       <button
-                                        size="sm" className="btn"
+                                        size="sm"
+                                        className="btn"
                                         onClick={() => selectProject(project)}
                                       >
                                         <Button
@@ -1527,184 +1406,307 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                                     </td>
                                   </tr>
                                 );
-                              }
-                            )}
-                          </tbody>
-                        </Table>
-                      </Tab>
-                      <Tab eventKey="all" title="All">
-                        <Table size="sm" striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Status </th>
-                              <th>Priority</th>
-                              <th> PM</th>
-                              <th> Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {AllLiveIssuesData.map((project, Index) => {
-                              return (
-                                <tr key={Index}>
-                                  <td>{project.name}</td>
-                                  <td> {project.project_status.name}</td>
-                                  <td> {project.priority_type.name}</td>
-                                  <td>{project.user.name}</td>
-                                  <td className="text-center">
-                                    <Button
-                                      variant="outline-success"
-                                      size="sm"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      Select
-                                    </Button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
+                              })}
+                            </tbody>
+                          </Table>
+                        </Tab>
+                        <Tab eventKey="completed" title="Completed">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Status </th>
+                                <th>Priority</th>
+                                <th> PM</th>
+                                <th> Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {AllComletedLiveIssuesData.map(
+                                (project, Index) => {
+                                  return (
+                                    <tr key={Index}>
+                                      <td>{project.name}</td>
+                                      <td> {project.project_status.name}</td>
+                                      <td> {project.priority_type.name}</td>
+                                      <td>{project.user.name}</td>
+                                      <td className="text-center">
+                                        <Button
+                                          variant="outline-success"
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          Select
+                                        </Button>{" "}
+                                        <button
+                                          size="sm"
+                                          className="btn"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            variant="outline-success"
+                                            size="sm"
+                                            onClick={handleUpdateLiveShow}
+                                          >
+                                            update
+                                          </Button>
+                                        </button>{" "}
+                                        <button
+                                          size="sm"
+                                          className="btn"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={handleDeleteLiveIssueShow}
+                                          >
+                                            Delete
+                                          </Button>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </Tab>
+                        <Tab eventKey="disablled" title="Not Active">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Status </th>
+                                <th>Priority</th>
+                                <th> PM</th>
+                                <th> Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {AllNotActiveLiveIssuesData.map(
+                                (project, Index) => {
+                                  return (
+                                    <tr key={Index}>
+                                      <td>{project.name}</td>
+                                      <td> {project.project_status.name}</td>
+                                      <td> {project.priority_type.name}</td>
+                                      <td>{project.user.name}</td>
+                                      <td className="text-center">
+                                        <Button
+                                          variant="outline-success"
+                                          size="sm"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          Select
+                                        </Button>{" "}
+                                        <button
+                                          size="sm"
+                                          className="btn"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            variant="outline-success"
+                                            size="sm"
+                                            onClick={handleUpdateLiveShow}
+                                          >
+                                            update
+                                          </Button>
+                                        </button>{" "}
+                                        <button
+                                          size="sm"
+                                          className="btn"
+                                          onClick={() => selectProject(project)}
+                                        >
+                                          <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={handleDeleteLiveIssueShow}
+                                          >
+                                            Delete
+                                          </Button>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </Tab>
+                        <Tab eventKey="all" title="All">
+                          <Table size="sm" striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Status </th>
+                                <th>Priority</th>
+                                <th> PM</th>
+                                <th> Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {AllLiveIssuesData.map((project, Index) => {
+                                return (
+                                  <tr key={Index}>
+                                    <td>{project.name}</td>
+                                    <td> {project.project_status.name}</td>
+                                    <td> {project.priority_type.name}</td>
+                                    <td>{project.user.name}</td>
+                                    <td className="text-center">
                                       <Button
                                         variant="outline-success"
                                         size="sm"
-                                        onClick={handleUpdateLiveShow}
+                                        onClick={() => selectProject(project)}
                                       >
-                                        update
-                                      </Button>
-                                    </button>{" "}
-                                    <button
-                                      size="sm" className="btn"
-                                      onClick={() => selectProject(project)}
-                                    >
-                                      <Button
-                                        variant="outline-danger"
+                                        Select
+                                      </Button>{" "}
+                                      <button
                                         size="sm"
-                                        onClick={handleDeleteLiveIssueShow}
+                                        className="btn"
+                                        onClick={() => selectProject(project)}
                                       >
-                                        Delete
-                                      </Button>
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </Table>
-                      </Tab>
-                    </Tabs>
-                  </Card.Body>
-                  <Card.Footer className="text-center">
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={handleAddLiveShow}
-                    >
-                      Add Live Issue
-                    </Button>
-                  </Card.Footer>
-                </Card>
-              </Col>
-              <Col>
-                <Card>
-                  <Card.Header>Live Issue Details </Card.Header>
-                  <Card.Body className="sdm-live-issue-modal-live-issues-details-card">
-                    <Row>
-                      <Col>Name :</Col>
-                      <Col>
-                        <p>{live_issue_Value.name}</p>
-                      </Col>
-                    </Row>
-                    <hr />
-                    <Row>
-                      <Col>Priority :</Col>
-                      <Col>
-                        <Badge
-                          style={{ height: "25px" }}
-                          bg={live_issue_Value.priority_level}
-                          size="sm"
-                        >
-                          <p>{live_issue_Value.priority_name}</p>
-                        </Badge>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Assigned Date :</Col>
-                      <Col>
-                        <p>{live_issue_Value.assigned_date}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Progress :</Col>
-                      <Col>
-                        <ProgressBar
-                          now={live_issue_Value.project_progress}
-                          striped
-                          variant={live_issue_Value.project_status_level}
-                          label={`${live_issue_Value.project_progress}%`}
-                        />
-                      </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                      <Col>Last Status Update :</Col>
-                      <Col>
-                        <p>{live_issue_Value.last_status_update}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Days Since Last Status Update:</Col>
-                      <Col>
-                        <Badge pill bg="info">
-                          <CountUp
-                            start={0}
-                            end={100 - "live_issue_Value.progress"}
-                            delay={0}
+                                        <Button
+                                          variant="outline-success"
+                                          size="sm"
+                                          onClick={handleUpdateLiveShow}
+                                        >
+                                          update
+                                        </Button>
+                                      </button>{" "}
+                                      <button
+                                        size="sm"
+                                        className="btn"
+                                        onClick={() => selectProject(project)}
+                                      >
+                                        <Button
+                                          variant="outline-danger"
+                                          size="sm"
+                                          onClick={handleDeleteLiveIssueShow}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </Table>
+                        </Tab>
+                      </Tabs>
+                    </Card.Body>
+                    <Card.Footer className="text-center">
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={handleAddLiveShow}
+                      >
+                        Add Live Issue
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card>
+                    <Card.Header>Live Issue Details </Card.Header>
+                    <Card.Body className="sdm-live-issue-modal-live-issues-details-card">
+                      <Row>
+                        <Col>Name :</Col>
+                        <Col>
+                          <p>{live_issue_Value.name}</p>
+                        </Col>
+                      </Row>
+                      <hr />
+                      <Row>
+                        <Col>Priority :</Col>
+                        <Col>
+                          <Badge
+                            style={{ height: "25px" }}
+                            bg={live_issue_Value.priority_level}
+                            size="sm"
                           >
-                            {({ countUpRef }) => (
-                              <div>
-                                <span ref={countUpRef} />
-                              </div>
-                            )}
-                          </CountUp>
-                        </Badge>
-                      </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                      <Col>Created :</Col>
-                      <Col>
-                        <p>{live_issue_Value.inserted_at}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Last Update</Col>
-                      <Col>
-                        <p>{live_issue_Value.last_update}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>PM :</Col>
-                      <Col>
-                        <p>{live_issue_Value.pm}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>Team :</Col>
-                      <Col>
-                        <p>{live_issue_Value.team_name}</p>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                  <Card.Footer className="text-center">
-                    full details
-                  </Card.Footer>
-                </Card>
-              </Col>
-            </Row>
-              </Card.Body>
-            </Card>
-    
+                            <p>{live_issue_Value.priority_name}</p>
+                          </Badge>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>Assigned Date :</Col>
+                        <Col>
+                          <p>{live_issue_Value.assigned_date}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>Progress :</Col>
+                        <Col>
+                          <ProgressBar
+                            now={live_issue_Value.project_progress}
+                            striped
+                            variant={live_issue_Value.project_status_level}
+                            label={`${live_issue_Value.project_progress}%`}
+                          />
+                        </Col>
+                      </Row>
+                      <br />
+                      <Row>
+                        <Col>Last Status Update :</Col>
+                        <Col>
+                          <p>{live_issue_Value.last_status_update}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>Days Since Last Status Update:</Col>
+                        <Col>
+                          <Badge pill bg="info">
+                            <CountUp
+                              start={0}
+                              end={100 - "live_issue_Value.progress"}
+                              delay={0}
+                            >
+                              {({ countUpRef }) => (
+                                <div>
+                                  <span ref={countUpRef} />
+                                </div>
+                              )}
+                            </CountUp>
+                          </Badge>
+                        </Col>
+                      </Row>
+                      <br />
+                      <Row>
+                        <Col>Created :</Col>
+                        <Col>
+                          <p>{live_issue_Value.inserted_at}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>Last Update</Col>
+                        <Col>
+                          <p>{live_issue_Value.last_update}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>PM :</Col>
+                        <Col>
+                          <p>{live_issue_Value.pm}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>Team :</Col>
+                        <Col>
+                          <p>{live_issue_Value.team_name}</p>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                    <Card.Footer className="text-center">
+                      full details
+                    </Card.Footer>
+                  </Card>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
         </Modal.Body>
-     
       </Modal>
 
       {/* Add Live Issue */}
@@ -1721,7 +1723,9 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Form onSubmit={handle_Add_Live_Issue}>
             <br />
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="ProjectName"
                 aria-describedby="name"
@@ -1734,111 +1738,131 @@ if (liveIssueFormValue.project_status_id === completion_key) {
               />
             </InputGroup>
             <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="business_request_document_status">
-              {" "}
-              BRD Available:{" "}
-            </InputGroup.Text>
+              <InputGroup.Text
+                className="col-4"
+                id="business_request_document_status"
+              >
+                {" "}
+                BRD Available:{" "}
+              </InputGroup.Text>
               <Form.Select
-            name="business_request_document_status"
-            id="business_request_document_status"
-            onChange={handleChange}
-            value={liveIssueFormValue.business_request_document_status}
-            required >     <option value="">BRD Status</option>
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-             </Form.Select>
-             </InputGroup>
-         
+                name="business_request_document_status"
+                id="business_request_document_status"
+                onChange={handleChange}
+                value={liveIssueFormValue.business_request_document_status}
+                required
+              >
+                {" "}
+                <option value="">BRD Status</option>
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </Form.Select>
+            </InputGroup>
+
             <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="business_request_document_link">
-              {" "}
-              BRD File:{" "}
-            </InputGroup.Text>
-            <Form.Control
+              <InputGroup.Text
+                className="col-4"
+                id="business_request_document_link"
+              >
+                {" "}
+                BRD File:{" "}
+              </InputGroup.Text>
+              <Form.Control
                 type="file"
                 name="business_request_document_link"
                 onChange={handleChange}
               />
-              </InputGroup>
-        
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="team_id">
-              {" "}
-              Team:{" "}
-            </InputGroup.Text>
-              <Form.Select
-             name="team_id"
-             onChange={handleChange}
-             id="team_id"
-             required ><option value="">Select Team</option>
-             {teamsData.map((team, key) => {
-               return (
-                 <option key={key} value={team.id}>
-                   {team.name}
-                 </option>
-               );
-             })}
-              </Form.Select>
-              </InputGroup>
-        
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="pm_id">
-              {" "}
-              PM:{" "}
-            </InputGroup.Text>
-              <Form.Select
-               name="pm_id"
-               onChange={handleChange}
-               id="pm_id"
-               required >  <option value="">Select PM</option>
-               {userData.map((user, key) => {
-                 return (
-                   <option key={key} value={user.id}>
-                     {user.name}
-                   </option>
-                 );
-               })}
-              </Form.Select>
-              </InputGroup>
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="project_status_id">
-              {" "}
-              Status:{" "}
-            </InputGroup.Text>
-              <Form.Select
-               name="project_status_id"
-               onChange={handleChange}
-               id="project_status_id"
-               required > <option value="">Assign</option>
-               <></>
-               {statusData.map((status, key) => {
-                 return (
-                   <option key={key} value={status.id}>
-                     {status.name}
-                   </option>
-                 );
-               })} </Form.Select>
-               </InputGroup>
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="priority_type_id">
-              {" "}
-              Priority:{" "}
-            </InputGroup.Text>
-              <Form.Select
-               name="priority_type_id"
-               onChange={handleChange}
-               id="priority_type_id"
-               required >  <option value="">Assign</option>
+            </InputGroup>
 
-               {PriorityData.map((priority, key) => {
-                 return (
-                   <option key={key} value={priority.id}>
-                     {priority.name}
-                   </option>
-                 );
-               })}
-                </Form.Select>
-                </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="team_id">
+                {" "}
+                Team:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="team_id"
+                onChange={handleChange}
+                id="team_id"
+                required
+              >
+                <option value="">Select Team</option>
+                {teamsData.map((team, key) => {
+                  return (
+                    <option key={key} value={team.id}>
+                      {team.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="pm_id">
+                {" "}
+                PM:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="pm_id"
+                onChange={handleChange}
+                id="pm_id"
+                required
+              >
+                {" "}
+                <option value="">Select PM</option>
+                {userData.map((user, key) => {
+                  return (
+                    <option key={key} value={user.id}>
+                      {user.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project_status_id">
+                {" "}
+                Status:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_status_id"
+                onChange={handleChange}
+                id="project_status_id"
+                required
+              >
+                {" "}
+                <option value="">Assign</option>
+                <></>
+                {statusData.map((status, key) => {
+                  return (
+                    <option key={key} value={status.id}>
+                      {status.name}
+                    </option>
+                  );
+                })}{" "}
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="priority_type_id">
+                {" "}
+                Priority:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="priority_type_id"
+                onChange={handleChange}
+                id="priority_type_id"
+                required
+              >
+                {" "}
+                <option value="">Assign</option>
+                {PriorityData.map((priority, key) => {
+                  return (
+                    <option key={key} value={priority.id}>
+                      {priority.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
             <br />
             <Button variant="primary" type="submit">
               Add Live Issue
@@ -1855,30 +1879,28 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           </Button>
         </Modal.Footer>
 
-
-
         <ToastContainer className="p-3" position={"top-end"}>
-           {/* Error Create */}
-           <Toast
-          onClose={handleCloseErrorLiveCreate}
-          show={error_live_create}
-          bg={"warning"}
-          delay={5000}
-          autohide
-        >
-          <Toast.Header>
-            <img
-              src="holder.js/20x20?text=%20"
-              className="rounded me-2"
-              alt=""
-            />
-            <strong className="me-auto">Error Occured</strong>
-          </Toast.Header>
-          <Toast.Body className="text-white">
-            {" "}
-            please check input or Record already exists
-          </Toast.Body>
-        </Toast>
+          {/* Error Create */}
+          <Toast
+            onClose={handleCloseErrorLiveCreate}
+            show={error_live_create}
+            bg={"warning"}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error Occured</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">
+              {" "}
+              please check input or Record already exists
+            </Toast.Body>
+          </Toast>
         </ToastContainer>
       </Modal>
 
@@ -1895,7 +1917,9 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Form onSubmit={handle_Update_Live_Issue}>
             <br />
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name:</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name:
+              </InputGroup.Text>
               <FormControl
                 aria-label="ProjectName"
                 aria-describedby="name"
@@ -1907,113 +1931,135 @@ if (liveIssueFormValue.project_status_id === completion_key) {
                 required
               />
             </InputGroup>
-        
+
             <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="business_request_document_status">
-              {" "}
-              BRD Available:{" "}
-            </InputGroup.Text>
+              <InputGroup.Text
+                className="col-4"
+                id="business_request_document_status"
+              >
+                {" "}
+                BRD Available:{" "}
+              </InputGroup.Text>
               <Form.Select
-               name="business_request_document_status"
-               id="business_request_document_status"
-               onChange={handleChange}
-               value={liveIssueFormValue.business_request_document_status}
-               required ><option value="">BRD Status</option>
-               <option value={true}>Yes</option>
-               <option value={false}>No</option></Form.Select>
-               </InputGroup>
-               <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="business_request_document_status">
-              {" "}
-              BRD File:{" "}
-            </InputGroup.Text>
+                name="business_request_document_status"
+                id="business_request_document_status"
+                onChange={handleChange}
+                value={liveIssueFormValue.business_request_document_status}
+                required
+              >
+                <option value="">BRD Status</option>
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text
+                className="col-4"
+                id="business_request_document_status"
+              >
+                {" "}
+                BRD File:{" "}
+              </InputGroup.Text>
               <Form.Control
                 type="file"
                 name="business_request_document_link"
-                onChange={handleChange} 
+                onChange={handleChange}
               />
             </InputGroup>
-          
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="team_id">
-              {" "}
-              Team:{" "}
-            </InputGroup.Text>
-              <Form.Select
-               name="team_id"
-               onChange={handleChange}
-               id="team_id"
-               value={liveIssueFormValue.team_id}
-               required > <option value="">Select Team</option>
-               {teamsData.map((team, key) => {
-                 return (
-                   <option key={key} value={team.id}>
-                     {team.name}
-                   </option>
-                 );
-               })}</Form.Select>
-               </InputGroup>
-         
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="pm_id">
-              {" "}
-              PM:{" "}
-            </InputGroup.Text>
-              <Form.Select
-               name="pm_id"
-               onChange={handleChange}
-               id="pm_id"
-               value={liveIssueFormValue.pm_id}
-               required ><option value="">Select PM</option>
-               {userData.map((user, key) => {
-                 return (
-                   <option key={key} value={user.id}>
-                     {user.name}
-                   </option>
-                 );
-               })}</Form.Select>
-               </InputGroup>
-           
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="project_status_id">
-              {" "}
-              Status:{" "}
-            </InputGroup.Text>
-              <Form.Select
-                 name="project_status_id"
-                 onChange={handleChange}
-                 id="project_status_id"
-                 value={liveIssueFormValue.project_status_id}
-                 required ><option value="">Assign</option>
-                 <></>
-                 {statusData.map((status, key) => {
-                   return (
-                     <option key={key} value={status.id}>
-                       {status.name}
-                     </option>
-                   );
-                 })}</Form.Select>
-               </InputGroup>
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="priority_type_id">
-              {" "}
-              Priority:{" "}
-            </InputGroup.Text>
-              <Form.Select
-                  name="priority_type_id"
-                  onChange={handleChange}
-                  id="priority_type_id"
-                  value={liveIssueFormValue.priority_type_id}
-                  required ><option value="">Assign</option>
 
-                  {PriorityData.map((priority, key) => {
-                    return (
-                      <option key={key} value={priority.id}>
-                        {priority.name}
-                      </option>
-                    );
-                  })}</Form.Select>
-                 </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="team_id">
+                {" "}
+                Team:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="team_id"
+                onChange={handleChange}
+                id="team_id"
+                value={liveIssueFormValue.team_id}
+                required
+              >
+                {" "}
+                <option value="">Select Team</option>
+                {teamsData.map((team, key) => {
+                  return (
+                    <option key={key} value={team.id}>
+                      {team.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="pm_id">
+                {" "}
+                PM:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="pm_id"
+                onChange={handleChange}
+                id="pm_id"
+                value={liveIssueFormValue.pm_id}
+                required
+              >
+                <option value="">Select PM</option>
+                {userData.map((user, key) => {
+                  return (
+                    <option key={key} value={user.id}>
+                      {user.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project_status_id">
+                {" "}
+                Status:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_status_id"
+                onChange={handleChange}
+                id="project_status_id"
+                value={liveIssueFormValue.project_status_id}
+                required
+              >
+                <option value="">Assign</option>
+                <></>
+                {statusData.map((status, key) => {
+                  return (
+                    <option key={key} value={status.id}>
+                      {status.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="priority_type_id">
+                {" "}
+                Priority:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="priority_type_id"
+                onChange={handleChange}
+                id="priority_type_id"
+                value={liveIssueFormValue.priority_type_id}
+                required
+              >
+                <option value="">Assign</option>
+
+                {PriorityData.map((priority, key) => {
+                  return (
+                    <option key={key} value={priority.id}>
+                      {priority.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
             <br />
             <Button variant="success" type="submit">
               Done
@@ -2101,7 +2147,6 @@ if (liveIssueFormValue.project_status_id === completion_key) {
       </Modal>
 
       <ToastContainer className="p-3" position={"top-end"}>
-        
         {/* Successfully Create */}
         <Toast
           onClose={handleCloseSuccessLiveCreate}
@@ -2116,11 +2161,10 @@ if (liveIssueFormValue.project_status_id === completion_key) {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Assigned Successfully</Toast.Body>
         </Toast>
-     
 
         {/* Successfully Updated */}
         <Toast
@@ -2136,7 +2180,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Updated Successfully</Toast.Body>
         </Toast>
@@ -2180,8 +2224,6 @@ if (liveIssueFormValue.project_status_id === completion_key) {
           <Toast.Body className="text-white">Live Issues resolved </Toast.Body>
         </Toast>
 
-     
-
         {/* Live Issues Server Error  */}
         <Toast
           onClose={handleCloseServerLiveError}
@@ -2215,7 +2257,7 @@ if (liveIssueFormValue.project_status_id === completion_key) {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully </strong>
+            <strong className="me-auto">{<FcApproval />} Successfully </strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Deleted Successfully</Toast.Body>
         </Toast>

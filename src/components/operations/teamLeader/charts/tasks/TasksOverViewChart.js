@@ -15,6 +15,7 @@ function TaskOverviewChart() {
       },
     };
     // team statuses
+
     fetch(
       `${URL}/api/auth/team/task_status?id=${localStorage.getItem("team")}`,
       requestOptions
@@ -45,11 +46,9 @@ function TaskOverviewChart() {
     ],
   };
   return (
-    
-        <div style={{ width: "40%" }}>
-          <Doughnut data={data} />
-        </div>
-    
+    <div style={{ width: "40%" }}>
+      <Doughnut data={data} />
+    </div>
   );
 }
 export default TaskOverviewChart;

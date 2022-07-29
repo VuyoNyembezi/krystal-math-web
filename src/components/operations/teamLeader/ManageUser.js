@@ -13,29 +13,32 @@ import {
   FormControl,
   Container,
   Nav,
+  Col,
 } from "react-bootstrap";
-
-import { FcApproval  } from "react-icons/fc";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { FcApproval } from "react-icons/fc";
 import holder from "../../content/images/holder.png";
 import { URL } from "../../../server_connections/server";
 function ManageMembers() {
-    // search state
-    const [search_key, set_search_key] = useState({
-      account_search: null,
-    });
+  // search state
+  const [search_key, set_search_key] = useState({
+    account_search: null,
+  });
   // create date condition toasts
   // Kick off date less than today/now
   const [kickoff_date_less_now, set_kickoff_date_less_now] = useState(false);
   const handleShowKODateLessNow = () => set_kickoff_date_less_now(true);
   const handleCloseKODateLessNow = () => set_kickoff_date_less_now(false);
- // Kick off date less than due date
- const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] = useState(false);
- const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
- const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
- // Due  date less than now
- const [due_date_less_now, set_due_date_less_now] = useState(false);
- const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
- const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
+  // Kick off date less than due date
+  const [kickoff_date_less_due_date, set_kickoff_date_less_due_date] =
+    useState(false);
+  const handleShowKODateLessDue = () => set_kickoff_date_less_due_date(true);
+  const handleCloseKODateLessDue = () => set_kickoff_date_less_due_date(false);
+  // Due  date less than now
+  const [due_date_less_now, set_due_date_less_now] = useState(false);
+  const handleShowDueDateLessNOW = () => set_due_date_less_now(true);
+  const handleCloseDueDateLessNOW = () => set_due_date_less_now(false);
   // Due off date less than kickoff
   const [due_date_less_kickoff, set_due_date_less_kickoff] = useState(false);
   const handleShowDueDateLessKO = () => set_due_date_less_kickoff(true);
@@ -62,6 +65,10 @@ function ManageMembers() {
   const handleUpdateShow = () => setUpdateShow(true);
   const handleUpdateClose = () => setUpdateShow(false);
 
+  const [showCapacity, setCapacity] = useState(false);
+  const handleShowCapacity = () => setCapacity(true);
+  const handleCloseCapacity = () => setCapacity(false);
+
   const [showLoanRequest, setLoanRequest] = useState(false);
   const handleLoanRequestShow = () => setLoanRequest(true);
   const handleLoanRequestClose = () => setLoanRequest(false);
@@ -78,38 +85,36 @@ function ManageMembers() {
   // Keeps track of changes in the database
   const [old_user_data, set_old_user_data] = useState([]);
 
-  function OldData(){
+  function OldData() {
     set_old_user_data(TeamMembers);
+  }
 
-  };
-  
   const latest_user_data = useMemo(() => old_user_data, [old_user_data]);
 
   useEffect(() => {
-
-    if(search_key.account_search === null || search_key.account_search === ''){
-        fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((Response) => Response.json())
-      .then((Result) => {
-        setTeamMembers(Result.data.users);
-      });
-    
+    if (
+      search_key.account_search === null ||
+      search_key.account_search === ""
+    ) {
+      fetch(`${URL}/api/auth/team/members?id=${localStorage.getItem("team")}`, {
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("key")}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((Response) => Response.json())
+        .then((Result) => {
+          setTeamMembers(Result.data.users);
+        });
     }
-       
- 
 
     const requestOptions = {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
         "Content-Type": "application/json",
       },
     };
@@ -124,26 +129,82 @@ function ManageMembers() {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
         "Content-Type": "application/json",
       },
     };
 
-    if(requestValue.team_id !== 0) {
-       fetch(
-      `${URL}/api/auth/team/members?id=${requestValue.team_id}`,
-      requestOptions
-    )
-      .then((Response) => Response.json())
-      .then((Result) => {
-        setTeamMembersForm(Result.data.users);
-      });
+    if (requestValue.team_id !== 0) {
+      fetch(
+        `${URL}/api/auth/team/members?id=${requestValue.team_id}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          setTeamMembersForm(Result.data.users);
+        });
     }
-   
   }, [requestValue.team_id]);
 
-const fromDate = `${requestValue.from_date +' '+ requestValue.from_time}`
-const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
+  const [project_assignments, setproject_assignments] = useState({
+    project_assignments: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (_user.id !== undefined) {
+      fetch(
+        `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${_user.id}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          setproject_assignments(Result);
+        });
+    }
+  }, [_user.id]);
+
+  // User Task Capacity Monitor
+  const [task_assignments, settask_assignments] = useState({
+    tasks_assigned: 0,
+    max_value: 0,
+  });
+  useEffect(() => {
+    const requestOptions = {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (_user.id !== undefined) {
+      fetch(
+        `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${_user.id}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          settask_assignments(Result);
+        });
+    }
+  }, [_user.id]);
+
+  const fromDate = `${requestValue.from_date + " " + requestValue.from_time}`;
+  const toDate = `${requestValue.to_date + " " + requestValue.to_time}`;
 
   if (!TeamMembers) {
     return <p>no user</p>;
@@ -181,7 +242,7 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
       },
       body: JSON.stringify({
         id: _user.id,
@@ -207,47 +268,42 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
     const today = new Date().toISOString();
     var fromPeriodValue = new Date(fromDate).toISOString();
     var toPeriodValue = new Date(toDate).toISOString();
-   
-    if( fromPeriodValue < today){
-     handleShowKODateLessNow();
-  }
-     else if(fromPeriodValue > toPeriodValue){
-       handleShowKODateLessDue();
-    }
-    else if(toPeriodValue < today){
-       handleShowDueDateLessNOW();
-     }
-     else if(toPeriodValue < fromPeriodValue){
+
+    if (fromPeriodValue < today) {
+      handleShowKODateLessNow();
+    } else if (fromPeriodValue > toPeriodValue) {
+      handleShowKODateLessDue();
+    } else if (toPeriodValue < today) {
+      handleShowDueDateLessNOW();
+    } else if (toPeriodValue < fromPeriodValue) {
       handleShowDueDateLessKO();
-    }
-     else {
-      
-    fetch(`${URL}/api/auth/user/map`, {
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
-      },
-      body: JSON.stringify({
-        id: _user.id,
-        user: {
-          team_id: _user.team_id,
+    } else {
+      fetch(`${URL}/api/auth/user/map`, {
+        method: "put",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("key")}`,
         },
-      }),
-    }).then((Response) => {
-      Response.json(Response);
-      if (Response.status === 200) {
-        handleShowsuccessUpdate();
-        handleUpdateClose();
-        OldData();
-      } else if (Response.status === 422) {
-        handleShowErrorUpdate();
-      } else if (Response.status === 500) {
-        handleShowServerError();
-      }
-    });
-  }
+        body: JSON.stringify({
+          id: _user.id,
+          user: {
+            team_id: _user.team_id,
+          },
+        }),
+      }).then((Response) => {
+        Response.json(Response);
+        if (Response.status === 200) {
+          handleShowsuccessUpdate();
+          handleUpdateClose();
+          OldData();
+        } else if (Response.status === 422) {
+          handleShowErrorUpdate();
+        } else if (Response.status === 500) {
+          handleShowServerError();
+        }
+      });
+    }
   }
   function handle_Search_Account_Submit(event) {
     event.preventDefault();
@@ -260,134 +316,160 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
       },
     };
     //search for Acctive Accounts
-    fetch(`${URL}/api/auth/team/user/account/search?team_id=${localStorage.getItem('team')}&search=${search_key.account_search}`,
+    fetch(
+      `${URL}/api/auth/team/user/account/search?team_id=${localStorage.getItem(
+        "team"
+      )}&search=${search_key.account_search}`,
       requestOptions
     )
       .then((response) => response.json())
       .then((Result) => {
         setTeamMembers(Result.data);
       });
-
   }
 
   return (
     <>
- 
-<div className="mt-3">
-  <Container fluid>
-    <Card>
-      <Card.Body className="teamlead-member-control-card">
-               <CardGroup>
-            <Card className="shadow" >
-              <Card.Header>
-                Team Leader:{" "}
-                <b>
-                  <i>{localStorage.getItem('name')}</i>
-                </b>{" "}
-              </Card.Header>
-              <Nav className="justify-content-end">
-              <div className="col-md-4 col-sm-7 mt-3 me-3">
-                <Form
-                  onSubmit={handle_Search_Account_Submit}
-                  className="d-flex"
-                >
-                  <FormControl
-                    type="search"
-                    name="account_search"
-                    placeholder="Search"
-                    required
-                    onChange={handleChange}
-                    className="mr-3"
-                    aria-label="Search"
-                  />
-                  <Button variant="outline-success" type="submit" size="sm">
-                    Search
-                  </Button>
-                </Form>
-              </div>
-            </Nav>
-              <Card.Body className="teamlead-member-control-card-members-card">
-                <Table size="sm" striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th> Name </th>
-                      <th> Last name </th>
-                      <th> email </th>
-                      <th> </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {TeamMembers.map((user, Index) => {
-                      return (
-                        <tr key={Index}>
-                          <th scope="row">{user.name}</th>
-                          <td>{user.last_name}</td>
-                          <td>{user.email}</td>
+      <div className="mt-3">
+        <Container fluid>
+          <Card>
+            <Card.Body className="teamlead-member-control-card">
+              <CardGroup>
+                <Col md={9}>
+                  <Card className="shadow">
+                    <Card.Header>
+                      Team Leader:{" "}
+                      <b>
+                        <i>{localStorage.getItem("name")}</i>
+                      </b>{" "}
+                    </Card.Header>
+                    <Nav className="justify-content-end">
+                      <div className="col-md-4 col-sm-7 mt-3 me-3">
+                        <Form
+                          onSubmit={handle_Search_Account_Submit}
+                          className="d-flex"
+                        >
+                          <FormControl
+                            type="search"
+                            name="account_search"
+                            placeholder="Search"
+                            required
+                            onChange={handleChange}
+                            className="mr-3"
+                            aria-label="Search"
+                            size="sm"
+                          />
+                          <Button
+                            variant="outline-success"
+                            type="submit"
+                            size="sm"
+                          >
+                            Search
+                          </Button>
+                        </Form>
+                      </div>
+                    </Nav>
+                    <Card.Body className="teamlead-member-control-card-members-card">
+                      <Table size="sm" striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th> Name </th>
+                            <th> Last name </th>
+                            <th> email </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {TeamMembers.map((user, Index) => {
+                            return (
+                              <tr key={Index}>
+                                <th scope="row">{user.name}</th>
+                                <td>{user.last_name}</td>
+                                <td>{user.email}</td>
+                                <td className="text-center">
+                                  <button
+                                    size="sm"
+                                    className="btn"
+                                    onClick={() => selectUser(user)}
+                                  >
+                                    <Button
+                                      variant="outline-success"
+                                      size="sm"
+                                      onClick={handleShowCapacity}
+                                    >
+                                      Capacity
+                                    </Button>
+                                  </button>{" "}
+                                  <button
+                                    size="sm"
+                                    className="btn"
+                                    onClick={() => selectUser(user)}
+                                  >
+                                    <Button
+                                      variant="outline-success"
+                                      size="sm"
+                                      onClick={handleUpdateShow}
+                                    >
+                                      Map
+                                    </Button>
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    </Card.Body>
+                    <Card.Footer>
+                      <small className="text-muted">
+                        only active users are listed
+                      </small>
+                    </Card.Footer>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card className="shadow">
+                    <Card.Header>Loan..</Card.Header>
+                    <Card.Body>
+                      <Card className="shadow" style={{ width: "40%" }}>
+                        <Card.Img variant="top" src={holder} />
+                        <Card.Body>
+                          <Badge className="badge rounded-pill bg-success ">
+                            Request loan
+                          </Badge>
+                          <br />
+                          <Button
+                            variant="outline-success"
+                            size="sm"
+                            onClick={handleLoanRequestShow}
+                          >
+                            Request
+                          </Button>
 
-                          <td className="text-center">
-                            <button size="sm" className="btn" onClick={() => selectUser(user)}>
-                              <Button
-                                variant="outline-success"
-                                size="sm"
-                                onClick={handleUpdateShow}
-                              >
-                                Update
-                              </Button>
-                            </button>{" "}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">
-                  only active users are listed
-                </small>
-              </Card.Footer>
-            </Card>
-            <Card  className="shadow"  >
-            <Card.Header>Loan..</Card.Header>
-              <Card.Body>
-                <Card className="shadow" style={{ width: "40%" }}>
-                            <Card.Img variant="top" src={holder} />
-                            <Card.Body>
-                              <Badge className="badge rounded-pill bg-success ">
-                                Request loan
-                              </Badge>
-                            <br />
-                                <Button  variant="outline-success"  size="sm"   onClick={handleLoanRequestShow} >
-                                  Request
-                                </Button>
-                          
-                              <hr />
-                            </Card.Body>
-                          </Card> 
-              </Card.Body>
-            </Card>
-          </CardGroup>
-      </Card.Body>
-   
-    </Card>
-
-  </Container>
-  
-</div>
-          
-     
+                          <hr />
+                        </Card.Body>
+                      </Card>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </CardGroup>
+            </Card.Body>
+          </Card>
+        </Container>
+      </div>
 
       {/* modal for updating record details  */}
       <Modal show={showUpdateUser} onHide={handleUpdateClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Update <b>{_user.name}</b> Details{" "}
+            Map <b>{_user.name}</b>{" "}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="name"
                 aria-describedby="name"
@@ -400,7 +482,9 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
               />
             </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="last_name">Last Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="last_name">
+                Last Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="last_name"
                 aria-describedby="last_name"
@@ -413,33 +497,32 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
               />
             </InputGroup>
             <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="team_id">
-              {" "}
-              Team:{" "}
-            </InputGroup.Text>
+              <InputGroup.Text className="col-4" id="team_id">
+                {" "}
+                Team:{" "}
+              </InputGroup.Text>
               <Form.Select
-                 name="team_id"
-                 id="team_id"
-                 onChange={handleChange}
-                 value={_user.team_id}
-                 required
+                name="team_id"
+                id="team_id"
+                onChange={handleChange}
+                value={_user.team_id}
+                required
               >
-              <option value="">Select Team</option>
-                  {teamValue.map((team, key) => {
-                    return (
-                      <option key={key} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-            </Form.Select>
+                <option value="">Select Team</option>
+                {teamValue.map((team, key) => {
+                  return (
+                    <option key={key} value={team.id}>
+                      {team.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
             </InputGroup>
-         
             <Button variant="secondary" onClick={handleUpdateClose}>
               Close
             </Button>{" "}
             <Button variant="success" type="submit">
-              Update record
+              Map {_user.name}
             </Button>
           </Form>
         </Modal.Body>
@@ -457,54 +540,63 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmitLoanRequest}>
-         
             <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="team_id">
-              {" "}
-              Team:{" "}
-            </InputGroup.Text>
+              <InputGroup.Text className="col-4" id="team_id">
+                {" "}
+                Team:{" "}
+              </InputGroup.Text>
               <Form.Select
-                  name="team_id"
-                  id="team_id"
-                  onChange={handleChange}
-                  value={requestValue.team_id}
-                  required
-              >  <option value="">Select Team</option>
-              {teamValue.map((team, key) => {
-                return (
-                  <option key={key} value={team.id}>
-                    {team.name}
-                  </option>
-                );
-              })}
-                </Form.Select>
-                </InputGroup>
-            <InputGroup className="mb-3">
-            <InputGroup.Text className="col-4" id="user_id">
-              {" "}
-              Member:{" "}
-            </InputGroup.Text>
-              <Form.Select
-                   name="user_id"
-                   id="user_id"
-                   onChange={handleChange}
-                   value={requestValue.user_id}
-                   required
-              >    <option value="">Select Member</option>
-              {TeamMembersForm.map((member, key) => {
-                return (
-                  <option key={key} value={member.id}>
-                    {member.name}
-                  </option>
-                );
-              })}
+                name="team_id"
+                id="team_id"
+                onChange={handleChange}
+                value={requestValue.team_id}
+                required
+              >
+                {" "}
+                <option value="">Select Team</option>
+                {teamValue.map((team, key) => {
+                  return (
+                    <option key={key} value={team.id}>
+                      {team.name}
+                    </option>
+                  );
+                })}
               </Form.Select>
-              </InputGroup>
-              <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="project-name"> Period: </InputGroup.Text>
-              </InputGroup>
+            </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="project-name"> FROM: </InputGroup.Text>
+              <InputGroup.Text className="col-4" id="user_id">
+                {" "}
+                Member:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="user_id"
+                id="user_id"
+                onChange={handleChange}
+                value={requestValue.user_id}
+                required
+              >
+                {" "}
+                <option value="">Select Member</option>
+                {TeamMembersForm.map((member, key) => {
+                  return (
+                    <option key={key} value={member.id}>
+                      {member.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project-name">
+                {" "}
+                Period:{" "}
+              </InputGroup.Text>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project-name">
+                {" "}
+                FROM:{" "}
+              </InputGroup.Text>
               <FormControl
                 aria-label="Name"
                 aria-describedby="project-name"
@@ -520,10 +612,14 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
                 value={requestValue.from_time}
                 placeholder="time placeholder"
                 type="time"
+                defaultValue={"23:59"}
               />
             </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="project-name"> TO: </InputGroup.Text>
+              <InputGroup.Text className="col-4" id="project-name">
+                {" "}
+                TO:{" "}
+              </InputGroup.Text>
               <FormControl
                 aria-label="Name"
                 aria-describedby="project-name"
@@ -539,6 +635,7 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
                 value={requestValue.to_time}
                 placeholder="time placeholder"
                 type="time"
+                defaultValue={"23:59"}
               />
             </InputGroup>
             <Button
@@ -552,68 +649,92 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
               Send
             </Button>
           </Form>
-          <ToastContainer className="p-3" position={'top-end'}>
-{/* Date Alerts Toast */}
-{/* KIck off Date less than Today */}
-<Toast onClose={handleCloseKODateLessNow} show={kickoff_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set to previous dates
-</Toast.Body>
-</Toast>
-{/* Kick off greater than Due Date */}
-<Toast onClose={handleCloseKODateLessDue} show={kickoff_date_less_due_date} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">KICK OFF DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  kick off date can't be set ahead of due date
-</Toast.Body>
-</Toast>
-{/* Due Date  less Than Today*/}
-<Toast onClose={handleCloseDueDateLessNOW} show={due_date_less_now} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due  date can't be set to previous date
-</Toast.Body>
-</Toast>
-{/* Due Date less Than Kick Off */}
-<Toast onClose={handleCloseDueDateLessKO} show={due_date_less_kickoff} bg={"warning"} delay={5000}  autohide>
-<Toast.Header>
-  <img
-    src="holder.js/20x20?text=%20"
-    className="rounded me-2"
-    alt=""
-  />
-  <strong className="me-auto">DUE DATE ERROR</strong>
-</Toast.Header>
-<Toast.Body className="text-white">
-  {" "}
-  due date can't be set before kick off date
-</Toast.Body>
-</Toast>
+          <ToastContainer className="p-3" position={"top-end"}>
+            {/* Date Alerts Toast */}
+            {/* KIck off Date less than Today */}
+            <Toast
+              onClose={handleCloseKODateLessNow}
+              show={kickoff_date_less_now}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">KICK OFF DATE ERROR</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                kick off date can't be set to previous dates
+              </Toast.Body>
+            </Toast>
+            {/* Kick off greater than Due Date */}
+            <Toast
+              onClose={handleCloseKODateLessDue}
+              show={kickoff_date_less_due_date}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">KICK OFF DATE ERROR</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                kick off date can't be set ahead of due date
+              </Toast.Body>
+            </Toast>
+            {/* Due Date  less Than Today*/}
+            <Toast
+              onClose={handleCloseDueDateLessNOW}
+              show={due_date_less_now}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">DUE DATE ERROR</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                due date can't be set to previous date
+              </Toast.Body>
+            </Toast>
+            {/* Due Date less Than Kick Off */}
+            <Toast
+              onClose={handleCloseDueDateLessKO}
+              show={due_date_less_kickoff}
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">DUE DATE ERROR</strong>
+              </Toast.Header>
+              <Toast.Body className="text-white">
+                {" "}
+                due date can't be set before kick off date
+              </Toast.Body>
+            </Toast>
           </ToastContainer>
         </Modal.Body>
         <Modal.Footer>
@@ -636,7 +757,7 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Updated Successfully</Toast.Body>
         </Toast>
@@ -681,6 +802,55 @@ const toDate = `${requestValue.to_date +' '+ requestValue.to_time}`
           <Toast.Body className="text-white">server error occured</Toast.Body>
         </Toast>
       </ToastContainer>
+
+      <Modal
+        show={showCapacity}
+        onHide={handleCloseCapacity}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <b>{_user.name}</b>'s Capacity
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <CardGroup>
+            <Card>
+              <Card.Title>Task Capacity</Card.Title>
+              <Card.Body>
+                <div style={{ width: "200px" }}>
+                  <CircularProgressbar
+                    value={task_assignments.tasks_assigned}
+                    text={`${task_assignments.tasks_assigned} of ${task_assignments.max_value}`}
+                    maxValue={task_assignments.max_value}
+                  />
+                </div>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Title>Task Capacity</Card.Title>
+              <Card.Body>
+                <div style={{ width: "200px" }}>
+                  <CircularProgressbar
+                    value={project_assignments.project_assignments}
+                    text={`${project_assignments.project_assignments} of ${project_assignments.max_value}`}
+                    maxValue={project_assignments.max_value}
+                  />
+                </div>
+              </Card.Body>
+            </Card>
+          </CardGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseCapacity}>
+            Close
+          </Button>
+          <Button variant="success" href="/team_leader/operations/task_manager">
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
