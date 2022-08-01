@@ -5,7 +5,6 @@ import {
   Container,
   Form,
   FormControl,
-
   InputGroup,
   Modal,
   Nav,
@@ -45,7 +44,7 @@ function OperationalProjects() {
   const handleUpdateProjectShow = () => setShowUpdateProject(true);
 
   //Projects Data States
-  const [projectData,set_ProjectData] = useState({})
+  const [projectData, set_ProjectData] = useState({});
   const [BetSoftwareProjectData, setBETSoftwareProjectData] = useState([]);
   const [CountryData, setCountryData] = useState([]);
   const [CustomerJourneyData, setCustomerJourneyData] = useState([]);
@@ -80,12 +79,15 @@ function OperationalProjects() {
   // Keeps track of changes in the database
   const [old_team_projects_data, set_old_team_projects_data] = useState([]);
 
-  function OldData(){
+  function OldData() {
     set_old_team_projects_data(projectData);
-  };
-  
-  const latest_project_data = useMemo(() => old_team_projects_data, [old_team_projects_data]);
-  
+  }
+
+  const latest_project_data = useMemo(
+    () => old_team_projects_data,
+    [old_team_projects_data]
+  );
+
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -137,31 +139,33 @@ function OperationalProjects() {
         "Content-Type": "application/json",
       },
     };
-     //fecth team  projects 
-     if (search_key.project_search === null || search_key.project_search === '') {
-     fetch(
-      `${URL}/api/auth/team/projects/operational?team_id=${localStorage.getItem('team')}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        set_ProjectData(results)
-        setBETSoftwareProjectData(results.bet_projects)
-        setBETSoftwarePartnersData(results.bet_project_partners_projects)
-        setCountryData(results.country_projects)
-        setCustomerJourneyData(results.customer_journey_projects)
-        setDigitalMarketingData(results.digital_marketing_projects)
-        setIntegrationsData(results.integrations_projects)
-        setPaymentMethodsData(results.payment_method_projects)
-        setOperational_data(results.all_projects)
-
-      });
+    //fecth team  projects
+    if (
+      search_key.project_search === null ||
+      search_key.project_search === ""
+    ) {
+      fetch(
+        `${URL}/api/auth/team/projects/operational?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          set_ProjectData(results);
+          setBETSoftwareProjectData(results.bet_projects);
+          setBETSoftwarePartnersData(results.bet_project_partners_projects);
+          setCountryData(results.country_projects);
+          setCustomerJourneyData(results.customer_journey_projects);
+          setDigitalMarketingData(results.digital_marketing_projects);
+          setIntegrationsData(results.integrations_projects);
+          setPaymentMethodsData(results.payment_method_projects);
+          setOperational_data(results.all_projects);
+        });
     }
-   
-  }, [latest_project_data,search_key.project_search]);
+  }, [latest_project_data, search_key.project_search]);
 
-
-
+  // program to display a text using setInterval method
 
   const handleChange = (event) => {
     setProjectFormValue({
@@ -237,20 +241,27 @@ function OperationalProjects() {
       },
     };
 
-    fetch(`${URL}/api/auth/projects/team/operational_types/search?team_id=${localStorage.getItem("team")}&search=${search_key.project_search}`,requestOptions)
+    fetch(
+      `${URL}/api/auth/projects/team/operational_types/search?team_id=${localStorage.getItem(
+        "team"
+      )}&search=${search_key.project_search}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((Result) => {
         setBETSoftwareProjectData(Result.bet_projects);
         setBETSoftwarePartnersData(Result.bet_project_partners_projects);
-        setCountryData(Result.country_projects)
-        setCustomerJourneyData(Result.customer_journey_projects)
-        setDigitalMarketingData(Result.digital_marketing_projects)
-        setIntegrationsData(Result.integrations_projects)
-        setPaymentMethodsData(Result.payment_method_projects)
+        setCountryData(Result.country_projects);
+        setCustomerJourneyData(Result.customer_journey_projects);
+        setDigitalMarketingData(Result.digital_marketing_projects);
+        setIntegrationsData(Result.integrations_projects);
+        setPaymentMethodsData(Result.payment_method_projects);
       });
     //fetch all operational
     fetch(
-      `${URL}/api/auth/projects/team/operational/search?team_id=${localStorage.getItem("team")}&search=${search_key.project_search}`,
+      `${URL}/api/auth/projects/team/operational/search?team_id=${localStorage.getItem(
+        "team"
+      )}&search=${search_key.project_search}`,
       requestOptions
     )
       .then((response) => response.json())
@@ -258,451 +269,441 @@ function OperationalProjects() {
   }
   return (
     <>
-<div className="mt-3">
-   <Container fluid>
-    <Card>
-              <Card.Header>
-                <h6>Operational Projects</h6>
-                <Nav className="justify-content-end">
-                  <div className="col-md-3 col-sm-9 me-2">
-                    <Form
-                      onSubmit={handle_Search_Project_Submit}
-                      className="d-flex"
-                    >
-                      <FormControl
-                        type="search"
-                        name="project_search"
-                        placeholder="Search"
-                        required
-                        onChange={handleChange}
-                        className="mr-3"
-                        aria-label="Search"
-                      />
-                      <Button variant="outline-success" type="submit" size="sm">
-                        Search
-                      </Button>
-                    </Form>
-                  </div>
-                </Nav>
-              </Card.Header>
-              <Card.Body className="scroll">
-                <Tabs
-                  defaultActiveKey="operational_bet_project"
-                  id="uncontrolled-tab-example"
-                  className="mb-3"
+      <div className="mt-3">
+        <Container fluid>
+          <Card>
+            <Card.Header>
+              <h6>Operational Projects</h6>
+              <Nav className="justify-content-end">
+                <div className="col-md-3 col-sm-9 me-2">
+                  <Form
+                    onSubmit={handle_Search_Project_Submit}
+                    className="d-flex"
+                  >
+                    <FormControl
+                      type="search"
+                      name="project_search"
+                      placeholder="Search"
+                      required
+                      onChange={handleChange}
+                      className="mr-3"
+                      aria-label="Search"
+                    />
+                    <Button variant="outline-success" type="submit" size="sm">
+                      Search
+                    </Button>
+                  </Form>
+                </div>
+              </Nav>
+            </Card.Header>
+            <Card.Body className="scroll">
+              <Tabs
+                defaultActiveKey="operational_bet_project"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+              >
+                <Tab eventKey="operational_bet_project" title="BET Projects">
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {BetSoftwareProjectData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
+                                  size="sm"
+                                  onClick={handleUpdateProjectShow}
+                                >
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab eventKey="operational_country" title="Country">
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {CountryData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
+                                  size="sm"
+                                  onClick={handleUpdateProjectShow}
+                                >
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab
+                  eventKey="operational_customer_journey"
+                  title="Customer Journey"
                 >
-                  <Tab eventKey="operational_bet_project" title="BET Projects">
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {BetSoftwareProjectData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {CustomerJourneyData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
                                   size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
+                                  onClick={handleUpdateProjectShow}
                                 >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab eventKey="operational_country" title="Country">
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {CountryData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab eventKey="operational_integrations" title="Integrations">
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {IntegrationsData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
                                   size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
+                                  onClick={handleUpdateProjectShow}
                                 >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab
-                    eventKey="operational_customer_journey"
-                    title="Customer Journey"
-                  >
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {CustomerJourneyData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab
+                  eventKey="operational_payment_methods"
+                  title="Payment Methods/Gateways"
+                >
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PaymentMethodsData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
                                   size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
+                                  onClick={handleUpdateProjectShow}
                                 >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab eventKey="operational_integrations" title="Integrations">
-                    <Table  size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {IntegrationsData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab
+                  eventKey="operational_digital_marketing"
+                  title="Digital Marketing"
+                >
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {DigitalMarketingData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
                                   size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
+                                  onClick={handleUpdateProjectShow}
                                 >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab
-                    eventKey="operational_payment_methods"
-                    title="Payment Methods/Gateways"
-                  >
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {PaymentMethodsData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab
+                  eventKey="operational_bet_software_partners"
+                  title="BET Software Partners"
+                >
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {BetSoftwarePartnersData.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                            <td className="text-center">
+                              <button
+                                size="sm"
+                                className="btn"
+                                onClick={() => selectProject(project)}
+                              >
+                                <Button
+                                  variant="outline-success"
                                   size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
+                                  onClick={handleUpdateProjectShow}
                                 >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab
-                    eventKey="operational_digital_marketing"
-                    title="Digital Marketing"
-                  >
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {DigitalMarketingData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
-                                  size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
-                                >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab
-                    eventKey="operational_bet_software_partners"
-                    title="BET Software Partners"
-                  >
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {BetSoftwarePartnersData.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
-                                  size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
-                                >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                              <td className="text-center">
-                                <button
-                                  size="sm" className="btn"
-                                  onClick={() => selectProject(project)}
-                                >
-                                  <Button
-                                    variant="outline-success"
-                                    size="sm"
-                                    onClick={handleUpdateProjectShow}
-                                  >
-                                    Update
-                                  </Button>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                  <Tab eventKey="operational_projects" title="All">
-                    <Table size="sm" striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Project Name</th>
-                          <th>BRD</th>
-                          <th>Status</th>
-                          <th>PM</th>
-                          <th>Team</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {operational_data.map((project, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>{project.name}</td>
-                              <td>
-                                <Form.Select
-                                  size="sm"
-                                  value={
-                                    project.business_request_document_status
-                                  }
-                                  disabled
-                                >
-                                  <option value={true}>Yes</option>
-                                  <option value={false}>No</option>
-                                </Form.Select>
-                              </td>
-                              <td>{project.project_status.name}</td>
-                              <td>{project.user.name}</td>
-                              <td>{project.team.name}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                </Tabs>
-              </Card.Body>
-            </Card>
-   </Container>
-      </div>      
-        
+                                  Update
+                                </Button>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+                <Tab eventKey="operational_projects" title="All">
+                  <Table size="sm" striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>BRD</th>
+                        <th>Status</th>
+                        <th>PM</th>
+                        <th>Team</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {operational_data.map((project, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{project.name}</td>
+                            <td>
+                              <Form.Select
+                                size="sm"
+                                value={project.business_request_document_status}
+                                disabled
+                              >
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </Form.Select>
+                            </td>
+                            <td>{project.project_status.name}</td>
+                            <td>{project.user.name}</td>
+                            <td>{project.team.name}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Tab>
+              </Tabs>
+            </Card.Body>
+          </Card>
+        </Container>
+      </div>
 
       {/* MODALS  */}
 
@@ -719,60 +720,58 @@ function OperationalProjects() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handle_Update_Project_Submit}>
-        
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project_category_type_id">
+                {" "}
+                Project Category:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_category_type_id"
+                onChange={handleChange}
+                id="project_category_type_id"
+                value={projectFormValue.project_category_type_id}
+                disabled
+                required
+              >
+                <option value="">Select Project Category</option>
+                {projectCategoryTypeData.map((project_category_type, key) => {
+                  return (
+                    <option key={key} value={project_category_type.id}>
+                      {project_category_type.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
 
             <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_category_type_id">
-                  {" "}
-                  Project Category:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                   name="project_category_type_id"
-                                   onChange={handleChange}
-                                   id="project_category_type_id"
-                                   value={projectFormValue.project_category_type_id}
-                                   disabled
-                                   required
-                                >
-                                    <option value="">Select Project Category</option>
-                  {projectCategoryTypeData.map((project_category_type, key) => {
-                    return (
-                      <option key={key} value={project_category_type.id}>
-                        {project_category_type.name}
-                      </option>
-                    );
-                  })}
-                                  </Form.Select>
-</InputGroup>
-            
-      
-
-            <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_type_id">
-                  {" "}
-                  Project Type:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                    name="project_type_id"
-                                    onChange={handleChange}
-                                    id="project_type_id"
-                                    value={projectFormValue.project_type_id}
-                                    disabled
-                                    required
-                                >
-                                        <option value="">Select Project Type</option>
-                  {projectTypeData.map((project_type, key) => {
-                    return (
-                      <option key={key} value={project_type.id}>
-                        {project_type.name}
-                      </option>
-                    );
-                  })}
-                                  </Form.Select>
-                                  </InputGroup>
+              <InputGroup.Text className="col-4" id="project_type_id">
+                {" "}
+                Project Type:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_type_id"
+                onChange={handleChange}
+                id="project_type_id"
+                value={projectFormValue.project_type_id}
+                disabled
+                required
+              >
+                <option value="">Select Project Type</option>
+                {projectTypeData.map((project_type, key) => {
+                  return (
+                    <option key={key} value={project_type.id}>
+                      {project_type.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
             <br />
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="col-4" id="project-name">Name :</InputGroup.Text>
+              <InputGroup.Text className="col-4" id="project-name">
+                Name :
+              </InputGroup.Text>
               <FormControl
                 aria-label="Username"
                 aria-describedby="project-name"
@@ -785,126 +784,137 @@ function OperationalProjects() {
                 required
               />
             </InputGroup>
-        
+
             <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_type_id">
-                  {" "}
-                  BRD Available:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                    name="business_request_document_status"
-                                    id="business_request_document_status"
-                                    onChange={handleChange}
-                                    value={projectFormValue.business_request_document_status}
-                                    required
-                                > <option value="">BRD Status</option>
-                                <option value={true}>Yes</option>
-                                <option value={false}>No</option>
-                                  </Form.Select>
-                                  </InputGroup>
-                                  <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="business_request_document_link">
-                  {" "}
-                  BRD File:{" "}
-                </InputGroup.Text>
-           
+              <InputGroup.Text className="col-4" id="project_type_id">
+                {" "}
+                BRD Available:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="business_request_document_status"
+                id="business_request_document_status"
+                onChange={handleChange}
+                value={projectFormValue.business_request_document_status}
+                required
+              >
+                {" "}
+                <option value="">BRD Status</option>
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text
+                className="col-4"
+                id="business_request_document_link"
+              >
+                {" "}
+                BRD File:{" "}
+              </InputGroup.Text>
+
               <Form.Control
                 type="file"
                 name="business_request_document_link"
                 onChange={handleChange}
               />
-              
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="team_id">
-                  {" "}
-                  Team:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                   name="team_id"
-                                   onChange={handleChange}
-                                   id="team_id"
-                                   value={projectFormValue.team_id}
-                                   disabled
-                                   required
-                                >   <option value="">Select Team</option>
-                                {teamsData.map((team, key) => {
-                                  return (
-                                    <option key={key} value={team.id}>
-                                      {team.name}
-                                    </option>
-                                  );
-                                })}
-                                </Form.Select>
-                                </InputGroup>
-         
-            <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="user_id">
-                  {" "}
-                  PM:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                  name="user_id"
-                                  onChange={handleChange}
-                                  id="user_id"
-                                  value={projectFormValue.user_id}
-                                  required
-                                >     <option value="">Select PM</option>
-                                {userData.map((user, key) => {
-                                  return (
-                                    <option key={key} value={user.id}>
-                                      {user.name}
-                                    </option>
-                                  );
-                                })}
-                                </Form.Select>
-                                </InputGroup>
-         
-            <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="project_status_id">
-                  {" "}
-                  Status:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                                   name="project_status_id"
-                                   onChange={handleChange}
-                                   id="project_status_id"
-                                   value={projectFormValue.project_status_id}
-                                   required
-                                >    <option value="">Assign</option>
-                                <></>
-                                {statusData.map((status, key) => {
-                                  return (
-                                    <option key={key} value={status.id}>
-                                      {status.name}
-                                    </option>
-                                  );
-                                })}   
-                                </Form.Select>
-                                </InputGroup>
-       
-            <InputGroup className="mb-3">
-                <InputGroup.Text className="col-4" id="priority_type_id">
-                  {" "}
-                  Priority:{" "}
-                </InputGroup.Text>
-                <Form.Select
-                               name="priority_type_id"
-                               onChange={handleChange}
-                               id="priority_type_id"
-                               value={projectFormValue.priority_type_id}
-                               required
-                                >     <option value="">Assign</option>
+              <InputGroup.Text className="col-4" id="team_id">
+                {" "}
+                Team:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="team_id"
+                onChange={handleChange}
+                id="team_id"
+                value={projectFormValue.team_id}
+                disabled
+                required
+              >
+                {" "}
+                <option value="">Select Team</option>
+                {teamsData.map((team, key) => {
+                  return (
+                    <option key={key} value={team.id}>
+                      {team.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
 
-                                {PriorityData.map((priority, key) => {
-                                  return (
-                                    <option key={key} value={priority.id}>
-                                      {priority.name}
-                                    </option>
-                                  );
-                                })}
-                                </Form.Select>
-                                </InputGroup> 
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="user_id">
+                {" "}
+                PM:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="user_id"
+                onChange={handleChange}
+                id="user_id"
+                value={projectFormValue.user_id}
+                required
+              >
+                {" "}
+                <option value="">Select PM</option>
+                {userData.map((user, key) => {
+                  return (
+                    <option key={key} value={user.id}>
+                      {user.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="project_status_id">
+                {" "}
+                Status:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="project_status_id"
+                onChange={handleChange}
+                id="project_status_id"
+                value={projectFormValue.project_status_id}
+                required
+              >
+                {" "}
+                <option value="">Assign</option>
+                <></>
+                {statusData.map((status, key) => {
+                  return (
+                    <option key={key} value={status.id}>
+                      {status.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text className="col-4" id="priority_type_id">
+                {" "}
+                Priority:{" "}
+              </InputGroup.Text>
+              <Form.Select
+                name="priority_type_id"
+                onChange={handleChange}
+                id="priority_type_id"
+                value={projectFormValue.priority_type_id}
+                required
+              >
+                {" "}
+                <option value="">Assign</option>
+                {PriorityData.map((priority, key) => {
+                  return (
+                    <option key={key} value={priority.id}>
+                      {priority.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </InputGroup>
             <br />
             <Button variant="primary" size="sm" type="submit">
               Update Project
@@ -935,7 +945,7 @@ function OperationalProjects() {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{<FcApproval/>}{' '}Successfully</strong>
+            <strong className="me-auto">{<FcApproval />} Successfully</strong>
           </Toast.Header>
           <Toast.Body className="text-white"> Updated Successfully</Toast.Body>
         </Toast>

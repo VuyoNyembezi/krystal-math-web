@@ -286,25 +286,28 @@ function LiveIssues() {
     };
 
     let pm_key = 6;
-    // fetch all statuses
-    fetch(`${URL}/api/auth/project_status/all`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => setStatus(Result.data));
+    const activeoverview = setInterval(() => {
+      // fetch all statuses
+      fetch(`${URL}/api/auth/project_status/all`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => setStatus(Result.data));
 
-    // fetch all priority values
-    fetch(`${URL}/api/auth/priority_type/all`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => setPriorityData(Result.data));
+      // fetch all priority values
+      fetch(`${URL}/api/auth/priority_type/all`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => setPriorityData(Result.data));
 
-    // fetch users
-    fetch(`${URL}/api/auth/user/role?id=${pm_key}`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => setUserData(Result.data));
+      // fetch users
+      fetch(`${URL}/api/auth/user/role?id=${pm_key}`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => setUserData(Result.data));
 
-    // fetch all teams
-    fetch(`${URL}/api/auth/active/teams`, requestOptions)
-      .then((response) => response.json())
-      .then((res) => setTeamsData(res.data));
+      // fetch all teams
+      fetch(`${URL}/api/auth/active/teams`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => setTeamsData(res.data));
+    }, 5000);
+    return () => clearInterval(activeoverview);
   }, []);
 
   useEffect(() => {

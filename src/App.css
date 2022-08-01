@@ -394,6 +394,26 @@ body {
 }
 
 
+  .loadermodal {
+    width: 361px;
+    height: 367px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -240px;
+    margin-left: -250px;
+    border-radius: 50px;
+background-color: transparent;
+       
+  }
+
+.theSpiner {
+   width: 355px;
+    height: 354px;
+    opacity: 0.1;
+    text-align: center;
+}
+
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-text {
   color: #fff;
 }

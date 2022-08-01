@@ -13,6 +13,7 @@ import {
   Table,
   Col,
   Badge,
+  Spinner,
 } from "react-bootstrap";
 import { URL } from "../../server_connections/server";
 import CountUp from "react-countup";
@@ -85,34 +86,16 @@ function ManagerDashboard() {
     live_issue_search: null,
   });
 
-// Time Render function
-  // Renders Every 5 Seconds To all load latest Projects Data Changes
-  // const [projects_data, set_projects_data] = useState({
-  //   operational: [],
-  //   strategic: [],
-  //   live_issues: []
-  // });
-  // setInterval(ProjectsData,
-  //   6000);
-  // function ProjectsData() {
-  //   // set_projects_data({
-  //   //   operational: operational_data,
-  //   //   strategic: strategic_data,
-  //   //   live_issues: live_issues_data
-  //   // });
- 
-
-  //   console.log("6 Second Function Rendered")
-  //   return console.log(projects_data);
-  // }
- 
-
-
-
   // Projects Data
 
   // Operational
-  
+  const [loader, setloader] = useState(true);
+  const handleLoaderClose = () => setloader(false);
+
+  setTimeout(() => {
+    handleLoaderClose();
+  }, 6000);
+
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -124,13 +107,15 @@ function ManagerDashboard() {
     };
     // fetch operational projects
 
-    if (operational_search_key.operational_project_search === null || operational_search_key.operational_project_search === '') {
+    if (
+      operational_search_key.operational_project_search === null ||
+      operational_search_key.operational_project_search === ""
+    ) {
       fetch(`${URL}/api/auth/projects/operational/all`, requestOptions)
         .then((response) => response.json())
         .then((Result) => setOperational_data(Result.data));
     }
- 
-  }, [ operational_data,operational_search_key]);
+  }, [operational_search_key]);
   // Strategic Project
   useEffect(() => {
     const requestOptions = {
@@ -141,13 +126,19 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-    if (strategic_search_key.strategic_project_search === null || strategic_search_key.strategic_project_search === '') {
-      // fetch strategic projects
-      fetch(`${URL}/api/auth/projects/strategic/all`, requestOptions)
-        .then((response) => response.json())
-        .then((Result) => set_strategic_data(Result.data));
-    }
-  }, [strategic_data, strategic_search_key]);
+    const activeoverview = setInterval(() => {
+      if (
+        strategic_search_key.strategic_project_search === null ||
+        strategic_search_key.strategic_project_search === ""
+      ) {
+        // fetch strategic projects
+        fetch(`${URL}/api/auth/projects/strategic/all`, requestOptions)
+          .then((response) => response.json())
+          .then((Result) => set_strategic_data(Result.data));
+      }
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, [strategic_search_key]);
   // Live Issues Project
   useEffect(() => {
     const requestOptions = {
@@ -158,14 +149,19 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-
-    if (live_search_key.live_issue_search === null || live_search_key.live_issue_search === '') {
-      // fetch live issues projects
-      fetch(`${URL}/api/auth/live_issues`, requestOptions)
-        .then((response) => response.json())
-        .then((Result) => setlive_issues_data(Result.all_live_issues));
-    }
-  }, [live_issues_data, live_search_key]);
+    const activeoverview = setInterval(() => {
+      if (
+        live_search_key.live_issue_search === null ||
+        live_search_key.live_issue_search === ""
+      ) {
+        // fetch live issues projects
+        fetch(`${URL}/api/auth/live_issues`, requestOptions)
+          .then((response) => response.json())
+          .then((Result) => setlive_issues_data(Result.all_live_issues));
+      }
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, [live_search_key]);
 
   // COUNTERS
   //project counters
@@ -178,15 +174,18 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-    // operational project counter  request
-    fetch(`${URL}/api/auth/projects/category/counter`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => {
-        set_operational_Project_Count(Result.operational);
-        set_strategic_project_count(Result.strategic);
-        set_live_issues_Project_Count(Result.live_issues);
-      });
-  }, [operational_project_Count]);
+    const activeoverview = setInterval(() => {
+      // operational project counter  request
+      fetch(`${URL}/api/auth/projects/category/counter`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => {
+          set_operational_Project_Count(Result.operational);
+          set_strategic_project_count(Result.strategic);
+          set_live_issues_Project_Count(Result.live_issues);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   // operational and strategic status Counters
   useEffect(() => {
@@ -198,14 +197,16 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-
-    fetch(`${URL}/api/auth/projects/status/counter`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => {
-        set_operational_project_statuses(Result.operational);
-        set_strategic_project_statuses(Result.strategic);
-      });
-  }, [operational_project_statuses]);
+    const activeoverview = setInterval(() => {
+      fetch(`${URL}/api/auth/projects/status/counter`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => {
+          set_operational_project_statuses(Result.operational);
+          set_strategic_project_statuses(Result.strategic);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   // Live Issues  status Counters
   useEffect(() => {
@@ -217,12 +218,14 @@ function ManagerDashboard() {
         "Content-Type": "application/json",
       },
     };
-
-    // strategic project count
-    fetch(`${URL}/api/auth/live_issues/count/statuses`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => set_live_issues_project_statuses(Result));
-  }, [live_issues_project_statuses]);
+    const activeoverview = setInterval(() => {
+      // strategic project count
+      fetch(`${URL}/api/auth/live_issues/count/statuses`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => set_live_issues_project_statuses(Result));
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   const handleChange = (event) => {
     set_operational_search_key({
@@ -290,11 +293,13 @@ function ManagerDashboard() {
       },
     };
 
-      fetch(`${URL}/api/auth/live_issues/search?search=${live_search_key.live_issue_search}`,requestOptions)
+    fetch(
+      `${URL}/api/auth/live_issues/search?search=${live_search_key.live_issue_search}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((res) => {
         setlive_issues_data(res.all_live_issues);
-     
       });
   }
   return (
@@ -310,7 +315,10 @@ function ManagerDashboard() {
           <Card className="shadow border-0 mb-7">
             <Carousel fade indicators={false}>
               {/* Operational Carousel Item */}
-              <Carousel.Item style={{ backgroundColor: "#F0FFFF" }} interval={40000}>
+              <Carousel.Item
+                style={{ backgroundColor: "#F0FFFF" }}
+                interval={40000}
+              >
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
                     <Card
@@ -347,41 +355,50 @@ function ManagerDashboard() {
                 </div>
                 <Container fluid>
                   <Row>
-                    <div  className="col-md-8 col-sm-12"  style={{  height: "calc(100vh - 290px)",  overflow: "auto" }} >
-                      <Card className="text-black mb-3"  style={{ backgroundColor: "white", height: "86%" }} >
-                        <Card.Header  className="card text-white mb-3"  style={{ backgroundColor: "#8F9CB3" }} >
+                    <div
+                      className="col-md-8 col-sm-12"
+                      style={{
+                        height: "calc(100vh - 290px)",
+                        overflow: "auto",
+                      }}
+                    >
+                      <Card
+                        className="text-black mb-3"
+                        style={{ backgroundColor: "white", height: "86%" }}
+                      >
+                        <Card.Header
+                          className="card text-white mb-3"
+                          style={{ backgroundColor: "#8F9CB3" }}
+                        >
                           {" "}
                           Operational Projects{" "}
                         </Card.Header>
-                          <Nav className="justify-content-end">
-                                                    <div className="col-md-3 col-sm-9 me-3">
-                                                      <Form
-                                                        onSubmit={
-                                                          handle_Operation_Search_Project_Submit
-                                                        }
-                                                        className="d-flex"
-                                                      >
-                                                        <FormControl
-                                                          type="search"
-                                                          name="operational_project_search"
-                                                          placeholder="Search"
-                                                          onChange={handleChange}
-                                                          className="mr-3"
-                                                          aria-label="Search"
-                                                        />
-                                                        <Button
-                                                          variant="outline-success"
-                                                          type="submit"
-                                                          size="sm"
-                                                        >
-                                                          Search
-                                                        </Button>
-                                                      </Form>
-                                                    </div>
-                                                  </Nav>
+                        <Nav className="justify-content-end">
+                          <div className="col-md-3 col-sm-9 me-3">
+                            <Form
+                              onSubmit={handle_Operation_Search_Project_Submit}
+                              className="d-flex"
+                            >
+                              <FormControl
+                                type="search"
+                                name="operational_project_search"
+                                placeholder="Search"
+                                onChange={handleChange}
+                                className="mr-3"
+                                aria-label="Search"
+                              />
+                              <Button
+                                variant="outline-success"
+                                type="submit"
+                                size="sm"
+                              >
+                                Search
+                              </Button>
+                            </Form>
+                          </div>
+                        </Nav>
                         <Card.Body className="scroll">
-                        
-                          <Table  size="sm" striped bordered hover>
+                          <Table size="sm" striped bordered hover>
                             <thead>
                               <tr>
                                 <th>Project Name</th>
@@ -436,13 +453,16 @@ function ManagerDashboard() {
                         className="text-center"
                         style={{ backgroundColor: "#8F9CB3" }}
                       >
-                        <Button size="sm" variant="outline-success" onClick={handleShow}>
+                        <Button
+                          size="sm"
+                          variant="outline-success"
+                          onClick={handleShow}
+                        >
                           All
                         </Button>
                       </Card.Footer>
                     </div>
                     <div className="col-md-3 col-sm-12">
-                
                       <Card fluid style={{ height: "96%" }}>
                         <Card.Header
                           className="card text-white mb-3"
@@ -660,12 +680,13 @@ function ManagerDashboard() {
               >
                 <div className="row mb-2">
                   <div className="col-md-2 col-sm-12">
-                    <Card  className="text-white mb-3 py-3"
+                    <Card
+                      className="text-white mb-3 py-3"
                       style={{ backgroundColor: "#3e7dcc" }}
                     >
                       <Card.Body>
-                       <Row>
-                        <Col>
+                        <Row>
+                          <Col>
                             <span className="h6 ">Strategic </span>
                             <span className="h5 font-bold mb-0">
                               <CountUp
@@ -681,57 +702,62 @@ function ManagerDashboard() {
                               </CountUp>
                             </span>
                           </Col>
-                        <Col>
+                          <Col>
                             <span className="h6 text-white">
                               <h1>
                                 <FcEngineering />
                               </h1>
                             </span>
-                         </Col>
-                        </Row>                      </Card.Body>
+                          </Col>
+                        </Row>{" "}
+                      </Card.Body>
                     </Card>
                   </div>
                 </div>
-                <Container fluid >
+                <Container fluid>
                   <Row>
                     <div
-                      className="col-md-8 col-sm-12" style={{ height: "calc(100vh - 290px)", overflow: "auto",
+                      className="col-md-8 col-sm-12"
+                      style={{
+                        height: "calc(100vh - 290px)",
+                        overflow: "auto",
                       }}
                     >
                       <Card
                         className="text-black mb-3"
                         style={{ backgroundColor: "white", height: "86%" }}
                       >
-                        <Card.Header className="card text-white mb-3" style={{ backgroundColor: "#3E7DCC" }} >
+                        <Card.Header
+                          className="card text-white mb-3"
+                          style={{ backgroundColor: "#3E7DCC" }}
+                        >
                           {" "}
                           Strategic Projects{" "}
                         </Card.Header>
-                            <Nav className="justify-content-end">
-                                                        <div className="col-md-3 col-sm-9  me-3">
-                                                          <Form
-                                                            onSubmit={
-                                                              handle_Strategic_Search_Project_Submit
-                                                            }
-                                                            className="d-flex"
-                                                          >
-                                                            <FormControl
-                                                              type="search"
-                                                              name="strategic_project_search"
-                                                              placeholder="Search"
-                                                              onChange={handleChange}
-                                                              className="mr-3"
-                                                              aria-label="Search"
-                                                            />
-                                                            <Button
-                                                              variant="outline-success"
-                                                              type="submit"
-                                                              size="sm"
-                                                            >
-                                                              Search
-                                                            </Button>
-                                                          </Form>
-                                                        </div>
-                                                      </Nav>
+                        <Nav className="justify-content-end">
+                          <div className="col-md-3 col-sm-9  me-3">
+                            <Form
+                              onSubmit={handle_Strategic_Search_Project_Submit}
+                              className="d-flex"
+                            >
+                              <FormControl
+                                type="search"
+                                name="strategic_project_search"
+                                placeholder="Search"
+                                onChange={handleChange}
+                                className="mr-3"
+                                aria-label="Search"
+                              />
+                              <Button
+                                variant="outline-success"
+                                type="submit"
+                                size="sm"
+                              >
+                                Search
+                              </Button>
+                            </Form>
+                          </div>
+                        </Nav>
                         <Card.Body className="scroll">
                           <Table size="sm" striped bordered hover>
                             <thead>
@@ -1065,31 +1091,30 @@ function ManagerDashboard() {
                           Live Issues Projects{" "}
                         </Card.Header>
                         <Nav className="justify-content-end">
-                            <div className="col-md-3 col-sm-9  me-3">
-                              <Form
-                                onSubmit={handle_Live_Search_Project_Submit}
-                                className="d-flex"
+                          <div className="col-md-3 col-sm-9  me-3">
+                            <Form
+                              onSubmit={handle_Live_Search_Project_Submit}
+                              className="d-flex"
+                            >
+                              <FormControl
+                                type="search"
+                                name="live_issue_search"
+                                placeholder="Search"
+                                onChange={handleChange}
+                                className="mr-3"
+                                aria-label="Search"
+                              />
+                              <Button
+                                variant="outline-success"
+                                type="submit"
+                                size="sm"
                               >
-                                <FormControl
-                                  type="search"
-                                  name="live_issue_search"
-                                  placeholder="Search"
-                                  onChange={handleChange}
-                                  className="mr-3"
-                                  aria-label="Search"
-                                />
-                                <Button
-                                  variant="outline-success"
-                                  type="submit"
-                                  size="sm"
-                                >
-                                  Search
-                                </Button>
-                              </Form>
-                            </div>
-                          </Nav>
-                        <Card.Body  className="scroll">
-               
+                                Search
+                              </Button>
+                            </Form>
+                          </div>
+                        </Nav>
+                        <Card.Body className="scroll">
                           <Table size="sm" striped bordered hover>
                             <thead>
                               <tr>
@@ -1142,7 +1167,7 @@ function ManagerDashboard() {
                       </Card>
                       <Card.Footer className="text-center">
                         <Button
-                           size="sm"
+                          size="sm"
                           style={{ backgroundColor: "#00C8C8" }}
                           onClick={handleShowLiveIssues}
                         >
@@ -1394,7 +1419,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table size='sm'  striped bordered hover>
+            <Table size="sm" striped bordered hover>
               <caption>List of operational projects</caption>
               <thead>
                 <tr>
@@ -1469,7 +1494,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table size='sm'  striped bordered hover>
+            <Table size="sm" striped bordered hover>
               <caption>List of Strategic projects</caption>
               <thead>
                 <tr>
@@ -1546,7 +1571,7 @@ function ManagerDashboard() {
                 </Form>
               </div>
             </Nav>
-            <Table size='sm'  striped bordered hover>
+            <Table size="sm" striped bordered hover>
               <caption>List of live issues </caption>
               <thead>
                 <tr>
@@ -1595,6 +1620,19 @@ function ManagerDashboard() {
           </Modal.Footer>
         </Modal>
       </div>
+
+      <Container>
+        <Modal
+          className="loadermodal"
+          fullscreen={true}
+          show={loader}
+          onHide={handleLoaderClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Spinner animation="grow" className="theSpiner" variant="info" />
+        </Modal>
+      </Container>
     </div>
   );
 }

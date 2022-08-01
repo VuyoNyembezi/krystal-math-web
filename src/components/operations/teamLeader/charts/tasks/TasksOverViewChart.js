@@ -15,14 +15,16 @@ function TaskOverviewChart() {
       },
     };
     // team statuses
-
-    fetch(
-      `${URL}/api/auth/team/task_status?id=${localStorage.getItem("team")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_team_tasks_statuses(Result));
-  }, [team_tasks_statuses]);
+    const activeoverview = setInterval(() => {
+      fetch(
+        `${URL}/api/auth/team/task_status?id=${localStorage.getItem("team")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => set_team_tasks_statuses(Result));
+    }, 5000);
+    return () => clearInterval(activeoverview);
+  }, []);
   const data = {
     labels: ["Not Started", "On Hold", "In Progress", "Testing", "Completed"],
     datasets: [

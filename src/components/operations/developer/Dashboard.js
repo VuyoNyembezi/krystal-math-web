@@ -13,6 +13,7 @@ import {
   Nav,
   ProgressBar,
   Row,
+  Spinner,
   Tab,
   Table,
   Tabs,
@@ -289,6 +290,12 @@ function DashBoardDev() {
   );
   const latest_task_data = useMemo(() => old_tasks_data, [old_tasks_data]);
 
+  const [loader, setloader] = useState(true);
+  const handleLoaderClose = () => setloader(false);
+
+  setTimeout(() => {
+    handleLoaderClose();
+  }, 4000);
   // For DropDown Population
   useEffect(() => {
     const requestOptions = {
@@ -321,20 +328,23 @@ function DashBoardDev() {
       },
     };
     if (search_key.task_search === null || search_key.task_search === "") {
-      // fetch user tasks
-      fetch(
-        `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
-          "team"
-        )}&user_id=${localStorage.getItem("SUID")}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((Result) => {
-          setUserOpenTasksData(Result.open_tasks);
-          setUserAllTasksData(Result.all_tasks);
-          setUserOverDueTasksData(Result.over_due_tasks);
-          setUserCompletedTasksData(Result.completed_tasks);
-        });
+      const activeoverview = setInterval(() => {
+        // fetch user tasks
+        fetch(
+          `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
+            "team"
+          )}&user_id=${localStorage.getItem("SUID")}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((Result) => {
+            setUserOpenTasksData(Result.open_tasks);
+            setUserAllTasksData(Result.all_tasks);
+            setUserOverDueTasksData(Result.over_due_tasks);
+            setUserCompletedTasksData(Result.completed_tasks);
+          });
+      }, 3000);
+      return () => clearInterval(activeoverview);
     }
   }, [latest_task_data, search_key.task_search]);
 
@@ -348,27 +358,29 @@ function DashBoardDev() {
         "Content-Type": "application/json",
       },
     };
+    const activeoverview = setInterval(() => {
+      // Completed Tasks
+      fetch(
+        `${URL}/api/auth/task/user/count?team_id=${localStorage.getItem(
+          "team"
+        )}&id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => setTaskOverviewCounter(Result));
 
-    // Completed Tasks
-    fetch(
-      `${URL}/api/auth/task/user/count?team_id=${localStorage.getItem(
-        "team"
-      )}&id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => setTaskOverviewCounter(Result));
-
-    // Member Status Value
-    // not started
-    fetch(
-      `${URL}/api/auth/user/tasks_status?team_id=${localStorage.getItem(
-        "team"
-      )}&id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_user_task_statuses(Result));
+      // Member Status Value
+      // not started
+      fetch(
+        `${URL}/api/auth/user/tasks_status?team_id=${localStorage.getItem(
+          "team"
+        )}&id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => set_user_task_statuses(Result));
+    }, 3000);
+    return () => clearInterval(activeoverview);
   }, [latest_task_data]);
 
   // Project Assignments
@@ -381,31 +393,36 @@ function DashBoardDev() {
         "Content-Type": "application/json",
       },
     };
-    //fecth team  project assignments
-    fetch(
-      `${URL}/api/auth/project_assignment/dev/all?team_id=${localStorage.getItem(
-        "team"
-      )}&id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        set_assign_ProjectData(results);
-        set_assign_bet_ProjectData(results.bet_projects);
-        set_assign_bet_partners_ProjectData(
-          results.bet_project_partners_projects
-        );
-        set_assign_country_ProjectData(results.country_projects);
-        set_assign_customer_journey_ProjectData(
-          results.customer_journey_projects
-        );
-        set_assign_digital_marketing_ProjectData(
-          results.digital_marketing_projects
-        );
-        set_assign_integrations_ProjectData(results.integrations_projects);
-        set_assign_payment_methods_ProjectData(results.payment_method_projects);
-        set_assign_all_projects_ProjectData(results.all_projects);
-      });
+    const activeoverview = setInterval(() => {
+      //fecth team  project assignments
+      fetch(
+        `${URL}/api/auth/project_assignment/dev/all?team_id=${localStorage.getItem(
+          "team"
+        )}&id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          set_assign_ProjectData(results);
+          set_assign_bet_ProjectData(results.bet_projects);
+          set_assign_bet_partners_ProjectData(
+            results.bet_project_partners_projects
+          );
+          set_assign_country_ProjectData(results.country_projects);
+          set_assign_customer_journey_ProjectData(
+            results.customer_journey_projects
+          );
+          set_assign_digital_marketing_ProjectData(
+            results.digital_marketing_projects
+          );
+          set_assign_integrations_ProjectData(results.integrations_projects);
+          set_assign_payment_methods_ProjectData(
+            results.payment_method_projects
+          );
+          set_assign_all_projects_ProjectData(results.all_projects);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
   }, [latest_project_data]);
 
   useEffect(() => {
@@ -577,18 +594,20 @@ function DashBoardDev() {
         "Content-Type": "application/json",
       },
     };
-
-    fetch(
-      `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
-        "team"
-      )}&user_id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((Response) => Response.json())
-      .then((Result) => {
-        settask_assignments(Result);
-      });
-  }, [task_assignments]);
+    const activeoverview = setInterval(() => {
+      fetch(
+        `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          settask_assignments(Result);
+        });
+    }, 5000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   const [project_assignments, setproject_assignments] = useState({
     project_assignments: 0,
@@ -604,17 +623,20 @@ function DashBoardDev() {
       },
     };
 
-    fetch(
-      `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
-        "team"
-      )}&user_id=${localStorage.getItem("SUID")}`,
-      requestOptions
-    )
-      .then((Response) => Response.json())
-      .then((Result) => {
-        setproject_assignments(Result);
-      });
-  }, [project_assignments]);
+    const activeoverview = setInterval(() => {
+      fetch(
+        `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
+          "team"
+        )}&user_id=${localStorage.getItem("SUID")}`,
+        requestOptions
+      )
+        .then((Response) => Response.json())
+        .then((Result) => {
+          setproject_assignments(Result);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   // Update Task Status
   function handleSubmitTaskUpdate(event) {
@@ -5362,6 +5384,18 @@ function DashBoardDev() {
           </Toast>
         </ToastContainer>
       </div>
+      <Container>
+        <Modal
+          className="loadermodal"
+          fullscreen={true}
+          show={loader}
+          onHide={handleLoaderClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Spinner animation="grow" className="theSpiner" variant="info" />
+        </Modal>
+      </Container>
     </div>
   );
 }

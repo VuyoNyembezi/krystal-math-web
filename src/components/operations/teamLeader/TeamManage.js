@@ -15,6 +15,7 @@ import {
   Nav,
   Container,
   Row,
+  Spinner,
 } from "react-bootstrap";
 
 import { FcApproval } from "react-icons/fc";
@@ -99,6 +100,12 @@ function ManageTeam() {
   const handleShowError = () => set_error(true);
   const handleCloseError = () => set_error(false);
   // ############################################################
+  const [loader, setloader] = useState(true);
+  const handleLoaderClose = () => setloader(false);
+
+  setTimeout(() => {
+    handleLoaderClose();
+  }, 4000);
 
   const history = useNavigate();
   const [TeamMembers, setTeamMembers] = useState([]);
@@ -389,32 +396,37 @@ function ManageTeam() {
         "Content-Type": "application/json",
       },
     };
-    //fecth team  project assignments
-    fetch(
-      `${URL}/api/auth/project_assignment/team/all?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        set_assign_ProjectData(results);
-        set_assign_bet_ProjectData(results.bet_projects);
-        set_assign_bet_partners_ProjectData(
-          results.bet_project_partners_projects
-        );
-        set_assign_country_ProjectData(results.country_projects);
-        set_assign_customer_journey_ProjectData(
-          results.customer_journey_projects
-        );
-        set_assign_digital_marketing_ProjectData(
-          results.digital_marketing_projects
-        );
-        set_assign_integrations_ProjectData(results.integrations_projects);
-        set_assign_payment_methods_ProjectData(results.payment_method_projects);
-        set_assign_all_ProjectData(results.all_projects);
-      });
-  }, [latest_project_assignment_data, assign_projectData]);
+    const activeoverview = setInterval(() => {
+      //fecth team  project assignments
+      fetch(
+        `${URL}/api/auth/project_assignment/team/all?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          set_assign_ProjectData(results);
+          set_assign_bet_ProjectData(results.bet_projects);
+          set_assign_bet_partners_ProjectData(
+            results.bet_project_partners_projects
+          );
+          set_assign_country_ProjectData(results.country_projects);
+          set_assign_customer_journey_ProjectData(
+            results.customer_journey_projects
+          );
+          set_assign_digital_marketing_ProjectData(
+            results.digital_marketing_projects
+          );
+          set_assign_integrations_ProjectData(results.integrations_projects);
+          set_assign_payment_methods_ProjectData(
+            results.payment_method_projects
+          );
+          set_assign_all_ProjectData(results.all_projects);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, [latest_project_assignment_data]);
   // Over due  Assignment
   // Project Assignments
   useEffect(() => {
@@ -426,36 +438,39 @@ function ManageTeam() {
         "Content-Type": "application/json",
       },
     };
-    //fecth over due team  project assignments
+    const activeoverview = setInterval(() => {
+      //fecth over due team  project assignments
 
-    fetch(
-      `${URL}/api/auth/project_assignment/over_due/team/all?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        set_over_due_assign_ProjectData(results);
-        set_over_due_assign_bet_ProjectData(results.bet_projects);
-        set_over_due_assign_bet_partners_ProjectData(
-          results.bet_project_partners_projects
-        );
-        set_over_due_assign_country_ProjectData(results.country_projects);
-        set_over_due_assign_customer_journey_ProjectData(
-          results.customer_journey_projects
-        );
-        set_over_due_assign_digital_marketing_ProjectData(
-          results.digital_marketing_projects
-        );
-        set_over_due_assign_integrations_ProjectData(
-          results.integrations_projects
-        );
-        set_over_due_assign_payment_methods_ProjectData(
-          results.payment_method_projects
-        );
-        set_over_due_assign_all_ProjectData(results.all_projects);
-      });
+      fetch(
+        `${URL}/api/auth/project_assignment/over_due/team/all?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          set_over_due_assign_ProjectData(results);
+          set_over_due_assign_bet_ProjectData(results.bet_projects);
+          set_over_due_assign_bet_partners_ProjectData(
+            results.bet_project_partners_projects
+          );
+          set_over_due_assign_country_ProjectData(results.country_projects);
+          set_over_due_assign_customer_journey_ProjectData(
+            results.customer_journey_projects
+          );
+          set_over_due_assign_digital_marketing_ProjectData(
+            results.digital_marketing_projects
+          );
+          set_over_due_assign_integrations_ProjectData(
+            results.integrations_projects
+          );
+          set_over_due_assign_payment_methods_ProjectData(
+            results.payment_method_projects
+          );
+          set_over_due_assign_all_ProjectData(results.all_projects);
+        });
+    }, 3000);
+    return () => clearInterval(activeoverview);
   }, [latest_over_due_project_assignment_data]);
 
   useEffect(() => {
@@ -506,20 +521,23 @@ function ManageTeam() {
       },
     };
     if (search_key.task_search === null || search_key.task_search === "") {
-      // fetch team tasks
-      fetch(
-        `${URL}/api/auth/team/tasks?id=${localStorage.getItem("team")}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((Result) => {
-          setTeamOpenTasksData(Result.open_tasks);
-          setTeamAllTasksData(Result.all_tasks);
-          setTeamOverDueTasksData(Result.over_due_tasks);
-          setTeamActiveTasksData(Result.active_tasks);
-          setTeamCompletedTasksData(Result.completed_tasks);
-          setTeamNotActiveTasksData(Result.not_active_tasks);
-        });
+      const activeoverview = setInterval(() => {
+        // fetch team tasks
+        fetch(
+          `${URL}/api/auth/team/tasks?id=${localStorage.getItem("team")}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((Result) => {
+            setTeamOpenTasksData(Result.open_tasks);
+            setTeamAllTasksData(Result.all_tasks);
+            setTeamOverDueTasksData(Result.over_due_tasks);
+            setTeamActiveTasksData(Result.active_tasks);
+            setTeamCompletedTasksData(Result.completed_tasks);
+            setTeamNotActiveTasksData(Result.not_active_tasks);
+          });
+      }, 3000);
+      return () => clearInterval(activeoverview);
     }
   }, [latest_team_tasks_data, search_key.task_search]);
 
@@ -534,22 +552,25 @@ function ManageTeam() {
       },
     };
     if (search_key.task_search === null || search_key.task_search === "") {
-      // fetch team tasks
-      fetch(
-        `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
-          "team"
-        )}&user_id=${user.id}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((Result) => {
-          setUserOpenTasksData(Result.open_tasks);
-          setUserAllTasksData(Result.all_tasks);
-          setUserOverDueTasksData(Result.over_due_tasks);
-          setUserActiveTasksData(Result.active_tasks);
-          setUserCompletedTasksData(Result.completed_tasks);
-          setUserNotActiveTasksData(Result.not_active_tasks);
-        });
+      const activeoverview = setInterval(() => {
+        // fetch team tasks
+        fetch(
+          `${URL}/api/auth/user/tasks?id=${localStorage.getItem(
+            "team"
+          )}&user_id=${user.id}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((Result) => {
+            setUserOpenTasksData(Result.open_tasks);
+            setUserAllTasksData(Result.all_tasks);
+            setUserOverDueTasksData(Result.over_due_tasks);
+            setUserActiveTasksData(Result.active_tasks);
+            setUserCompletedTasksData(Result.completed_tasks);
+            setUserNotActiveTasksData(Result.not_active_tasks);
+          });
+      }, 3000);
+      return () => clearInterval(activeoverview);
     }
   }, [user.id, latest_user_tasks_data, search_key.task_search]);
 
@@ -4515,6 +4536,18 @@ function ManageTeam() {
           <Toast.Body className="text-white">error occured</Toast.Body>
         </Toast>
       </ToastContainer>
+      <Container>
+        <Modal
+          className="loadermodal"
+          fullscreen={true}
+          show={loader}
+          onHide={handleLoaderClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Spinner animation="grow" className="theSpiner" variant="info" />
+        </Modal>
+      </Container>
     </div>
   );
 }

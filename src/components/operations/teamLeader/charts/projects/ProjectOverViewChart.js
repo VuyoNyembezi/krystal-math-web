@@ -9,27 +9,28 @@ function ProjectOverviewChart() {
   const [team_project_statuses, set_team_project_statuses] = useState([]);
   // Team overview
 
-
   useEffect(() => {
     const requestOptions = {
       method: "Get",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem('key')}`,
+        Authorization: `Bearer ${localStorage.getItem("key")}`,
         "Content-Type": "application/json",
       },
     };
-    // nteam project status overview
-    fetch(
-      `${URL}/api/auth/team_projects/overview/count?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_team_project_statuses(Result));
-  }, [team_project_statuses]);
-
+    const activeoverview = setInterval(() => {
+      // nteam project status overview
+      fetch(
+        `${URL}/api/auth/team_projects/overview/count?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => set_team_project_statuses(Result));
+    }, 5000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   const data = {
     labels: [
@@ -78,12 +79,9 @@ function ProjectOverviewChart() {
     ],
   };
   return (
-  
-       <div style={{width: "60%",height:"60%" }}>
-       <Doughnut data={data} />
-       </div>
-     
-     
+    <div style={{ width: "60%", height: "60%" }}>
+      <Doughnut data={data} />
+    </div>
   );
 }
 

@@ -16,11 +16,14 @@ function LiveOverView() {
         "Content-Type": "application/json",
       },
     };
-    // projects overview statuses
-    fetch(`${URL}/api/auth/live_issues/count/statuses`, requestOptions)
-      .then((response) => response.json())
-      .then((Result) => set_live_issue_statuses(Result));
-  }, [live_issue_statuses]);
+    const activeoverview = setInterval(() => {
+      // projects overview statuses
+      fetch(`${URL}/api/auth/live_issues/count/statuses`, requestOptions)
+        .then((response) => response.json())
+        .then((Result) => set_live_issue_statuses(Result));
+    }, 3000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   const main_live_issues_data = {
     labels: [
@@ -70,7 +73,7 @@ function LiveOverView() {
   };
   return (
     <>
-      <div >
+      <div>
         <Doughnut data={main_live_issues_data} />
       </div>
     </>

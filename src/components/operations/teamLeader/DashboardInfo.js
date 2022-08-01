@@ -15,6 +15,7 @@ import {
   Offcanvas,
   ProgressBar,
   Row,
+  Spinner,
   Tab,
   Table,
   Tabs,
@@ -441,6 +442,13 @@ function DashBoardInfo() {
     [old_team_tasks_data]
   );
 
+  const [loader, setloader] = useState(true);
+  const handleLoaderClose = () => setloader(false);
+
+  setTimeout(() => {
+    handleLoaderClose();
+  }, 6000);
+
   function TaskData() {
     set_old_team_tasks_data(memberTask);
   }
@@ -530,17 +538,21 @@ function DashBoardInfo() {
         "Content-Type": "application/json",
       },
     };
-    fetch(
-      `${URL}/api/auth/live_issues/team/count/overview?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        setActiveOverviewLiveIssue(results);
-      });
-  }, [LiveIssueOverviewData]);
+
+    const activeoverview = setInterval(() => {
+      fetch(
+        `${URL}/api/auth/live_issues/team/count/overview?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          setActiveOverviewLiveIssue(results);
+        });
+    }, 4000);
+    return () => clearInterval(activeoverview);
+  }, []);
 
   //Members COUNTERS
 
@@ -559,6 +571,7 @@ function DashBoardInfo() {
       operational: 1,
       strategic: 2,
     };
+
     //########### member project assignment #######
     // operational Project assignment
     fetch(
@@ -623,25 +636,30 @@ function DashBoardInfo() {
         "Content-Type": "application/json",
       },
     };
-    //fecth team  projects
 
-    fetch(
-      `${URL}/api/auth/team/projects?team_id=${localStorage.getItem("team")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((results) => {
-        set_ProjectData(results);
-        set_bet_ProjectData(results.bet_projects);
-        set_bet_partners_ProjectData(results.bet_project_partners_projects);
-        set_country_ProjectData(results.country_projects);
-        set_customer_journey_ProjectData(results.customer_journey_projects);
-        set_digital_marketing_ProjectData(results.digital_marketing_projects);
-        set_integrations_ProjectData(results.integrations_projects);
-        set_payment_methods_ProjectData(results.payment_method_projects);
-        set_all_ProjectData(results.all_projects);
-      });
-  }, [latest_project_data]);
+    const activeoverview = setInterval(() => {
+      //fecth team  projects
+
+      fetch(
+        `${URL}/api/auth/team/projects?team_id=${localStorage.getItem("team")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((results) => {
+          set_ProjectData(results);
+          set_bet_ProjectData(results.bet_projects);
+          set_bet_partners_ProjectData(results.bet_project_partners_projects);
+          set_country_ProjectData(results.country_projects);
+          set_customer_journey_ProjectData(results.customer_journey_projects);
+          set_digital_marketing_ProjectData(results.digital_marketing_projects);
+          set_integrations_ProjectData(results.integrations_projects);
+          set_payment_methods_ProjectData(results.payment_method_projects);
+          set_all_ProjectData(results.all_projects);
+        });
+    }, 4000);
+    return () => clearInterval(activeoverview);
+  }, []);
+
   useEffect(() => {
     const requestOptions = {
       method: "Get",
@@ -651,23 +669,28 @@ function DashBoardInfo() {
         "Content-Type": "application/json",
       },
     };
-    // team overview Tasks
-    fetch(
-      `${URL}/api/auth/task/team/count?id=${localStorage.getItem("team")}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_team_tasks_overview(Result));
-    // All  Projects Overview
-    fetch(
-      `${URL}/api/auth/team/project/count?team_id=${localStorage.getItem(
-        "team"
-      )}`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((Result) => set_Team_Projects_Counter_Data(Result));
-  }, [latest_project_data]);
+
+    const activeoverview = setInterval(() => {
+      // team overview Tasks
+      fetch(
+        `${URL}/api/auth/task/team/count?id=${localStorage.getItem("team")}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => set_team_tasks_overview(Result));
+      // All  Projects Overview
+      fetch(
+        `${URL}/api/auth/team/project/count?team_id=${localStorage.getItem(
+          "team"
+        )}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((Result) => set_Team_Projects_Counter_Data(Result));
+    }, 4000);
+    return () => clearInterval(activeoverview);
+  }, []);
+
   // Live Issues
   useEffect(() => {
     const requestOptions = {
@@ -683,18 +706,21 @@ function DashBoardInfo() {
       search_key.live_issue_search === null ||
       search_key.live_issue_search === ""
     ) {
-      // fetch all live issues active projects assigned to the team
-      fetch(
-        `${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem(
-          "team"
-        )}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((res) => {
-          setLiveIssueData(res.all_live_issues);
-          setCompletedLiveIssueData(res.completed_live_issues);
-        });
+      const activeoverview = setInterval(() => {
+        // fetch all live issues active projects assigned to the team
+        fetch(
+          `${URL}/api/auth/team/live_issues?team_id=${localStorage.getItem(
+            "team"
+          )}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((res) => {
+            setLiveIssueData(res.all_live_issues);
+            setCompletedLiveIssueData(res.completed_live_issues);
+          });
+      }, 4000);
+      return () => clearInterval(activeoverview);
     }
   }, [latest_ive_ssue_data, showLiveIssues, search_key]);
 
@@ -753,16 +779,19 @@ function DashBoardInfo() {
     };
 
     if (memberValue.id !== 0) {
-      fetch(
-        `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
-          "team"
-        )}&user_id=${memberValue.id}`,
-        requestOptions
-      )
-        .then((Response) => Response.json())
-        .then((Result) => {
-          setproject_assignments(Result);
-        });
+      const activeoverview = setInterval(() => {
+        fetch(
+          `${URL}/api/auth/project_assignments/user/check?team_id=${localStorage.getItem(
+            "team"
+          )}&user_id=${memberValue.id}`,
+          requestOptions
+        )
+          .then((Response) => Response.json())
+          .then((Result) => {
+            setproject_assignments(Result);
+          });
+      }, 1000);
+      return () => clearInterval(activeoverview);
     }
   }, [memberValue.id]);
 
@@ -782,16 +811,19 @@ function DashBoardInfo() {
     };
 
     if (memberValue.id !== 0) {
-      fetch(
-        `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
-          "team"
-        )}&user_id=${memberValue.id}`,
-        requestOptions
-      )
-        .then((Response) => Response.json())
-        .then((Result) => {
-          settask_assignments(Result);
-        });
+      const activeoverview = setInterval(() => {
+        fetch(
+          `${URL}/api/auth/task_assignent/user/check?team_id=${localStorage.getItem(
+            "team"
+          )}&user_id=${memberValue.id}`,
+          requestOptions
+        )
+          .then((Response) => Response.json())
+          .then((Result) => {
+            settask_assignments(Result);
+          });
+      }, 1000);
+      return () => clearInterval(activeoverview);
     }
   }, [memberValue.id]);
 
@@ -3936,7 +3968,6 @@ function DashBoardInfo() {
                   value={taskFormValue.time}
                   placeholder="time placeholder"
                   type="time"
-                  defaultValue={"23:59"}
                 />
               </InputGroup>
               <InputGroup className="mb-3">
@@ -3959,7 +3990,6 @@ function DashBoardInfo() {
                   value={taskFormValue.dueDate}
                   placeholder="time placeholder"
                   type="time"
-                  defaultValue={"23:59"}
                 />
               </InputGroup>
               <InputGroup>
@@ -4904,6 +4934,19 @@ function DashBoardInfo() {
           <Toast.Body className="text-white">server error occured</Toast.Body>
         </Toast>
       </ToastContainer>
+
+      <Container>
+        <Modal
+          className="loadermodal"
+          fullscreen={true}
+          show={loader}
+          onHide={handleLoaderClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Spinner animation="grow" className="theSpiner" variant="info" />
+        </Modal>
+      </Container>
     </div>
   );
 }
